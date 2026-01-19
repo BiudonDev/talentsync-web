@@ -6,6 +6,9 @@ export const metadata: Metadata = {
   title: 'TalentSync | Connecting Top Talent with Innovative Companies',
   description: 'TalentSync is your partner in building exceptional tech teams. We connect innovative companies with top-tier AI and software engineering talent.',
   keywords: ['recruitment', 'tech hiring', 'AI talent', 'software engineers', 'talent acquisition'],
+  icons: {
+    icon: '/favicon.svg',
+  },
   openGraph: {
     title: 'TalentSync | Connecting Top Talent with Innovative Companies',
     description: 'Your partner in building exceptional tech teams.',

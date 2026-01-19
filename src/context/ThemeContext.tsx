@@ -1,6 +1,6 @@
 'use client'
 
-import { createContext, useContext, useEffect, useState, ReactNode } from 'react'
+import { createContext, useContext, useEffect, useState, ReactNode, useCallback, useSyncExternalStore } from 'react'
 
 type Theme = 'light' | 'dark'
 
@@ -16,18 +16,25 @@ const ThemeContext = createContext<ThemeContextType>({
   mounted: false,
 })
 
-export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setTheme] = useState<Theme>('light')
-  const [mounted, setMounted] = useState(false)
+const emptySubscribe = () => () => {}
 
-  useEffect(() => {
-    setMounted(true)
+function getSnapshot() {
+  return typeof window !== 'undefined'
+}
+
+function getServerSnapshot() {
+  return false
+}
+
+export function ThemeProvider({ children }: { children: ReactNode }) {
+  const mounted = useSyncExternalStore(emptySubscribe, getSnapshot, getServerSnapshot)
+
+  const [theme, setThemeState] = useState<Theme>(() => {
+    if (typeof window === 'undefined') return 'light'
     const stored = localStorage.getItem('talentsync-theme') as Theme | null
-    const systemPreference = window.matchMedia('(prefers-color-scheme: dark)').matches
-      ? 'dark'
-      : 'light'
-    setTheme(stored || systemPreference)
-  }, [])
+    if (stored) return stored
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+  })
 
   useEffect(() => {
     if (!mounted) return
@@ -37,9 +44,9 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     localStorage.setItem('talentsync-theme', theme)
   }, [theme, mounted])
 
-  const toggleTheme = () => {
-    setTheme((prev) => (prev === 'light' ? 'dark' : 'light'))
-  }
+  const toggleTheme = useCallback(() => {
+    setThemeState((prev) => (prev === 'light' ? 'dark' : 'light'))
+  }, [])
 
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme, mounted }}>
