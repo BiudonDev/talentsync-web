@@ -14,10 +14,10 @@
 
   /* Surface Colors */
   --color-background-light: #FAFAFA;
-  --color-background-dark: #0F0F0F;
+  --color-background-dark: #121214;
 
   --color-surface-light: #FFFFFF;
-  --color-surface-dark: #1A1A1A;
+  --color-surface-dark: #1C1C1F;
 
   /* Text Colors - improved contrast for light mode */
   --color-text-primary-light: #1A1A1A;
@@ -150,7 +150,7 @@ body {
 }
 
 .animated-bg {
-  background: #0A0A0A;
+  background: #141416;
   position: relative;
 }
 
