@@ -8,11 +8,12 @@ import { scrollToSection } from '@/lib/utils'
 
 export default function Hero() {
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Background decorations */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-1/4 -left-32 w-64 h-64 bg-primary/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/4 -right-32 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden animated-bg">
+      {/* Animated color rays */}
+      <div className="color-rays pointer-events-none">
+        <div className="color-ray color-ray-1" />
+        <div className="color-ray color-ray-2" />
+        <div className="color-ray color-ray-3" />
       </div>
 
       {/* Content */}
@@ -61,7 +62,7 @@ export default function Hero() {
 
       {/* Scroll indicator */}
       <motion.div
-        className="absolute bottom-8 left-1/2 -translate-x-1/2"
+        className="absolute bottom-24 left-1/2 -translate-x-1/2 z-10"
         animate={{ y: [0, 8, 0] }}
         transition={{ duration: 1.5, repeat: Infinity }}
       >
@@ -73,6 +74,9 @@ export default function Hero() {
           <HiChevronDown className="w-8 h-8" />
         </button>
       </motion.div>
+
+      {/* Gradient fade to next section */}
+      <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-b from-transparent via-[#0F0F0F]/50 to-background-dark pointer-events-none" />
     </section>
   )
 }

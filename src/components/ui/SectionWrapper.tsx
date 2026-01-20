@@ -1,7 +1,6 @@
 'use client'
 
-import { ReactNode, useRef } from 'react'
-import { motion, useInView } from 'framer-motion'
+import { ReactNode } from 'react'
 
 interface SectionWrapperProps {
   id: string
@@ -10,23 +9,14 @@ interface SectionWrapperProps {
 }
 
 export default function SectionWrapper({ id, children, className }: SectionWrapperProps) {
-  const ref = useRef(null)
-  const isInView = useInView(ref, { once: true, margin: '-100px' })
-
   return (
     <section
       id={id}
-      ref={ref}
-      className={`py-16 sm:py-20 lg:py-24 ${className || ''}`}
+      className={`py-24 sm:py-32 lg:py-40 ${className || ''}`}
     >
-      <motion.div
-        initial={{ opacity: 0, y: 40 }}
-        animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
-        transition={{ duration: 0.6 }}
-        className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8"
-      >
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         {children}
-      </motion.div>
+      </div>
     </section>
   )
 }

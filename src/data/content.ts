@@ -1,10 +1,13 @@
 export const siteConfig = {
   name: 'TalentSync',
-  description: 'Connecting Top Talent with Innovative Companies',
-  tagline: 'Your partner in building exceptional tech teams',
+  description: 'Your Strategic Partner for Tech Talent Solutions',
+  tagline: 'Connect with elite software developers from Eastern Europe. Build stronger tech teams faster, smarter, and more cost-effectively.',
   url: 'https://talentsync.eu',
   calendlyUrl: 'https://calendly.com/talentsync-meeting/30min',
-  email: 'hello@talentsync.eu',
+  email: 'victor@talentsync.eu',
+  phone: '+373 68 300 700',
+  linkedin: 'https://linkedin.com/company/talentsync',
+  location: 'Chișinău, Moldova',
 }
 
 export const navigation = [
@@ -12,8 +15,6 @@ export const navigation = [
   { label: 'Services', href: '#services' },
   { label: 'Process', href: '#process' },
   { label: 'Case Studies', href: '#case-studies' },
-  { label: 'Team', href: '#team' },
-  { label: 'Pricing', href: '#pricing' },
   { label: 'FAQ', href: '#faq' },
   { label: 'Careers', href: '#careers' },
   { label: 'Contact', href: '#contact' },
@@ -22,216 +23,182 @@ export const navigation = [
 export const services = [
   {
     icon: 'HiOutlineUserGroup',
-    title: 'Talent Acquisition',
-    description: 'End-to-end recruitment solutions for tech and AI roles. We find the perfect match for your team.',
+    title: 'Eastern Europe Talent Pool',
+    description: 'Direct access to vetted software developers and IT specialists across the region, delivering exceptional quality at competitive rates.',
   },
   {
-    icon: 'HiOutlineLightBulb',
-    title: 'AI & Tech Specialists',
-    description: 'Access top-tier AI engineers, data scientists, and software developers from our curated network.',
+    icon: 'HiOutlineCurrencyDollar',
+    title: 'Cost-Efficient Solutions',
+    description: 'Save up to 60% on hiring costs while maintaining top-tier technical excellence and cultural alignment with your team.',
   },
   {
-    icon: 'HiOutlineCog',
-    title: 'Technical Screening',
-    description: 'Rigorous technical assessments ensure candidates meet your exact requirements.',
+    icon: 'HiOutlinePuzzle',
+    title: 'Tailored Matching',
+    description: 'Custom recruitment and team-building designed around your specific technology stack and organizational culture.',
   },
   {
-    icon: 'HiOutlineChartBar',
-    title: 'Market Insights',
-    description: 'Data-driven salary benchmarks and hiring trends to help you stay competitive.',
+    icon: 'HiOutlineCode',
+    title: 'Full-Stack Expertise',
+    description: 'JavaScript, React, Angular, Node.js, .NET, Python, Java — we cover the entire modern tech stack.',
   },
   {
-    icon: 'HiOutlineGlobe',
-    title: 'Global Reach',
-    description: 'Tap into international talent pools while we handle compliance and onboarding.',
+    icon: 'HiOutlineCloud',
+    title: 'Cloud & DevOps',
+    description: 'AWS, Azure, Google Cloud specialists ready to architect and scale your infrastructure.',
   },
   {
-    icon: 'HiOutlineShieldCheck',
-    title: 'Retention Support',
-    description: 'Post-placement support and check-ins to ensure long-term success.',
+    icon: 'HiOutlineChip',
+    title: 'AI & Machine Learning',
+    description: 'Access AI engineers and data scientists to power your next-generation products.',
   },
 ]
 
 export const process = [
   {
     step: 1,
-    title: 'Discovery',
-    description: 'We learn about your company culture, technical requirements, and growth goals.',
+    title: 'Deep Technical Vetting',
+    description: 'Rigorous assessments and skill evaluations go far beyond CVs — ensuring both technical excellence and cultural fit.',
   },
   {
     step: 2,
-    title: 'Matching',
-    description: 'Our AI-powered system identifies candidates that fit your unique needs.',
+    title: 'Flexible Engagement',
+    description: 'Full-time, part-time, contract, or project-based placements tailored to your exact business needs and timeline.',
   },
   {
     step: 3,
-    title: 'Interview',
-    description: 'We coordinate technical interviews and provide detailed candidate assessments.',
+    title: 'Dedicated Support',
+    description: 'Single point of contact — your dedicated account manager ensures seamless communication and successful delivery.',
   },
   {
     step: 4,
-    title: 'Placement',
-    description: 'Seamless onboarding support and 90-day guarantee on all placements.',
+    title: 'Cost-Effective Rates',
+    description: 'Transparent pricing from €15-35/hour — no hidden fees, no surprises. Quality talent at competitive rates.',
   },
 ]
 
 export const caseStudies = [
   {
-    company: 'FinTech Startup',
-    industry: 'Financial Technology',
-    image: '/images/case-fintech.jpg',
-    results: ['15 engineers hired in 3 months', '95% retention after 1 year', '40% faster than in-house recruiting'],
+    company: 'FC Barcelona',
+    industry: 'Sports & Entertainment',
+    image: '/images/case-barca.jpg',
+    highlight: true,
+    results: [
+      '1.5M app downloads in first 3 months',
+      'Real-time platform for millions of global fans',
+      'JavaScript & AWS cloud architecture',
+    ],
   },
   {
-    company: 'AI Research Lab',
-    industry: 'Artificial Intelligence',
-    image: '/images/case-ai.jpg',
-    results: ['Built 8-person ML team from scratch', 'Senior talent from top tech companies', 'First hire within 2 weeks'],
+    company: 'Orange',
+    industry: 'Telecommunications',
+    image: '/images/case-orange.jpg',
+    results: [
+      'Led Orange Network integration with Barça Mobile MVNO',
+      'Complex telecom infrastructure delivery',
+      'Global operator partnership',
+    ],
   },
   {
-    company: 'Scale-up SaaS',
-    industry: 'Enterprise Software',
-    image: '/images/case-saas.jpg',
-    results: ['Expanded engineering 3x in 6 months', 'Hired across 4 countries', 'Zero failed probations'],
+    company: 'Entail AI',
+    industry: 'AI / No-code CRO',
+    image: '/images/case-entail.jpg',
+    results: [
+      'Technical development of their blog platform',
+      'Best practices in security implementation',
+      'Software development consulting',
+    ],
   },
   {
-    company: 'HealthTech Pioneer',
-    industry: 'Healthcare Technology',
-    image: '/images/case-health.jpg',
-    results: ['Specialized compliance-aware hiring', 'HIPAA-trained engineers', 'Ongoing talent pipeline'],
-  },
-]
-
-export const team = [
-  {
-    name: 'Alex Morgan',
-    role: 'Founder & CEO',
-    image: '/images/team-alex.jpg',
+    company: 'Qualiwise',
+    industry: 'AI Product Quality',
+    image: '/images/case-qualiwise.jpg',
+    results: [
+      'Senior Backend Python Developer placed in 1 week',
+      'AI Copilot platform scaling',
+      'Rapid team augmentation',
+    ],
   },
   {
-    name: 'Sarah Chen',
-    role: 'Head of Recruitment',
-    image: '/images/team-sarah.jpg',
+    company: 'SocialBee',
+    industry: 'Social Media SaaS',
+    image: '/images/case-socialbee.jpg',
+    results: [
+      '2 Senior Fullstack Java/Angular Developers in 2 weeks',
+      'Social media management platform scaling',
+      'Fast turnaround hiring',
+    ],
   },
   {
-    name: 'Marcus Johnson',
-    role: 'Technical Lead',
-    image: '/images/team-marcus.jpg',
-  },
-  {
-    name: 'Elena Kowalski',
-    role: 'Client Success Manager',
-    image: '/images/team-elena.jpg',
+    company: 'Silvertalent',
+    industry: 'HR Tech',
+    image: '/images/case-silvertalent.jpg',
+    results: [
+      '3 Fullstack React/.NET Developers in 2 weeks',
+      'Talent acquisition platform development',
+      'Multiple simultaneous placements',
+    ],
   },
 ]
 
 export const testimonials = [
   {
-    quote: 'TalentSync transformed our hiring process. We went from struggling to find qualified candidates to having a pipeline of exceptional talent.',
-    author: 'James Wilson',
-    title: 'CTO, TechVentures',
-    avatar: '/images/testimonial-james.jpg',
+    quote: 'TalentSync delivered expert JavaScript and AWS engineers who helped us build a platform that reached 1.5 million downloads in just 3 months.',
+    author: 'Project Lead',
+    title: 'FC Barcelona Digital',
+    avatar: '/images/testimonial-barca.jpg',
   },
   {
-    quote: 'The quality of candidates and speed of delivery exceeded our expectations. They truly understand the tech landscape.',
-    author: 'Maria Santos',
-    title: 'VP Engineering, DataFlow',
-    avatar: '/images/testimonial-maria.jpg',
+    quote: 'The quality of developers and speed of delivery exceeded our expectations. We scaled our team with senior developers in under two weeks.',
+    author: 'CTO',
+    title: 'SocialBee',
+    avatar: '/images/testimonial-socialbee.jpg',
   },
   {
-    quote: 'Working with TalentSync felt like having an extension of our own team. They got our culture from day one.',
-    author: 'David Park',
-    title: 'Founder, AIStart',
-    avatar: '/images/testimonial-david.jpg',
-  },
-]
-
-export const pricing = [
-  {
-    tier: 'Starter',
-    price: '18%',
-    unit: 'of annual salary',
-    description: 'Perfect for occasional hiring needs',
-    features: [
-      'Access to candidate network',
-      'Basic technical screening',
-      'Standard support',
-      '60-day replacement guarantee',
-    ],
-    cta: 'Get Started',
-    highlighted: false,
-  },
-  {
-    tier: 'Growth',
-    price: '22%',
-    unit: 'of annual salary',
-    description: 'Best for scaling teams',
-    features: [
-      'Everything in Starter',
-      'Priority candidate access',
-      'Advanced technical assessments',
-      'Dedicated account manager',
-      '90-day replacement guarantee',
-    ],
-    cta: 'Get Started',
-    highlighted: true,
-  },
-  {
-    tier: 'Enterprise',
-    price: 'Custom',
-    unit: 'pricing',
-    description: 'For large-scale hiring initiatives',
-    features: [
-      'Everything in Growth',
-      'Volume discounts',
-      'Embedded recruitment support',
-      'Custom SLAs',
-      'Quarterly business reviews',
-      '120-day replacement guarantee',
-    ],
-    cta: 'Contact Us',
-    highlighted: false,
+    quote: 'Working with TalentSync gave us access to exceptional Eastern European talent at a fraction of Western European costs without compromising quality.',
+    author: 'Founder',
+    title: 'Tech Startup',
+    avatar: '/images/testimonial-startup.jpg',
   },
 ]
 
 export const faq = [
   {
-    question: 'How does your recruitment process work?',
-    answer: 'We start with a discovery call to understand your needs, then leverage our AI-powered matching system to identify candidates. We handle technical screening, coordinate interviews, and support you through to successful placement.',
+    question: 'What regions do you source talent from?',
+    answer: 'We specialize in Eastern European talent, with our headquarters in Chișinău, Moldova. We have deep local expertise across thriving tech markets in the region including Moldova, Romania, Ukraine, and Poland.',
   },
   {
-    question: 'What industries do you specialize in?',
-    answer: 'We specialize in technology companies across fintech, AI/ML, SaaS, healthtech, and enterprise software. Our network includes engineers, data scientists, product managers, and technical leaders.',
+    question: 'How much can I save compared to Western European rates?',
+    answer: 'Our clients typically save up to 60% on hiring costs while maintaining top-tier technical excellence. Our rates range from €15-35/hour depending on the role and seniority level.',
   },
   {
-    question: 'What is your success rate?',
-    answer: 'We maintain a 95% placement success rate with over 90% of candidates staying beyond their first year. Our rigorous screening process ensures quality matches.',
+    question: 'What technology stacks do you cover?',
+    answer: 'We cover the full modern tech stack: JavaScript (React, Angular, Node.js), .NET & C#, Python (Flask, FastAPI, Django), Java, mobile development (Swift, Kotlin, Flutter, React Native), and cloud platforms (AWS, Azure, Google Cloud).',
   },
   {
     question: 'How quickly can you fill a position?',
-    answer: 'Most positions are filled within 3-4 weeks. For urgent needs, we offer expedited search services that can deliver qualified candidates within 1-2 weeks.',
+    answer: 'We pride ourselves on speed. Many positions are filled within 1-2 weeks. For example, we placed a Senior Backend Python Developer for Qualiwise in just one week.',
   },
   {
-    question: 'Do you offer replacement guarantees?',
-    answer: 'Yes, all placements come with a replacement guarantee ranging from 60-120 days depending on your plan. If a hire doesn\'t work out, we\'ll find a replacement at no additional cost.',
+    question: 'What engagement models do you offer?',
+    answer: 'We offer flexible engagement options: full-time, part-time, contract, or project-based placements. Everything is tailored to your exact business needs and timeline.',
   },
   {
-    question: 'Can you help with remote and international hiring?',
-    answer: 'Absolutely. We have experience placing talent across multiple countries and can advise on compliance, contracts, and onboarding for distributed teams.',
+    question: 'Do you provide ongoing support after placement?',
+    answer: 'Yes, you get a dedicated account manager as your single point of contact who ensures seamless communication and successful delivery throughout the engagement.',
   },
 ]
 
 export const careers = [
   {
     title: 'Senior Technical Recruiter',
-    location: 'Remote',
+    location: 'Chișinău / Remote',
     type: 'Full-time',
-    description: 'Join our team to help connect exceptional talent with innovative companies.',
+    description: 'Join our team to connect exceptional Eastern European talent with global tech companies.',
   },
   {
     title: 'Business Development Manager',
-    location: 'London / Remote',
+    location: 'Remote (Europe)',
     type: 'Full-time',
-    description: 'Drive growth by building relationships with tech companies across Europe.',
+    description: 'Drive growth by building relationships with tech companies across Europe and beyond.',
   },
 ]

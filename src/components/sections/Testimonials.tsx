@@ -1,57 +1,68 @@
 'use client'
 
-import { useState, useRef } from 'react'
-import { motion, useInView, AnimatePresence } from 'framer-motion'
+import { useState } from 'react'
+import Image from 'next/image'
+import { motion, AnimatePresence } from 'framer-motion'
 import { HiChevronLeft, HiChevronRight } from 'react-icons/hi'
 import { SectionWrapper } from '@/components/ui'
 import { testimonials } from '@/data/content'
 
 export default function Testimonials() {
   const [current, setCurrent] = useState(0)
-  const ref = useRef(null)
-  const isInView = useInView(ref, { once: true, margin: '-100px' })
 
   const next = () => setCurrent((prev) => (prev + 1) % testimonials.length)
   const prev = () => setCurrent((prev) => (prev - 1 + testimonials.length) % testimonials.length)
 
   return (
     <SectionWrapper id="testimonials" className="bg-background-light dark:bg-background-dark">
-      <div className="text-center mb-12">
-        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">
+      <motion.div
+        initial={{ opacity: 0, y: 60 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: '-100px' }}
+        transition={{ duration: 0.8 }}
+        className="text-center mb-16"
+      >
+        <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-4">
           What Our <span className="text-gradient">Clients Say</span>
         </h2>
-      </div>
+      </motion.div>
 
-      <div ref={ref} className="max-w-3xl mx-auto">
+      <div className="max-w-4xl mx-auto">
         <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
+          initial={{ opacity: 0, scale: 0.95 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
           className="relative"
         >
           {/* Quote */}
-          <div className="bg-surface-light dark:bg-surface-dark rounded-2xl p-8 sm:p-12">
-            <div className="text-6xl text-primary/20 mb-4">&ldquo;</div>
+          <div className="bg-surface-light dark:bg-surface-dark rounded-3xl p-10 sm:p-16 shadow-xl">
+            <div className="text-8xl text-primary/20 mb-6 leading-none">&ldquo;</div>
 
             <AnimatePresence mode="wait">
               <motion.div
                 key={current}
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }}
-                transition={{ duration: 0.3 }}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.4 }}
               >
-                <p className="text-lg sm:text-xl text-text-primary-light dark:text-text-primary-dark mb-8">
+                <p className="text-xl sm:text-2xl text-text-primary-light dark:text-text-primary-dark mb-10 leading-relaxed">
                   {testimonials[current].quote}
                 </p>
 
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center">
-                    <span className="text-xl">👤</span>
+                <div className="flex items-center gap-5">
+                  <div className="relative w-16 h-16 rounded-full overflow-hidden ring-4 ring-primary/20">
+                    <Image
+                      src={testimonials[current].avatar}
+                      alt={testimonials[current].author}
+                      fill
+                      className="object-cover"
+                    />
                   </div>
                   <div>
-                    <p className="font-semibold">{testimonials[current].author}</p>
-                    <p className="text-sm text-text-secondary-light dark:text-text-secondary-dark">
+                    <p className="text-lg font-bold">{testimonials[current].author}</p>
+                    <p className="text-text-secondary-light dark:text-text-secondary-dark">
                       {testimonials[current].title}
                     </p>
                   </div>

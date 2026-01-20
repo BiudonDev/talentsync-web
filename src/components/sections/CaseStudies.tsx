@@ -1,53 +1,109 @@
 'use client'
 
-import { useRef } from 'react'
-import { motion, useInView } from 'framer-motion'
+import Image from 'next/image'
+import { motion } from 'framer-motion'
 import { SectionWrapper, Card } from '@/components/ui'
 import { caseStudies } from '@/data/content'
 
 export default function CaseStudies() {
-  const ref = useRef(null)
-  const isInView = useInView(ref, { once: true, margin: '-100px' })
+  const highlighted = caseStudies.find((s) => s.highlight)
+  const others = caseStudies.filter((s) => !s.highlight)
 
   return (
-    <SectionWrapper id="case-studies" className="bg-background-light dark:bg-background-dark">
-      <div className="text-center mb-12">
-        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">
-          Success <span className="text-gradient">Stories</span>
+    <SectionWrapper id="case-studies" className="bg-background-dark py-32">
+      <motion.div
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.5 }}
+        className="text-center mb-20"
+      >
+        <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6">
+          Our <span className="text-gradient">Clients</span>
         </h2>
-        <p className="text-lg text-text-secondary-light dark:text-text-secondary-dark max-w-2xl mx-auto">
-          See how we&apos;ve helped companies build exceptional teams
+        <p className="text-xl text-text-secondary-dark max-w-2xl mx-auto">
+          Driving success across industries — from global sports clubs to fast-growing startups
         </p>
-      </div>
+      </motion.div>
 
-      <div ref={ref} className="grid md:grid-cols-2 gap-6">
-        {caseStudies.map((study, index) => (
+      {/* Spotlight: FC Barcelona */}
+      {highlighted && (
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className="mb-16"
+        >
+          <Card className="border-primary ring-2 ring-primary/20 overflow-hidden">
+            <div className="grid md:grid-cols-2 gap-8 items-center">
+              <div className="relative aspect-video rounded-xl overflow-hidden">
+                <Image
+                  src={highlighted.image}
+                  alt={highlighted.company}
+                  fill
+                  className="object-cover"
+                  loading="lazy"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+              </div>
+              <div className="p-2">
+                <span className="px-4 py-2 text-sm font-semibold rounded-full gradient-primary text-secondary-dark mb-4 inline-block">
+                  Spotlight Partnership
+                </span>
+                <h3 className="text-3xl font-bold mb-3">{highlighted.company}</h3>
+                <p className="text-lg text-text-secondary-dark mb-6">
+                  {highlighted.industry}
+                </p>
+                <ul className="space-y-3">
+                  {highlighted.results.map((result, i) => (
+                    <li
+                      key={i}
+                      className="flex items-start gap-3 text-lg text-text-secondary-dark"
+                    >
+                      <span className="text-primary mt-1 font-bold text-xl">✓</span>
+                      {result}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </Card>
+        </motion.div>
+      )}
+
+      {/* Other clients */}
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {others.map((study, index) => (
           <motion.div
             key={study.company}
-            initial={{ opacity: 0, y: 40 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6, delay: index * 0.1 }}
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.4, delay: index * 0.05 }}
           >
-            <Card className="h-full">
-              {/* Placeholder image */}
-              <div className="aspect-video rounded-xl bg-gradient-to-br from-primary/20 to-primary/5 mb-4 flex items-center justify-center">
-                <span className="text-4xl">📊</span>
-              </div>
-
-              <div className="flex items-center gap-3 mb-3">
-                <h3 className="text-xl font-semibold">{study.company}</h3>
-                <span className="px-3 py-1 text-xs font-medium rounded-full bg-primary/10 text-primary">
+            <Card className="h-full overflow-hidden group">
+              <div className="relative aspect-video mb-4 rounded-lg overflow-hidden">
+                <Image
+                  src={study.image}
+                  alt={study.company}
+                  fill
+                  className="object-cover transition-transform duration-300 group-hover:scale-105"
+                  loading="lazy"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                <span className="absolute bottom-3 left-3 px-3 py-1 text-xs font-medium rounded-full bg-primary text-secondary-dark">
                   {study.industry}
                 </span>
               </div>
-
+              <h3 className="text-xl font-bold mb-3">{study.company}</h3>
               <ul className="space-y-2">
                 {study.results.map((result, i) => (
                   <li
                     key={i}
-                    className="flex items-start gap-2 text-text-secondary-light dark:text-text-secondary-dark"
+                    className="flex items-start gap-2 text-sm text-text-secondary-dark"
                   >
-                    <span className="text-primary mt-1">✓</span>
+                    <span className="text-primary mt-0.5">✓</span>
                     {result}
                   </li>
                 ))}

@@ -7,9 +7,7 @@ import {
   Services,
   Process,
   CaseStudies,
-  Team,
   Testimonials,
-  Pricing,
   FAQ,
   Contact,
   Careers,
@@ -25,9 +23,7 @@ export default function Home() {
         <Services />
         <Process />
         <CaseStudies />
-        <Team />
         <Testimonials />
-        <Pricing />
         <FAQ />
         <Careers />
         <Contact />

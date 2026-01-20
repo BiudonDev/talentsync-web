@@ -2,7 +2,7 @@
 
 import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
-import { HiOutlineMail } from 'react-icons/hi'
+import { HiOutlineMail, HiOutlinePhone } from 'react-icons/hi'
 import { SectionWrapper, Button } from '@/components/ui'
 import { siteConfig } from '@/data/content'
 
@@ -38,15 +38,27 @@ export default function Contact() {
           transition={{ duration: 0.6, delay: 0.2 }}
           className="flex flex-col items-center gap-6"
         >
-          <a
-            href={`mailto:${siteConfig.email}`}
-            className="flex items-center gap-3 px-6 py-3 rounded-xl bg-surface-light dark:bg-surface-dark hover:shadow-lg transition-shadow"
-          >
-            <div className="w-10 h-10 rounded-lg gradient-primary flex items-center justify-center">
-              <HiOutlineMail className="w-5 h-5 text-secondary-dark" />
-            </div>
-            <span className="font-medium">{siteConfig.email}</span>
-          </a>
+          <div className="flex flex-col sm:flex-row gap-4">
+            <a
+              href={`mailto:${siteConfig.email}`}
+              className="flex items-center gap-3 px-6 py-3 rounded-xl bg-surface-light dark:bg-surface-dark hover:shadow-lg transition-shadow"
+            >
+              <div className="w-10 h-10 rounded-lg gradient-primary flex items-center justify-center">
+                <HiOutlineMail className="w-5 h-5 text-secondary-dark" />
+              </div>
+              <span className="font-medium">{siteConfig.email}</span>
+            </a>
+
+            <a
+              href={`tel:${siteConfig.phone}`}
+              className="flex items-center gap-3 px-6 py-3 rounded-xl bg-surface-light dark:bg-surface-dark hover:shadow-lg transition-shadow"
+            >
+              <div className="w-10 h-10 rounded-lg gradient-primary flex items-center justify-center">
+                <HiOutlinePhone className="w-5 h-5 text-secondary-dark" />
+              </div>
+              <span className="font-medium">{siteConfig.phone}</span>
+            </a>
+          </div>
 
           <Button href={siteConfig.calendlyUrl} external>
             Book A Meeting
