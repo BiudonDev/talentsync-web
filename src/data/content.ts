@@ -79,13 +79,13 @@ export const process = [
 export const caseStudies = [
   {
     company: 'Barça Mobile',
-    industry: 'Sports & Entertainment',
+    industry: 'AI Super App',
     image: '/images/case-barca.jpg',
     highlight: true,
     results: [
       '1.5M app downloads in first 3 months',
       'Real-time platform for millions of global fans',
-      'JavaScript & AWS cloud architecture',
+      'Led system architecture design and CI/CD implementation',
     ],
   },
   {

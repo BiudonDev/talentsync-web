@@ -43,7 +43,7 @@ export default function Navbar() {
       className="fixed top-4 left-1/2 -translate-x-1/2 z-50"
     >
       <motion.div
-        className={`transition-all duration-500 rounded-[32px] lg:rounded-full w-[calc(100vw-32px)] lg:w-auto ${
+        className={`transition-all duration-500 rounded-[32px] lg:rounded-full w-[calc(100vw-16px)] lg:w-auto ${
           isExpanded ? 'lg:!w-[min(95vw,900px)]' : ''
         } ${
           isOverHero
