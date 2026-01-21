@@ -7,7 +7,7 @@ import { SectionWrapper } from '@/components/ui'
 import { faq } from '@/data/content'
 
 export default function FAQ() {
-  const [openIndex, setOpenIndex] = useState<number | null>(null)
+  const [openIndex, setOpenIndex] = useState<number | null>(0)
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
 

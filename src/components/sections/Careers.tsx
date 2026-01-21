@@ -11,7 +11,7 @@ export default function Careers() {
   const isInView = useInView(ref, { once: true, margin: '-100px' })
 
   return (
-    <SectionWrapper id="careers" className="bg-background-light dark:bg-background-dark">
+    <SectionWrapper id="careers" className="hidden md:block bg-background-light dark:bg-background-dark">
       <div className="text-center mb-12">
         <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">
           Join Our <span className="text-gradient">Team</span>

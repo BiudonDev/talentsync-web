@@ -44,10 +44,10 @@ export default function Navbar() {
     >
       <motion.div
         animate={{
-          width: isExpanded ? 'min(95vw, 900px)' : 'auto',
+          width: isMobileMenuOpen ? 'calc(100vw - 32px)' : isExpanded ? 'min(95vw, 900px)' : 'auto',
         }}
         transition={{ duration: 0.4, ease: 'easeInOut' }}
-        className={`transition-colors duration-500 rounded-full ${
+        className={`transition-colors duration-500 rounded-[32px] lg:rounded-full ${
           isOverHero
             ? 'bg-neutral-700/50 backdrop-blur-md border-2 border-neutral-400/40 shadow-[0_8px_32px_rgba(0,0,0,0.4)]'
             : 'bg-neutral-800/70 backdrop-blur-xl border-2 border-primary/60 shadow-[0_8px_32px_rgba(255,184,90,0.2)]'

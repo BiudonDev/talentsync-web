@@ -72,8 +72,56 @@ export default function CaseStudies() {
         </motion.div>
       )}
 
-      {/* Other clients */}
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {/* Other clients - horizontal scroll on mobile, grid on desktop */}
+      <div className="md:hidden overflow-x-auto pb-4 -mx-4 px-4 scrollbar-hide">
+        <div className="flex gap-4" style={{ width: 'max-content' }}>
+          {others.map((study, index) => (
+            <motion.div
+              key={study.company}
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: index * 0.05 }}
+              className="w-72 flex-shrink-0"
+            >
+              <Card className="h-full overflow-hidden group">
+                <div
+                  className="relative aspect-video mb-4 rounded-lg overflow-hidden"
+                  style={{ backgroundColor: study.logoBg || 'transparent' }}
+                >
+                  <Image
+                    src={study.image}
+                    alt={study.company}
+                    fill
+                    className={`transition-transform duration-300 group-hover:scale-105 ${
+                      study.logoContain ? `object-contain ${study.logoPadding || 'p-4'}` : 'object-cover'
+                    }`}
+                    loading="lazy"
+                  />
+                </div>
+                <span className="inline-block px-3 py-1 text-xs font-medium rounded-full bg-primary text-secondary-dark mb-2">
+                  {study.industry}
+                </span>
+                <h3 className="text-xl font-bold mb-3">{study.company}</h3>
+                <ul className="space-y-2">
+                  {study.results.map((result, i) => (
+                    <li
+                      key={i}
+                      className="flex items-start gap-2 text-sm text-text-secondary-dark"
+                    >
+                      <span className="text-primary mt-0.5">✓</span>
+                      {result}
+                    </li>
+                  ))}
+                </ul>
+              </Card>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+
+      {/* Other clients - grid on tablet/desktop */}
+      <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-8">
         {others.map((study, index) => (
           <motion.div
             key={study.company}
@@ -83,19 +131,23 @@ export default function CaseStudies() {
             transition={{ duration: 0.4, delay: index * 0.05 }}
           >
             <Card className="h-full overflow-hidden group">
-              <div className="relative aspect-video mb-4 rounded-lg overflow-hidden">
+              <div
+                className="relative aspect-video mb-4 rounded-lg overflow-hidden"
+                style={{ backgroundColor: study.logoBg || 'transparent' }}
+              >
                 <Image
                   src={study.image}
                   alt={study.company}
                   fill
-                  className="object-cover transition-transform duration-300 group-hover:scale-105"
+                  className={`transition-transform duration-300 group-hover:scale-105 ${
+                    study.logoContain ? `object-contain ${study.logoPadding || 'p-4'}` : 'object-cover'
+                  }`}
                   loading="lazy"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                <span className="absolute bottom-3 left-3 px-3 py-1 text-xs font-medium rounded-full bg-primary text-secondary-dark">
-                  {study.industry}
-                </span>
               </div>
+              <span className="inline-block px-3 py-1 text-xs font-medium rounded-full bg-primary text-secondary-dark mb-2">
+                {study.industry}
+              </span>
               <h3 className="text-xl font-bold mb-3">{study.company}</h3>
               <ul className="space-y-2">
                 {study.results.map((result, i) => (

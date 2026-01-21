@@ -95,6 +95,15 @@ body {
   .gradient-primary {
     background: linear-gradient(135deg, #FFB85A 0%, #E5A550 100%);
   }
+
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 /* Animated Gradient Background */
