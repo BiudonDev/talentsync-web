@@ -78,7 +78,7 @@ export const process = [
 
 export const caseStudies = [
   {
-    company: 'FC Barcelona',
+    company: 'Barça Mobile',
     industry: 'Sports & Entertainment',
     image: '/images/case-barca.jpg',
     highlight: true,
