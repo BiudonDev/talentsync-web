@@ -1,5 +1,6 @@
 'use client'
 
+import { useRef, useState } from 'react'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { SectionWrapper, Card } from '@/components/ui'
@@ -8,6 +9,22 @@ import { caseStudies } from '@/data/content'
 export default function CaseStudies() {
   const highlighted = caseStudies.find((s) => s.highlight)
   const others = caseStudies.filter((s) => !s.highlight)
+  const scrollRef = useRef<HTMLDivElement>(null)
+  const [activeIndex, setActiveIndex] = useState(0)
+
+  const handleScroll = () => {
+    if (!scrollRef.current) return
+    const scrollLeft = scrollRef.current.scrollLeft
+    const cardWidth = 288 + 16 // w-72 (288px) + gap-4 (16px)
+    const index = Math.round(scrollLeft / cardWidth)
+    setActiveIndex(Math.min(index, others.length - 1))
+  }
+
+  const scrollToIndex = (index: number) => {
+    if (!scrollRef.current) return
+    const cardWidth = 288 + 16
+    scrollRef.current.scrollTo({ left: index * cardWidth, behavior: 'smooth' })
+  }
 
   return (
     <SectionWrapper id="case-studies" className="bg-background-dark py-32">
@@ -73,49 +90,70 @@ export default function CaseStudies() {
       )}
 
       {/* Other clients - horizontal scroll on mobile, grid on desktop */}
-      <div className="md:hidden overflow-x-auto pb-4 -mx-4 px-4 scrollbar-hide">
-        <div className="flex gap-4" style={{ width: 'max-content' }}>
-          {others.map((study, index) => (
-            <motion.div
-              key={study.company}
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: index * 0.05 }}
-              className="w-72 flex-shrink-0"
-            >
-              <Card className="h-full overflow-hidden group">
-                <div
-                  className="relative aspect-video mb-4 rounded-lg overflow-hidden"
-                  style={{ backgroundColor: study.logoBg || 'transparent' }}
-                >
-                  <Image
-                    src={study.image}
-                    alt={study.company}
-                    fill
-                    className={`transition-transform duration-300 group-hover:scale-105 ${
-                      study.logoContain ? `object-contain ${study.logoPadding || 'p-4'}` : 'object-cover'
-                    }`}
-                    loading="lazy"
-                  />
-                </div>
-                <span className="inline-block px-3 py-1 text-xs font-medium rounded-full bg-primary text-secondary-dark mb-2">
-                  {study.industry}
-                </span>
-                <h3 className="text-xl font-bold mb-3">{study.company}</h3>
-                <ul className="space-y-2">
-                  {study.results.map((result, i) => (
-                    <li
-                      key={i}
-                      className="flex items-start gap-2 text-sm text-text-secondary-dark"
-                    >
-                      <span className="text-primary mt-0.5">✓</span>
-                      {result}
-                    </li>
-                  ))}
-                </ul>
-              </Card>
-            </motion.div>
+      <div className="md:hidden">
+        <div
+          ref={scrollRef}
+          onScroll={handleScroll}
+          className="overflow-x-auto pb-4 -mx-4 px-4 scrollbar-hide"
+        >
+          <div className="flex gap-4" style={{ width: 'max-content' }}>
+            {others.map((study, index) => (
+              <motion.div
+                key={study.company}
+                initial={{ opacity: 0, x: 20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: index * 0.05 }}
+                className="w-72 flex-shrink-0"
+              >
+                <Card className="h-full overflow-hidden group">
+                  <div
+                    className="relative aspect-video mb-4 rounded-lg overflow-hidden"
+                    style={{ backgroundColor: study.logoBg || 'transparent' }}
+                  >
+                    <Image
+                      src={study.image}
+                      alt={study.company}
+                      fill
+                      className={`transition-transform duration-300 group-hover:scale-105 ${
+                        study.logoContain ? `object-contain ${study.logoPadding || 'p-4'}` : 'object-cover'
+                      }`}
+                      loading="lazy"
+                    />
+                  </div>
+                  <span className="inline-block px-3 py-1 text-xs font-medium rounded-full bg-primary text-secondary-dark mb-2">
+                    {study.industry}
+                  </span>
+                  <h3 className="text-xl font-bold mb-3">{study.company}</h3>
+                  <ul className="space-y-2">
+                    {study.results.map((result, i) => (
+                      <li
+                        key={i}
+                        className="flex items-start gap-2 text-sm text-text-secondary-dark"
+                      >
+                        <span className="text-primary mt-0.5">✓</span>
+                        {result}
+                      </li>
+                    ))}
+                  </ul>
+                </Card>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+        {/* Dot indicators */}
+        <div className="flex justify-center gap-2 mt-4">
+          {others.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => scrollToIndex(index)}
+              className={`h-1 rounded-full transition-all duration-300 ${
+                activeIndex === index
+                  ? 'w-6 bg-primary'
+                  : 'w-1.5 bg-neutral-600 hover:bg-neutral-500'
+              }`}
+              aria-label={`Go to slide ${index + 1}`}
+            />
           ))}
         </div>
       </div>

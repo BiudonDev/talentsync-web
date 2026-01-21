@@ -47,7 +47,7 @@ export default function Testimonials() {
                 exit={{ opacity: 0, y: -20 }}
                 transition={{ duration: 0.4 }}
               >
-                <p className="text-xl sm:text-2xl text-text-primary-light dark:text-text-primary-dark mb-10 leading-relaxed">
+                <p className="text-xl sm:text-2xl text-text-primary-light dark:text-text-primary-dark mb-6 leading-relaxed">
                   {testimonials[current].quote}
                 </p>
 
