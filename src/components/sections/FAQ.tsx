@@ -16,7 +16,7 @@ export default function FAQ() {
   }
 
   return (
-    <SectionWrapper id="faq" className="bg-background-light dark:bg-background-dark">
+    <SectionWrapper id="faq" className="bg-background">
       <div className="text-center mb-12">
         <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">
           Frequently Asked <span className="text-gradient">Questions</span>
@@ -33,7 +33,7 @@ export default function FAQ() {
           >
             <button
               onClick={() => toggle(index)}
-              className="w-full bg-surface-light dark:bg-surface-dark rounded-xl p-6 text-left flex items-center justify-between gap-4 hover:shadow-md transition-shadow"
+              className="w-full bg-surface rounded-xl p-6 text-left flex items-center justify-between gap-4 hover:shadow-md transition-shadow"
             >
               <span className="font-semibold">{item.question}</span>
               <motion.div
@@ -53,7 +53,7 @@ export default function FAQ() {
                   transition={{ duration: 0.2 }}
                   className="overflow-hidden"
                 >
-                  <div className="px-6 py-4 text-text-secondary-light dark:text-text-secondary-dark">
+                  <div className="px-6 py-4 text-text-secondary">
                     {item.answer}
                   </div>
                 </motion.div>

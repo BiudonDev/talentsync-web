@@ -26,7 +26,7 @@ export default function Contact() {
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, delay: 0.1 }}
-          className="text-lg text-text-secondary-light dark:text-text-secondary-dark mb-8"
+          className="text-lg text-text-secondary mb-8"
         >
           Ready to find your next great hire? Get in touch and let&apos;s discuss
           how we can help build your team.
@@ -41,7 +41,7 @@ export default function Contact() {
           <div className="flex flex-col sm:flex-row gap-4">
             <a
               href={`mailto:${siteConfig.email}`}
-              className="flex items-center gap-3 px-6 py-3 rounded-xl bg-surface-light dark:bg-surface-dark hover:shadow-lg transition-shadow"
+              className="flex items-center gap-3 px-6 py-3 rounded-xl bg-surface hover:shadow-lg transition-shadow"
             >
               <div className="w-10 h-10 rounded-lg gradient-primary flex items-center justify-center">
                 <HiOutlineMail className="w-5 h-5 text-secondary-dark" />
@@ -51,7 +51,7 @@ export default function Contact() {
 
             <a
               href={`tel:${siteConfig.phone}`}
-              className="flex items-center gap-3 px-6 py-3 rounded-xl bg-surface-light dark:bg-surface-dark hover:shadow-lg transition-shadow"
+              className="flex items-center gap-3 px-6 py-3 rounded-xl bg-surface hover:shadow-lg transition-shadow"
             >
               <div className="w-10 h-10 rounded-lg gradient-primary flex items-center justify-center">
                 <HiOutlinePhone className="w-5 h-5 text-secondary-dark" />

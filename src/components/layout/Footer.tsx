@@ -10,7 +10,7 @@ export default function Footer() {
   }
 
   return (
-    <footer className="bg-surface-light dark:bg-surface-dark border-t border-neutral-100 dark:border-neutral-800">
+    <footer className="bg-surface border-t border-neutral-800">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="flex flex-col md:flex-row justify-between items-center gap-8">
           {/* Logo & Email */}
@@ -20,7 +20,7 @@ export default function Footer() {
             </h3>
             <a
               href={`mailto:${siteConfig.email}`}
-              className="text-text-secondary-light dark:text-text-secondary-dark hover:text-primary transition-colors"
+              className="text-text-secondary hover:text-primary transition-colors"
             >
               {siteConfig.email}
             </a>
@@ -32,7 +32,7 @@ export default function Footer() {
               <button
                 key={item.href}
                 onClick={() => scrollToSection(item.href.replace('#', ''))}
-                className="text-sm text-text-secondary-light dark:text-text-secondary-dark hover:text-primary transition-colors"
+                className="text-sm text-text-secondary hover:text-primary transition-colors"
               >
                 {item.label}
               </button>
@@ -50,8 +50,8 @@ export default function Footer() {
         </div>
 
         {/* Copyright */}
-        <div className="mt-8 pt-8 border-t border-neutral-100 dark:border-neutral-800 text-center">
-          <p className="text-sm text-text-secondary-light dark:text-text-secondary-dark">
+        <div className="mt-8 pt-8 border-t border-neutral-800 text-center">
+          <p className="text-sm text-text-secondary">
             &copy; {new Date().getFullYear()} {siteConfig.name}. All rights reserved.
           </p>
         </div>

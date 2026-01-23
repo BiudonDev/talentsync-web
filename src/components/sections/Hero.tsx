@@ -31,7 +31,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.1 }}
-          className="text-xl sm:text-2xl md:text-3xl font-semibold text-text-primary-light dark:text-text-primary-dark mb-4"
+          className="text-xl sm:text-2xl md:text-3xl font-semibold text-text-primary mb-4"
         >
           {siteConfig.description}
         </motion.p>
@@ -40,7 +40,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="text-lg sm:text-xl text-text-secondary-light dark:text-text-secondary-dark mb-8 max-w-2xl mx-auto"
+          className="text-lg sm:text-xl text-text-secondary mb-8 max-w-2xl mx-auto"
         >
           {siteConfig.tagline}
         </motion.p>
@@ -68,7 +68,7 @@ export default function Hero() {
       >
         <button
           onClick={() => scrollToSection('about')}
-          className="text-text-secondary-light dark:text-text-secondary-dark hover:text-primary transition-colors"
+          className="text-text-secondary hover:text-primary transition-colors"
           aria-label="Scroll to content"
         >
           <HiChevronDown className="w-8 h-8" />
@@ -76,7 +76,7 @@ export default function Hero() {
       </motion.div>
 
       {/* Gradient fade to next section */}
-      <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-b from-transparent via-[#0F0F0F]/50 to-background-dark pointer-events-none" />
+      <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-b from-transparent via-[#0F0F0F]/50 to-background pointer-events-none" />
     </section>
   )
 }

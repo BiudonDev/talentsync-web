@@ -14,7 +14,7 @@ export default function Testimonials() {
   const prev = () => setCurrent((prev) => (prev - 1 + testimonials.length) % testimonials.length)
 
   return (
-    <SectionWrapper id="testimonials" className="bg-background-light dark:bg-background-dark">
+    <SectionWrapper id="testimonials" className="bg-background">
       <motion.div
         initial={{ opacity: 0, y: 60 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -36,7 +36,7 @@ export default function Testimonials() {
           className="relative"
         >
           {/* Quote */}
-          <div className="bg-surface-light dark:bg-surface-dark rounded-3xl p-10 sm:p-16 shadow-xl">
+          <div className="bg-surface rounded-3xl p-10 sm:p-16 shadow-xl">
             <div className="text-8xl text-primary/20 mb-6 leading-none">&ldquo;</div>
 
             <AnimatePresence mode="wait">
@@ -47,7 +47,7 @@ export default function Testimonials() {
                 exit={{ opacity: 0, y: -20 }}
                 transition={{ duration: 0.4 }}
               >
-                <p className="text-xl sm:text-2xl text-text-primary-light dark:text-text-primary-dark mb-6 leading-relaxed">
+                <p className="text-xl sm:text-2xl text-text-primary mb-6 leading-relaxed">
                   {testimonials[current].quote}
                 </p>
 
@@ -62,7 +62,7 @@ export default function Testimonials() {
                   </div>
                   <div>
                     <p className="text-lg font-bold">{testimonials[current].author}</p>
-                    <p className="text-text-secondary-light dark:text-text-secondary-dark">
+                    <p className="text-text-secondary">
                       {testimonials[current].title}
                     </p>
                   </div>
