@@ -31,12 +31,13 @@ export default function Navbar() {
 
   const handleNavClick = (href: string) => {
     const id = href.replace('#', '')
-    // Close menu first on mobile to prevent animation interference with scroll
+    // Close menu first on mobile
     setIsMobileMenuOpen(false)
-    // Small delay to allow menu close animation to start before scrolling
+    // Wait for menu exit animation (200ms) to complete before scrolling
+    // Longer delay needed for iOS Safari compatibility
     setTimeout(() => {
       scrollToSection(id)
-    }, 100)
+    }, 300)
   }
 
   return (
