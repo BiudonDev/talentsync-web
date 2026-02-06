@@ -31,8 +31,12 @@ export default function Navbar() {
 
   const handleNavClick = (href: string) => {
     const id = href.replace('#', '')
-    scrollToSection(id)
+    // Close menu first on mobile to prevent animation interference with scroll
     setIsMobileMenuOpen(false)
+    // Small delay to allow menu close animation to start before scrolling
+    setTimeout(() => {
+      scrollToSection(id)
+    }, 100)
   }
 
   return (
