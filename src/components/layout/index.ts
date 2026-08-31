@@ -1,2 +1,5 @@
-export { default as Navbar } from './Navbar'
 export { default as Footer } from './Footer'
+export { default as Navbar } from './Navbar'
+export type { NavbarProps } from './Navbar'
+export { default as PageShell } from './PageShell'
+export type { PageShellProps } from './PageShell'

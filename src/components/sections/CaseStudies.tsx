@@ -27,7 +27,7 @@ export default function CaseStudies() {
   }
 
   return (
-    <SectionWrapper id="case-studies" className="bg-background-dark py-32">
+    <SectionWrapper id="case-studies" band>
       <motion.div
         initial={{ opacity: 0, y: 40 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -35,10 +35,10 @@ export default function CaseStudies() {
         transition={{ duration: 0.5 }}
         className="text-center mb-20"
       >
-        <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6">
+        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-balance mb-6">
           Our <span className="text-gradient">Clients</span>
         </h2>
-        <p className="text-xl text-text-secondary-dark max-w-2xl mx-auto">
+        <p className="text-lg sm:text-xl leading-relaxed text-text-secondary text-pretty max-w-2xl mx-auto">
           Driving success across industries — from global sports clubs to fast-growing startups
         </p>
       </motion.div>
@@ -53,7 +53,7 @@ export default function CaseStudies() {
           className="mb-16"
         >
           <Card className="border-primary ring-2 ring-primary/20 overflow-hidden">
-            <div className="grid md:grid-cols-2 gap-8 items-center">
+            <div className="grid lg:grid-cols-2 gap-8 items-center">
               <div className="relative aspect-video rounded-xl overflow-hidden">
                 <Image
                   src={highlighted.image}
@@ -62,23 +62,23 @@ export default function CaseStudies() {
                   className="object-cover"
                   loading="lazy"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" aria-hidden="true" />
               </div>
-              <div className="p-2">
+              <div>
                 <span className="px-4 py-2 text-sm font-semibold rounded-full gradient-primary text-secondary-dark mb-4 inline-block">
                   Spotlight Partnership
                 </span>
-                <h3 className="text-3xl font-bold mb-3">{highlighted.company}</h3>
-                <p className="text-lg text-text-secondary-dark mb-6">
+                <h3 className="text-xl sm:text-2xl font-bold mb-3">{highlighted.company}</h3>
+                <p className="text-base sm:text-lg leading-relaxed text-text-secondary text-pretty mb-6">
                   {highlighted.industry}
                 </p>
                 <ul className="space-y-3">
                   {highlighted.results.map((result, i) => (
                     <li
                       key={i}
-                      className="flex items-start gap-3 text-lg text-text-secondary-dark"
+                      className="flex items-start gap-3 text-base sm:text-lg leading-relaxed text-text-secondary"
                     >
-                      <span className="text-primary mt-1 font-bold text-xl">✓</span>
+                      <span className="text-primary mt-1 font-bold text-xl" aria-hidden="true">✓</span>
                       {result}
                     </li>
                   ))}
@@ -89,84 +89,20 @@ export default function CaseStudies() {
         </motion.div>
       )}
 
-      {/* Other clients - horizontal scroll on mobile, grid on desktop */}
-      <div className="md:hidden">
-        <div
-          ref={scrollRef}
-          onScroll={handleScroll}
-          className="overflow-x-auto pb-4 -mx-4 px-4 scrollbar-hide"
-        >
-          <div className="flex gap-4" style={{ width: 'max-content' }}>
-            {others.map((study, index) => (
-              <motion.div
-                key={study.company}
-                initial={{ opacity: 0, x: 20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: index * 0.05 }}
-                className="w-72 flex-shrink-0"
-              >
-                <Card className="h-full overflow-hidden group">
-                  <div
-                    className="relative aspect-video mb-4 rounded-lg overflow-hidden"
-                    style={{ backgroundColor: study.logoBg || 'transparent' }}
-                  >
-                    <Image
-                      src={study.image}
-                      alt={study.company}
-                      fill
-                      className={`transition-transform duration-300 group-hover:scale-105 ${
-                        study.logoContain ? `object-contain ${study.logoPadding || 'p-4'}` : 'object-cover'
-                      }`}
-                      loading="lazy"
-                    />
-                  </div>
-                  <span className="inline-block px-3 py-1 text-xs font-medium rounded-full bg-primary text-secondary-dark mb-2">
-                    {study.industry}
-                  </span>
-                  <h3 className="text-xl font-bold mb-3">{study.company}</h3>
-                  <ul className="space-y-2">
-                    {study.results.map((result, i) => (
-                      <li
-                        key={i}
-                        className="flex items-start gap-2 text-sm text-text-secondary-dark"
-                      >
-                        <span className="text-primary mt-0.5">✓</span>
-                        {result}
-                      </li>
-                    ))}
-                  </ul>
-                </Card>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-        {/* Dot indicators */}
-        <div className="flex justify-center gap-2 mt-4">
-          {others.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => scrollToIndex(index)}
-              className={`h-1 rounded-full transition-all duration-300 ${
-                activeIndex === index
-                  ? 'w-6 bg-primary'
-                  : 'w-1.5 bg-neutral-600 hover:bg-neutral-500'
-              }`}
-              aria-label={`Go to slide ${index + 1}`}
-            />
-          ))}
-        </div>
-      </div>
-
-      {/* Other clients - grid on tablet/desktop */}
-      <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {/* Other clients - ONE DOM tree: snap carousel at 360, card grid from sm up */}
+      <div
+        ref={scrollRef}
+        onScroll={handleScroll}
+        className="-mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-4 scrollbar-hide sm:mx-0 sm:grid sm:grid-cols-2 sm:gap-8 sm:overflow-x-visible sm:px-0 sm:pb-0 lg:grid-cols-3"
+      >
         {others.map((study, index) => (
           <motion.div
             key={study.company}
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.4, delay: index * 0.05 }}
+            className="w-72 shrink-0 snap-start sm:w-auto"
           >
             <Card className="h-full overflow-hidden group">
               <div
@@ -177,7 +113,7 @@ export default function CaseStudies() {
                   src={study.image}
                   alt={study.company}
                   fill
-                  className={`transition-transform duration-300 group-hover:scale-105 ${
+                  className={`motion-safe:transition-transform motion-safe:duration-300 group-hover:scale-105 ${
                     study.logoContain ? `object-contain ${study.logoPadding || 'p-4'}` : 'object-cover'
                   }`}
                   loading="lazy"
@@ -186,20 +122,39 @@ export default function CaseStudies() {
               <span className="inline-block px-3 py-1 text-xs font-medium rounded-full bg-primary text-secondary-dark mb-2">
                 {study.industry}
               </span>
-              <h3 className="text-xl font-bold mb-3">{study.company}</h3>
+              <h3 className="text-xl sm:text-2xl font-bold mb-3">{study.company}</h3>
               <ul className="space-y-2">
                 {study.results.map((result, i) => (
                   <li
                     key={i}
-                    className="flex items-start gap-2 text-sm text-text-secondary-dark"
+                    className="flex items-start gap-2 text-sm leading-relaxed text-text-secondary"
                   >
-                    <span className="text-primary mt-0.5">✓</span>
+                    <span className="text-primary mt-0.5" aria-hidden="true">✓</span>
                     {result}
                   </li>
                 ))}
               </ul>
             </Card>
           </motion.div>
+        ))}
+      </div>
+
+      {/* Dot indicators - only steer the carousel, which only exists below sm */}
+      <div className="flex justify-center gap-2 mt-4 sm:hidden">
+        {others.map((_, index) => (
+          <button
+            key={index}
+            type="button"
+            onClick={() => scrollToIndex(index)}
+            className="p-2.5 -m-1 rounded-full focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+            aria-label={`Go to slide ${index + 1}`}
+          >
+            <span
+              className={`block h-1 rounded-full motion-safe:transition-all motion-safe:duration-300 ${
+                activeIndex === index ? 'w-6 bg-primary' : 'w-1.5 bg-neutral-500'
+              }`}
+            />
+          </button>
         ))}
       </div>
     </SectionWrapper>

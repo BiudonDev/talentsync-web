@@ -1,167 +1,180 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+import { useEffect, useState } from 'react'
 import { HiMenu, HiX } from 'react-icons/hi'
-import { Button } from '@/components/ui'
-import { siteConfig, navigation } from '@/data/content'
-import { scrollToSection } from '@/lib/utils'
+import Button from '@/components/ui/Button'
+import { siteConfig } from '@/data/content'
+import { primaryNav } from '@/data/routes'
+import { href } from '@/lib/seo'
+import { cn } from '@/lib/utils'
 
-export default function Navbar() {
-  const [isExpanded, setIsExpanded] = useState(false)
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-  const [isOverHero, setIsOverHero] = useState(true)
+/**
+ * Zero framer-motion, on purpose. Navbar + Footer render on all 20 routes, so
+ * either one importing framer-motion pins 65,775 B into the SHARED chunk and no
+ * amount of de-motioning the leaf pages recovers it (00-design-contract.md §6.2
+ * step 2). The three motions it used to own are covered by:
+ *   - link reveal  -> conditional render (no clipped-but-focusable links)
+ *   - pill restyle -> motion-safe:transition on colour/shadow
+ *   - accordion    -> the grid-rows-[0fr] -> grid-rows-[1fr] trick (§5.2)
+ * The old `initial={{ y: -100 }}` entrance slide is DROPPED rather than ported:
+ * it needs a @keyframes in globals.css (not this package's file), and a navbar
+ * that slides in on every one of 20 route loads is worse than one that is just
+ * there. Add it back in globals.css if the owner wants it.
+ */
+
+const LINK_BASE =
+  'flex min-h-11 items-center whitespace-nowrap motion-safe:transition-colors ' +
+  'text-text-secondary hover:bg-primary/10 hover:text-primary ' +
+  'aria-[current=page]:text-primary ' +
+  'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary'
+
+export interface NavbarProps {
+  /**
+   * `hero` keeps the reveal-on-scroll effect the homepage was built around.
+   * `solid` (the default, and what PageShell uses) shows the links immediately —
+   * on a heroless interior route, reveal-on-scroll means the only link above the
+   * fold at >=1024px is "Book A Meeting" (§5.1).
+   */
+  variant?: 'hero' | 'solid'
+}
+
+export default function Navbar({ variant = 'solid' }: NavbarProps) {
+  const [expanded, setExpanded] = useState(variant === 'solid')
+  const [open, setOpen] = useState(false)
+  const current = href(usePathname())
 
   useEffect(() => {
-    const handleScroll = () => {
-      const scrollY = window.scrollY
+    if (variant !== 'hero') return
+    const onScroll = () => setExpanded(window.scrollY > 50)
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [variant])
 
-      // Expand navbar after scrolling 50px
-      setIsExpanded(scrollY > 50)
-
-      // Check if navbar is over hero section
-      const heroHeight = window.innerHeight * 0.8
-      setIsOverHero(scrollY < heroHeight)
+  // Scroll lock + Escape. Body computes `overflow-x: clip` from globals.css; the
+  // inline style overrides both axes while open and is removed on close.
+  useEffect(() => {
+    if (!open) return
+    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setOpen(false)
+    document.body.style.overflow = 'hidden'
+    document.addEventListener('keydown', onKey)
+    return () => {
+      document.body.style.overflow = ''
+      document.removeEventListener('keydown', onKey)
     }
+  }, [open])
 
-    window.addEventListener('scroll', handleScroll)
-    handleScroll()
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
-
-  const handleNavClick = (href: string) => {
-    const id = href.replace('#', '')
-    // Close menu first on mobile
-    setIsMobileMenuOpen(false)
-    // Wait for menu exit animation (200ms) to complete before scrolling
-    // Longer delay needed for iOS Safari compatibility
-    setTimeout(() => {
-      scrollToSection(id)
-    }, 300)
-  }
+  const isActive = (path: string) => (path === '/' ? current === '/' : current.startsWith(path))
+  // Translucent only over an unscrolled hero. An open menu forces the solid
+  // surface so the link labels keep their measured 6.74:1 on `surface`.
+  const glass = variant === 'hero' && !expanded && !open
 
   return (
-    <motion.nav
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      transition={{ duration: 0.5 }}
-      className="fixed top-4 left-1/2 -translate-x-1/2 z-50"
-    >
-      <motion.div
-        className={`transition-all duration-500 rounded-[32px] lg:rounded-full w-[calc(100vw-16px)] lg:w-auto ${
-          isExpanded ? 'lg:!w-[min(95vw,900px)]' : ''
-        } ${
-          isOverHero
-            ? 'bg-neutral-700/50 backdrop-blur-md border-2 border-neutral-400/40 shadow-[0_8px_32px_rgba(0,0,0,0.4)]'
-            : 'bg-neutral-800/70 backdrop-blur-xl border-2 border-primary/60 shadow-[0_8px_32px_rgba(255,184,90,0.2)]'
-        }`}
-        style={{
-          backdropFilter: 'blur(16px) saturate(180%)',
-          WebkitBackdropFilter: 'blur(16px) saturate(180%)',
-        }}
+    <header className="fixed top-4 left-1/2 z-50 -translate-x-1/2">
+      <nav
+        aria-label="Main"
+        className={cn(
+          'w-[calc(100vw-16px)] rounded-4xl border-2 backdrop-blur-xl',
+          'lg:w-auto lg:max-w-[calc(100vw-2rem)] lg:rounded-full',
+          'motion-safe:transition-[background-color,border-color,box-shadow] motion-safe:duration-500',
+          glass ? 'border-border bg-surface/50 shadow-float' : 'border-primary/60 bg-surface/70 shadow-glow',
+        )}
       >
         <div className="px-4 lg:px-6">
-          <div className="flex items-center justify-between h-14 lg:h-16 gap-4">
-            {/* Logo */}
-            <a href="#" className="text-xl lg:text-2xl font-bold text-gradient whitespace-nowrap">
+          <div className="flex h-14 items-center justify-between gap-4 lg:h-16">
+            <Link
+              href="/"
+              aria-current={current === '/' ? 'page' : undefined}
+              className="flex min-h-11 shrink-0 items-center text-xl font-bold whitespace-nowrap text-gradient focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+            >
               {siteConfig.name}
-            </a>
+            </Link>
 
-            {/* Desktop Navigation - Only visible when expanded */}
-            <AnimatePresence>
-              {isExpanded && (
-                <motion.div
-                  initial={{ opacity: 0, width: 0 }}
-                  animate={{ opacity: 1, width: 'auto' }}
-                  exit={{ opacity: 0, width: 0 }}
-                  transition={{ duration: 0.3 }}
-                  className="hidden lg:flex items-center gap-1 overflow-hidden"
-                >
-                  {navigation.slice(0, 6).map((item, index) => (
-                    <motion.button
-                      key={item.href}
-                      initial={{ opacity: 0, y: -10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -10 }}
-                      transition={{ duration: 0.2, delay: index * 0.05 }}
-                      onClick={() => handleNavClick(item.href)}
-                      className={`px-3 py-2 text-sm font-medium rounded-full transition-all whitespace-nowrap ${
-                        isOverHero
-                          ? 'text-white/80 hover:text-white hover:bg-white/10'
-                          : 'text-neutral-300 hover:text-primary hover:bg-primary/10'
-                      }`}
+            {/* Desktop links. Conditional render, not opacity/visibility: a
+                clipped-but-present list is still Tab-reachable, which is the
+                bug the old AnimatePresence version shipped. The row is its own
+                overflow-x-auto scroller (Rule 4) because seven real labels are
+                ~1130px wide with the logo and CTA — that fits from ~1140px up
+                and scrolls inside the pill below it, instead of overflowing. */}
+            {expanded && (
+              <ul className="hidden min-w-0 flex-1 items-center gap-2 overflow-x-auto py-1 scrollbar-hide lg:flex">
+                {primaryNav.map((r) => (
+                  <li key={r.path}>
+                    <Link
+                      href={r.path}
+                      aria-current={isActive(r.path) ? 'page' : undefined}
+                      className={cn(
+                        LINK_BASE,
+                        'rounded-lg px-2 text-sm font-medium',
+                        'aria-[current=page]:shadow-[inset_0_-2px_0_var(--color-primary)]',
+                      )}
                     >
-                      {item.label}
-                    </motion.button>
-                  ))}
-                </motion.div>
-              )}
-            </AnimatePresence>
+                      {r.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            )}
 
-            {/* Right side */}
-            <div className="flex items-center gap-3">
+            <div className="flex shrink-0 items-center gap-3">
               <Button
                 href={siteConfig.calendlyUrl}
                 external
-                className="hidden sm:inline-flex !py-2 !px-5 !text-sm whitespace-nowrap"
+                size="sm"
+                className="hidden whitespace-nowrap sm:inline-flex"
               >
                 Book A Meeting
               </Button>
 
-              {/* Mobile menu button */}
               <button
-                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className={`lg:hidden p-2 rounded-full transition-colors ${
-                  isOverHero
-                    ? 'text-white/80 hover:bg-white/10'
-                    : 'text-neutral-300 hover:bg-primary/10'
-                }`}
-                aria-label="Toggle menu"
+                type="button"
+                onClick={() => setOpen((o) => !o)}
+                aria-expanded={open}
+                aria-controls="mobile-menu"
+                aria-label={open ? 'Close menu' : 'Open menu'}
+                className="grid size-11 place-items-center rounded-full text-text-secondary motion-safe:transition-colors hover:bg-primary/10 hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary lg:hidden"
               >
-                {isMobileMenuOpen ? (
-                  <HiX className="w-6 h-6" />
-                ) : (
-                  <HiMenu className="w-6 h-6" />
-                )}
+                {open ? <HiX aria-hidden className="size-6" /> : <HiMenu aria-hidden className="size-6" />}
               </button>
             </div>
           </div>
         </div>
 
-        {/* Mobile Navigation */}
-        <AnimatePresence>
-          {isMobileMenuOpen && (
-            <motion.div
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: 'auto', opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              transition={{ duration: 0.2 }}
-              className="lg:hidden overflow-hidden px-4 pb-4"
-            >
-              <div className="pt-2 space-y-1">
-                {navigation.map((item) => (
-                  <button
-                    key={item.href}
-                    onClick={() => handleNavClick(item.href)}
-                    className={`block w-full text-left px-4 py-3 rounded-xl transition-all ${
-                      isOverHero
-                        ? 'text-white/80 hover:text-white hover:bg-white/10'
-                        : 'text-neutral-300 hover:text-primary hover:bg-primary/10'
-                    }`}
-                  >
-                    {item.label}
-                  </button>
-                ))}
-                <div className="pt-3">
-                  <Button href={siteConfig.calendlyUrl} external className="w-full">
-                    Book A Meeting
-                  </Button>
-                </div>
-              </div>
-            </motion.div>
+        {/* Measured at 360x740 with all seven items + CTA: pt-2 (8) + 7x44 +
+            6x8 gap (48) + CTA (12 + 44) + pb-4 (16) = 436px of panel under a
+            76px header = 512px pill, bottom edge 528px, 212px of headroom.
+            The max-h/overflow-y-auto is the belt for a shorter viewport. */}
+        <div
+          id="mobile-menu"
+          inert={!open}
+          className={cn(
+            'grid overflow-hidden motion-safe:transition-[grid-template-rows] motion-safe:duration-200 lg:hidden',
+            open ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]',
           )}
-        </AnimatePresence>
-      </motion.div>
-    </motion.nav>
+        >
+          <div className="max-h-[calc(100dvh-var(--nav-h)-2rem)] min-h-0 overflow-y-auto overscroll-contain px-4 pb-4">
+            <ul className="space-y-2 pt-2">
+              {primaryNav.map((r) => (
+                <li key={r.path}>
+                  <Link
+                    href={r.path}
+                    onClick={() => setOpen(false)}
+                    aria-current={isActive(r.path) ? 'page' : undefined}
+                    className={cn(LINK_BASE, 'rounded-xl px-4 py-3 aria-[current=page]:bg-primary/10')}
+                  >
+                    {r.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+            <Button href={siteConfig.calendlyUrl} external className="mt-3 w-full">
+              Book A Meeting
+            </Button>
+          </div>
+        </div>
+      </nav>
+    </header>
   )
 }

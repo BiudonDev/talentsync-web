@@ -10,15 +10,14 @@ export const siteConfig = {
   location: 'Chișinău, Moldova',
 }
 
-export const navigation = [
-  { label: 'About', href: '#about' },
-  { label: 'Services', href: '#services' },
-  { label: 'Process', href: '#process' },
-  { label: 'Case Studies', href: '#case-studies' },
-  { label: 'FAQ', href: '#faq' },
-  { label: 'Careers', href: '#careers' },
-  { label: 'Contact', href: '#contact' },
-]
+/**
+ * The header nav, re-pointed at the frozen route registry (D1). It used to be
+ * seven `#anchor` strings, which is why the site shipped without one crawlable
+ * internal link. Items are `Route`s now — `{ path, label }`, not `{ href }`.
+ * Footer columns come from `servicesNav` / `companyNav` / `legalNav` in the same
+ * module; nothing here may hold a second list of routes.
+ */
+export { primaryNav as navigation } from './routes'
 
 export const services = [
   {

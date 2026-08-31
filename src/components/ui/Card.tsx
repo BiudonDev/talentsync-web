@@ -12,9 +12,9 @@ export default function Card({ children, className, hover = true }: CardProps) {
     <div
       className={cn(
         'bg-surface',
-        'rounded-2xl border border-neutral-800',
+        'rounded-2xl border border-border',
         'p-6 sm:p-8',
-        hover && 'shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300',
+        hover && 'shadow-sm hover:shadow-lg motion-safe:hover:-translate-y-1 motion-safe:transition-all motion-safe:duration-300',
         className
       )}
     >

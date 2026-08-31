@@ -23,7 +23,7 @@ const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
 
 export default function Services() {
   return (
-    <SectionWrapper id="services" className="bg-background-dark">
+    <SectionWrapper id="services" band>
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -31,15 +31,15 @@ export default function Services() {
         transition={{ duration: 0.5 }}
         className="text-center mb-20"
       >
-        <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6">
+        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-balance mb-6">
           The TalentSync <span className="text-gradient">Advantage</span>
         </h2>
-        <p className="text-xl text-text-secondary-dark max-w-3xl mx-auto">
+        <p className="text-lg sm:text-xl leading-relaxed text-text-secondary text-pretty max-w-3xl mx-auto">
           Based in Chișinău, Moldova — operating across thriving Eastern European tech markets with deep local expertise.
         </p>
       </motion.div>
 
-      <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-8">
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-8 lg:grid-cols-3">
         {services.map((service, index) => {
           const Icon = iconMap[service.icon]
           return (
@@ -50,12 +50,12 @@ export default function Services() {
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: index * 0.05 }}
             >
-              <Card className="h-full group hover:border-primary/50 p-4 sm:p-6">
-                <div className="w-10 h-10 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl gradient-primary flex items-center justify-center mb-3 sm:mb-6">
-                  {Icon && <Icon className="w-5 h-5 sm:w-7 sm:h-7 text-secondary-dark" />}
+              <Card className="h-full group hover:border-primary/50">
+                <div className="w-14 h-14 rounded-2xl gradient-primary flex items-center justify-center mb-6">
+                  {Icon && <Icon className="w-7 h-7 text-secondary-dark" aria-hidden="true" />}
                 </div>
-                <h3 className="text-sm sm:text-2xl font-bold mb-1 sm:mb-3">{service.title}</h3>
-                <p className="text-xs sm:text-lg text-text-secondary-dark leading-relaxed line-clamp-2 sm:line-clamp-none">
+                <h3 className="text-xl sm:text-2xl font-bold mb-3">{service.title}</h3>
+                <p className="text-sm leading-relaxed text-text-secondary text-pretty">
                   {service.description}
                 </p>
               </Card>
