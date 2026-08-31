@@ -1,0 +1,273 @@
+<title>TalentSync Site Rebuild</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+  :root {
+    --ground: #FAFAF9;
+    --surface: #FFFFFF;
+    --raised: #F2F1EE;
+    --ink: #17171A;
+    --ink-soft: #56534D;
+    --ink-faint: #8A8680;
+    --rule: #E2E0DC;
+    --rule-strong: #C9C6C0;
+    --accent: #B0671A;
+    --accent-soft: #F5E7D5;
+    --done: #2F6B4C;
+    --open: #A9591B;
+    --blocked: #9A3520;
+    --shadow: 0 1px 2px rgb(23 23 26 / .05), 0 8px 24px -16px rgb(23 23 26 / .18);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground: #121214;
+      --surface: #1C1C1F;
+      --raised: #232327;
+      --ink: #F3F2F0;
+      --ink-soft: #A8A49E;
+      --ink-faint: #7A7671;
+      --rule: #2C2C31;
+      --rule-strong: #3D3D43;
+      --accent: #FFB85A;
+      --accent-soft: #33281A;
+      --done: #6FBF95;
+      --open: #E0A263;
+      --blocked: #E08A72;
+      --shadow: 0 1px 2px rgb(0 0 0 / .4), 0 8px 24px -16px rgb(0 0 0 / .7);
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground: #121214;
+    --surface: #1C1C1F;
+    --raised: #232327;
+    --ink: #F3F2F0;
+    --ink-soft: #A8A49E;
+    --ink-faint: #7A7671;
+    --rule: #2C2C31;
+    --rule-strong: #3D3D43;
+    --accent: #FFB85A;
+    --accent-soft: #33281A;
+    --done: #6FBF95;
+    --open: #E0A263;
+    --blocked: #E08A72;
+    --shadow: 0 1px 2px rgb(0 0 0 / .4), 0 8px 24px -16px rgb(0 0 0 / .7);
+  }
+
+  body {
+    background: var(--ground);
+    color: var(--ink);
+    font-family: 'IBM Plex Sans', system-ui, -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.62;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 45rem; margin: 0 auto; padding: 4rem 1.5rem 5rem; }
+  @media (max-width: 40rem) { .wrap { padding: 2.5rem 1.25rem 3.5rem; } }
+
+  .eyebrow {
+    font-family: 'IBM Plex Mono', ui-monospace, monospace;
+    font-size: .7rem; letter-spacing: .1em; text-transform: uppercase;
+    color: var(--ink-faint); margin: 0 0 .9rem;
+  }
+  h1 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: clamp(2.1rem, 6vw, 2.9rem); font-weight: 600;
+    line-height: 1.1; letter-spacing: -.015em; text-wrap: balance;
+    margin: 0 0 .8rem;
+  }
+  .lede { font-size: 1.075rem; color: var(--ink-soft); margin: 0; text-wrap: pretty; }
+
+  h2 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 1.4rem; font-weight: 600; line-height: 1.25;
+    letter-spacing: -.01em; text-wrap: balance;
+    margin: 0 0 .2rem; padding-top: 1.6rem;
+    border-top: 1px solid var(--rule);
+  }
+  h3 { font-size: .95rem; font-weight: 600; margin: 0 0 .3rem; }
+  p { margin: 0; text-wrap: pretty; }
+  section { display: flex; flex-direction: column; gap: .85rem; }
+  main { display: flex; flex-direction: column; gap: 2.6rem; margin-top: 3rem; }
+  strong { font-weight: 600; }
+
+  .stats {
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px;
+    background: var(--rule); border: 1px solid var(--rule);
+    border-radius: 3px; overflow: hidden; margin-top: 2.4rem;
+  }
+  @media (min-width: 34rem) { .stats { grid-template-columns: repeat(4, 1fr); } }
+  .stat { background: var(--surface); padding: .95rem 1rem; }
+  .stat-n {
+    font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums;
+    font-size: 1.45rem; font-weight: 500; line-height: 1.1; color: var(--accent);
+  }
+  .stat-l { font-size: .74rem; color: var(--ink-soft); line-height: 1.35; margin-top: .3rem; }
+
+  ul { margin: 0; padding-left: 1.05rem; display: flex; flex-direction: column; gap: .5rem; }
+  li::marker { color: var(--rule-strong); }
+
+  .note {
+    background: var(--raised); border-left: 2px solid var(--accent);
+    padding: .8rem 1rem; font-size: .9rem; color: var(--ink-soft); border-radius: 0 3px 3px 0;
+  }
+  .note strong { color: var(--ink); }
+
+  .rows { display: flex; flex-direction: column; gap: 0; border-top: 1px solid var(--rule); }
+  .row {
+    display: grid; grid-template-columns: 1fr auto; gap: .6rem 1rem;
+    align-items: baseline; padding: .7rem 0; border-bottom: 1px solid var(--rule);
+  }
+  .row p { font-size: .875rem; color: var(--ink-soft); grid-column: 1 / -1; margin-top: -.15rem; }
+  .tag {
+    font-family: 'IBM Plex Mono', monospace; font-size: .66rem;
+    letter-spacing: .06em; text-transform: uppercase; white-space: nowrap;
+    padding: .2rem .45rem; border-radius: 2px; border: 1px solid;
+  }
+  .t-done { color: var(--done); border-color: var(--done); }
+  .t-open { color: var(--open); border-color: var(--open); }
+  .t-block { color: var(--blocked); border-color: var(--blocked); background: var(--accent-soft); }
+
+  .needed {
+    border: 1px solid var(--rule-strong); border-radius: 4px;
+    background: var(--surface); box-shadow: var(--shadow);
+    padding: 1.5rem 1.4rem; display: flex; flex-direction: column; gap: 1rem;
+  }
+  .needed h2 { border-top: none; padding-top: 0; }
+  ol { margin: 0; padding-left: 1.35rem; display: flex; flex-direction: column; gap: .7rem; }
+  ol::marker, ol li::marker {
+    font-family: 'IBM Plex Mono', monospace; font-size: .82rem; color: var(--accent);
+  }
+  ol li { padding-left: .15rem; }
+  .why { display: block; font-size: .85rem; color: var(--ink-soft); margin-top: .1rem; }
+
+  code {
+    font-family: 'IBM Plex Mono', monospace; font-size: .85em;
+    background: var(--raised); padding: .1em .35em; border-radius: 2px;
+    overflow-wrap: anywhere;
+  }
+  footer {
+    margin-top: 3rem; padding-top: 1.3rem; border-top: 1px solid var(--rule);
+    font-family: 'IBM Plex Mono', monospace; font-size: .74rem;
+    color: var(--ink-faint); line-height: 1.7;
+  }
+  a { color: var(--accent); }
+  a:focus-visible, li:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+</style>
+
+<div class="wrap">
+  <p class="eyebrow">Build report · 31 August 2026</p>
+  <h1>From one page to a site that can be found</h1>
+  <p class="lede">The website was a single page. Google can only rank one page for one main topic, so every service, technology and market had to compete for the same URL. It is now 33 pages, each answering one question a buyer actually types.</p>
+
+  <div class="stats">
+    <div class="stat"><div class="stat-n">33</div><div class="stat-l">pages, from 1</div></div>
+    <div class="stat"><div class="stat-n">22</div><div class="stat-l">submitted to Google</div></div>
+    <div class="stat"><div class="stat-n">4,387</div><div class="stat-l">lines of legal text</div></div>
+    <div class="stat"><div class="stat-n">25</div><div class="stat-l">facts still needed</div></div>
+  </div>
+
+  <main>
+
+    <section>
+      <h2>The commercial problem we fixed</h2>
+      <p>The old homepage was titled after the brand, not after what clients search for. Its main heading was simply <em>TalentSync</em>. Nobody searches for a company they do not know yet.</p>
+      <p>The heading now reads <strong>“Hire Senior Software Engineers from Eastern Europe”</strong>, and the page title names the service and the region. The navigation was also built from buttons that only scrolled up and down. Google could not follow them, so it never found anything beyond the front page. Every menu item is now a real link.</p>
+    </section>
+
+    <section>
+      <h2>What the new pages do</h2>
+      <p>Each page targets one buying question, so they do not compete with each other:</p>
+      <div class="rows">
+        <div class="row"><span>Eastern Europe as a hiring market</span><span class="tag t-done">Live</span>
+          <p>Informational. Which country, how it compares to other regions. No sales pitch.</p></div>
+        <div class="row"><span>Hire developers in Eastern Europe</span><span class="tag t-done">Live</span>
+          <p>Commercial. Both models, the process, and what engaging looks like.</p></div>
+        <div class="row"><span>Direct B2B recruitment</span><span class="tag t-done">Live</span>
+          <p>Contract mechanics: permanent establishment, VAT, who employs whom.</p></div>
+        <div class="row"><span>Hourly engineering talent</span><span class="tag t-done">Live</span>
+          <p>Rates, timesheets, notice periods, how it differs from outsourcing.</p></div>
+        <div class="row"><span>Recruitment in Moldova</span><span class="tag t-done">Live</span>
+          <p>Local market, time zone, cost structure, why a Moldovan supplier.</p></div>
+        <div class="row"><span>Backend &amp; full-stack developers</span><span class="tag t-done">Live</span>
+          <p>Each built on named placements — Qualiwise, SocialBee, Silvertalent.</p></div>
+        <div class="row"><span>AI, DevOps and QA engineers</span><span class="tag t-open">Held back</span>
+          <p>Built but hidden from Google. See the note below.</p></div>
+        <div class="row"><span>Case studies, About, Insights, Careers, Contact</span><span class="tag t-done">Live</span>
+          <p>Four hiring guides, a placement record, and jobs marked up for Google Jobs.</p></div>
+      </div>
+      <div class="note"><strong>Why three pages are hidden.</strong> You have eight engineers placed across five clients. That is not enough proof to write six credible role pages, and near-identical pages damage the ranking of the good ones. The AI, DevOps and QA pages are finished and hidden from search. When you have two named placements for a role, one line publishes that page.</div>
+    </section>
+
+    <section>
+      <h2>The two models, said the same way everywhere</h2>
+      <p>The site used to offer “full-time, part-time, contract, or project-based placements”. That sounds like a general staffing agency and invites the wrong client. It is gone.</p>
+      <p>There are now two models only, written once and reused, so the wording never drifts: <strong>direct B2B recruitment</strong>, where the client contracts and manages the engineer, and <strong>flexible hourly collaboration</strong>, where the engineer joins the client's team and is billed hourly. The sentence “TalentSync is not a project outsourcing company” appears on the three pages where a buyer could misunderstand.</p>
+    </section>
+
+    <section>
+      <h2>Claims we removed, and why</h2>
+      <p>Under EU advertising rules you must be able to prove a factual claim. These could not be proven, or they worked against you:</p>
+      <ul>
+        <li><strong>“Save up to 60%”</strong> — no basis on file. Removed.</li>
+        <li><strong>“€15–35/hour”</strong> — attracts price shoppers and makes senior engineers look cheap. Removed.</li>
+        <li><strong>“1.5M app downloads in 3 months”</strong> — that is the client's result, not yours, and has no public source. Removed.</li>
+        <li><strong>“Led system architecture and CI/CD”</strong> — implies you built the product. Rewritten as what the engineer you placed did.</li>
+      </ul>
+      <p>Testing also found the site contradicting itself: one client appeared as one engineer on one page and two on another, a testimonial said “two days” where thirteen pages said one week, and the total was “nine engineers” against a record of eight. All corrected, and the build now refuses to compile if a number stops matching the case-study record.</p>
+    </section>
+
+    <section>
+      <h2>Legal documents</h2>
+      <p>Five documents are written and published: privacy policy, terms and conditions, cookie policy, a candidate privacy notice, and a legal notice page. They are written for both Moldovan law and the EU GDPR, because you sell to EU clients and hold data on EU engineers.</p>
+      <p>One point needs your attention. The registered company is <strong>S.R.L. “UNQENERGY”, IDNO 1020600034949</strong>. TalentSync is a trading name, not a registered company. The documents now say this clearly. An EU client's procurement team will check it, and a mismatch found later costs more than one explained now.</p>
+      <p>Candidates who email a CV are also now shown the notice the law requires, next to every Apply button.</p>
+    </section>
+
+    <section>
+      <h2>Measurement and consent</h2>
+      <p>Google Analytics 4 is installed but loads nothing until a visitor accepts. Reject is the same size as Accept, and closing the banner counts as refusal. This is what EU regulators enforce. Clicks on Calendly, email and phone are tracked as your three real enquiry routes.</p>
+      <p>A sitemap and a robots file are ready for Google Search Console. AI crawlers are allowed on purpose, since ChatGPT already sent you a client.</p>
+    </section>
+
+    <section>
+      <h2>How we know it works</h2>
+      <p>The site was checked by separate reviewers who did not write the code, in a real browser, at phone and desktop sizes. They rejected the work twice before it passed.</p>
+      <p>Automatic checks now run on every build and block a release if a page has no title, a duplicate description, a broken internal link, a missing image size, or an unanswered placeholder. Some real faults this caught: unknown web addresses used to return the homepage instead of a “not found” page, which would have let Google index nonsense; a heading style failed the contrast standard on about a hundred headings; and the mobile menu bar was 16 pixels too tall, which pushed every page slightly off centre.</p>
+    </section>
+
+    <div class="needed">
+      <h2>What is still needed</h2>
+      <p class="lede" style="font-size:.95rem">Nothing can go live until the first four are answered. The build deliberately fails while any placeholder remains, so a draft cannot reach the public site by accident.</p>
+      <ol>
+        <li><strong>Registered address, and VAT status</strong>
+          <span class="why">The registry page gives only the company name and IDNO. Required on the privacy policy, the terms and the legal notice.</span></li>
+        <li><strong>Your full name, job title and LinkedIn URL</strong>
+          <span class="why">Currently a placeholder inside the page data that search engines read. Named authors are what makes AI assistants quote a site.</span></li>
+        <li><strong>An EU representative — yes or no</strong>
+          <span class="why">A company outside the EU that handles EU personal data usually must appoint one. It is a small annual cost and a client will ask.</span></li>
+        <li><strong>Google Analytics measurement ID</strong>
+          <span class="why">Create the property, then paste the ID. Ten minutes.</span></li>
+        <li><strong>Placement fee percentage and minimum fee</strong>
+          <span class="why">Needed before you send the terms to a client, not before the site goes live.</span></li>
+        <li><strong>Confirm the Barça Mobile headcount</strong>
+          <span class="why">Two pages each claim one engineer. If the same person did both roles, that double counts.</span></li>
+        <li><strong>Permission to show the Orange and Barça logos</strong>
+          <span class="why">You have no contract with Orange. Showing the mark without permission is a real risk.</span></li>
+        <li><strong>A data processing agreement (Schedule 3)</strong>
+          <span class="why">The terms refer to it and block engineer system access until it exists. Needed before the first client signs.</span></li>
+      </ol>
+      <p class="why" style="margin-top:.2rem">Two smaller items I chose not to fix, so you can decide: JavaScript weight is about four times the target, but that is the framework's own baseline, not something added here. And one client logo ships at 126 KB for a space 120 pixels wide — a one-line swap once you confirm which logos stay.</p>
+    </div>
+
+    <section>
+      <h2>To review it yourself</h2>
+      <p>Everything is on the branch <code>feat/seo-multipage-legal</code>, in four commits. Nothing was pushed and <code>main</code> is untouched.</p>
+      <p>Run <code>npm run build</code>, then <code>npx serve out</code>, and open the address it prints. <code>npm run verify</code> lists every remaining placeholder and the page it sits on.</p>
+    </section>
+
+  </main>
+
+  <footer>
+    Rebuild carried out on branch feat/seo-multipage-legal · 4 commits · not pushed<br>
+    164 files changed · typecheck, lint and build passing · 33 pages generated
+  </footer>
+</div>
