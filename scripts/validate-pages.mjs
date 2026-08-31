@@ -42,7 +42,16 @@ const decode = s => s
   .replace(/&#(\d+);/g, (_, d) => String.fromCodePoint(+d))
   .replace(/&quot;/g, '"').replace(/&#0?39;|&apos;/g, "'")
   .replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&')
-const ORIGIN = 'https://talentsync.eu'
+// Read the canonical host from src/lib/seo.ts rather than repeating it. A guard
+// that hardcodes the origin stops checking the site and starts checking itself:
+// when the host moved to `www` (the apex serves only `/`, so every apex canonical
+// was a 404) this line was the only thing that disagreed.
+const ORIGIN = (() => {
+  const src = readFileSync('src/lib/seo.ts', 'utf8')
+  const m = src.match(/export const SITE_URL = '([^']+)'/)
+  if (!m) { console.error('FATAL: could not read SITE_URL from src/lib/seo.ts'); process.exit(1) }
+  return m[1]
+})()
 const seen = { title: new Map(), desc: new Map(), summary: new Map() }
 const routes = new Set(pages.map(routeOf))
 const sentences = {}   // route -> Set of 12+-word sentences, for the D1.2 cannibalisation guard

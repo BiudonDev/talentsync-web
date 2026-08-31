@@ -1,7 +1,19 @@
 import type { Metadata } from 'next'
 import { allRoutes } from '@/data/routes'
 
-export const SITE_URL = 'https://talentsync.eu'
+/**
+ * The canonical host, and it must be the host that actually serves the site.
+ *
+ * Railway is configured for `www` only. The bare apex 301s just `/` — and to
+ * plain `http://www`, not https — so `https://talentsync.eu/privacy/` is a 404.
+ * With the apex set here, every canonical, `og:url` and sitemap `<loc>` pointed
+ * at a URL that does not resolve, i.e. a sitemap of 404s handed to Google.
+ *
+ * To move canonical back to the bare apex: add `talentsync.eu` as a custom
+ * domain in Railway, confirm `https://talentsync.eu/privacy/` returns 200, then
+ * change this one line. Nothing else needs touching.
+ */
+export const SITE_URL = 'https://www.talentsync.eu'
 export const SITE_NAME = 'TalentSync'
 
 /**

@@ -10,7 +10,7 @@ export const siteConfig = {
   tagline:
     'TalentSync helps European and international product companies engage vetted senior engineers ' +
     'through direct B2B recruitment or flexible hourly collaboration.',
-  url: 'https://talentsync.eu',
+  url: 'https://www.talentsync.eu',
   calendlyUrl: 'https://calendly.com/talentsync-meeting/30min',
   email: 'victor@talentsync.eu',
   phone: '+373 68 300 700',
