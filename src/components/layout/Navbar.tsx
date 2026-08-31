@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { HiMenu, HiX } from 'react-icons/hi'
 import Button from '@/components/ui/Button'
 import { siteConfig } from '@/data/content'
@@ -22,6 +22,10 @@ import { cn } from '@/lib/utils'
  * it needs a @keyframes in globals.css (not this package's file), and a navbar
  * that slides in on every one of 20 route loads is worse than one that is just
  * there. Add it back in globals.css if the owner wants it.
+ *
+ * `prefetch={false}` on all three <Link>s — see the page-weight note in
+ * Footer.tsx. These seven links sit in the viewport on every route, so they are
+ * the single largest prefetch source on the site.
  */
 
 const LINK_BASE =
@@ -44,6 +48,7 @@ export default function Navbar({ variant = 'solid' }: NavbarProps) {
   const [expanded, setExpanded] = useState(variant === 'solid')
   const [open, setOpen] = useState(false)
   const current = href(usePathname())
+  const toggleRef = useRef<HTMLButtonElement>(null)
 
   useEffect(() => {
     if (variant !== 'hero') return
@@ -55,9 +60,21 @@ export default function Navbar({ variant = 'solid' }: NavbarProps) {
 
   // Scroll lock + Escape. Body computes `overflow-x: clip` from globals.css; the
   // inline style overrides both axes while open and is removed on close.
+  //
+  // Escape must also hand focus back to the toggle (WCAG 2.4.3). Closing sets
+  // `inert` on the menu wrapper, which yanks the focused link out of the a11y
+  // tree and drops focus to <body> — the next Tab then restarts from the top of
+  // the page. `.focus()` runs before React commits `inert`, so the toggle is
+  // already holding focus by the time the menu is inerted and nothing is orphaned.
+  // The other two close paths do not need this: the toggle button's own onClick
+  // already has focus, and a menu link navigates.
   useEffect(() => {
     if (!open) return
-    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setOpen(false)
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== 'Escape') return
+      setOpen(false)
+      toggleRef.current?.focus()
+    }
     document.body.style.overflow = 'hidden'
     document.addEventListener('keydown', onKey)
     return () => {
@@ -86,6 +103,7 @@ export default function Navbar({ variant = 'solid' }: NavbarProps) {
           <div className="flex h-14 items-center justify-between gap-4 lg:h-16">
             <Link
               href="/"
+              prefetch={false}
               aria-current={current === '/' ? 'page' : undefined}
               className="flex min-h-11 shrink-0 items-center text-xl font-bold whitespace-nowrap text-gradient focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
             >
@@ -104,6 +122,7 @@ export default function Navbar({ variant = 'solid' }: NavbarProps) {
                   <li key={r.path}>
                     <Link
                       href={r.path}
+                      prefetch={false}
                       aria-current={isActive(r.path) ? 'page' : undefined}
                       className={cn(
                         LINK_BASE,
@@ -129,6 +148,7 @@ export default function Navbar({ variant = 'solid' }: NavbarProps) {
               </Button>
 
               <button
+                ref={toggleRef}
                 type="button"
                 onClick={() => setOpen((o) => !o)}
                 aria-expanded={open}
@@ -142,9 +162,12 @@ export default function Navbar({ variant = 'solid' }: NavbarProps) {
           </div>
         </div>
 
-        {/* Measured at 360x740 with all seven items + CTA: pt-2 (8) + 7x44 +
-            6x8 gap (48) + CTA (12 + 44) + pb-4 (16) = 436px of panel under a
-            76px header = 512px pill, bottom edge 528px, 212px of headroom.
+        {/* Re-measured in Chrome at 360x740 with all seven items + CTA:
+            pt-2 (8) + 7x48 (336) + 6x8 gap (48) + CTA (mt-3 12 + 48) + pb-4 (16)
+            = 468px of panel under a 60px pill = 528px open, bottom edge 544px,
+            196px of headroom against a 632px max-h. Closed the panel is 0px, so
+            the pill is exactly the 56px content row + 2x2px borders = 60px and
+            --nav-h (16px top offset + 60px = 76px) holds at 4.75rem.
             The max-h/overflow-y-auto is the belt for a shorter viewport. */}
         <div
           id="mobile-menu"
@@ -154,12 +177,20 @@ export default function Navbar({ variant = 'solid' }: NavbarProps) {
             open ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]',
           )}
         >
-          <div className="max-h-[calc(100dvh-var(--nav-h)-2rem)] min-h-0 overflow-y-auto overscroll-contain px-4 pb-4">
+          {/* `pb-4` lives on the inner block, never on this scroll container:
+              `grid-template-rows: 0fr` collapses the CONTENT box only, so padding
+              on the grid item survives the collapse and leaves the closed pill
+              16px too tall (and every route's --nav-h clearance wrong by 16px).
+              Padding on a child inside the clip collapses with the row, and is
+              also the cross-browser-safe way to get trailing space inside a
+              scroll container. */}
+          <div className="max-h-[calc(100dvh-var(--nav-h)-2rem)] min-h-0 overflow-y-auto overscroll-contain px-4">
             <ul className="space-y-2 pt-2">
               {primaryNav.map((r) => (
                 <li key={r.path}>
                   <Link
                     href={r.path}
+                    prefetch={false}
                     onClick={() => setOpen(false)}
                     aria-current={isActive(r.path) ? 'page' : undefined}
                     className={cn(LINK_BASE, 'rounded-xl px-4 py-3 aria-[current=page]:bg-primary/10')}
@@ -169,9 +200,11 @@ export default function Navbar({ variant = 'solid' }: NavbarProps) {
                 </li>
               ))}
             </ul>
-            <Button href={siteConfig.calendlyUrl} external className="mt-3 w-full">
-              Book A Meeting
-            </Button>
+            <div className="pb-4">
+              <Button href={siteConfig.calendlyUrl} external className="mt-3 w-full">
+                Book A Meeting
+              </Button>
+            </div>
           </div>
         </div>
       </nav>

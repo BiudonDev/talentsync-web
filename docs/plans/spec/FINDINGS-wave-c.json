@@ -1,0 +1,158 @@
+[
+ {
+  "severity": "medium",
+  "file": "docs/plans/spec/00-design-contract.md:505",
+  "problem": "The spec's `.prose-legal` counter block (also 09-design-tokens.md:331-350) was never implemented and is in neither globals.css nor the built stylesheet \u2014 `counter-reset`/`counter-increment` appear 0 times in src/ and 0 times in out/_next/static/chunks/*.css. That is CORRECT: LegalPageTemplate.tsx:183-194 deliberately replaced CSS counters with literal `.legal-n` spans + `ol.lit` because clause numbering is alphanumeric and per-Part (B12.6, D23.3), 'which no <ol> can produce'. The risk is that the spec still says otherwise. Prose.tsx emits `[&_ol]:list-decimal`; if a later agent implements \u00a7505 as written, `.prose-legal ol { list-style:none }` at (0,2,1) and the decimal marker collide and produce exactly the double-marker failure ('1. (a) \u2026') that the template's comment warns about.",
+  "fix": "Amend 00-design-contract.md:505-509 and 09-design-tokens.md:331-350 to record that `.prose-legal` is superseded by LegalPageTemplate's hoisted `<style href=\"legal-page\">` block, and that CSS counters must NOT be added. No code change. (Spec file \u2014 not mine to edit; flagging for the spec owner.)"
+ },
+ {
+  "severity": "low",
+  "file": "src/components/sections/Hero.tsx:15",
+  "problem": "The JSDoc comment explaining why the md: step was dropped writes the class name literally: \"`md:text-6xl` step: `md:` is banned (Rule 1)\". Tailwind's oxide scanner does not strip comments, so the utility is emitted into production CSS: `.md\\:text-6xl{font-size:var(--text-6xl);line-height:var(--tw-leading,var(--text-6xl--line-height))}`. check-design-contract.mjs strips comments before check 2, so it correctly reports no SOURCE violation \u2014 but the stronger claim, that no md:/xl:/2xl: utility exists in this product's CSS, is false. Four more dead utilities ship the same way from comments: -mx-2, invert, max-w-prose, min-h-screen.",
+  "fix": "Reword the comment so the literal class string never appears, e.g. 'a 6xl step at md: is banned (Rule 1)'. Then md:text-6xl is not a candidate and the built CSS contains no banned breakpoint at all. Same treatment for the other four mentions if the dead bytes matter."
+ },
+ {
+  "severity": "low",
+  "file": "src/app/globals.css:70",
+  "problem": ".btn-base and .card-hover (globals.css:70 and :94) are emitted into the shipped stylesheet but referenced by no component \u2014 `grep -rn 'card-hover|btn-base' src --include='*.tsx' --include='*.ts'` returns rc=1 for both. .btn-base exists only as the head of the selector list that works around Tailwind 4.1.18 rejecting `@apply btn-base`, so the name itself is never needed; .card-hover is simply unused (only .card is, in ServicePageTemplate.tsx).",
+  "fix": "Drop `.btn-base,` from the selector list at globals.css:70, leaving `.btn-primary, .btn-secondary { \u2026 }` \u2014 identical emitted CSS minus one dead selector. Delete the `.card-hover` block, or apply it where cards were meant to lift. (globals.css belongs to another package this wave \u2014 reporting, not editing.)"
+ },
+ {
+  "severity": "high",
+  "file": "src/app/insights/page.tsx:50",
+  "problem": "/insights/ emits FAQPage JSON-LD, violating D6 (docs/plans/spec/DECISIONS.md:111 \u2014 \"FAQPage on / only. Visible <details> FAQ blocks stay on every page that has one.\"). Verified: grep -rl 'FAQPage' out --include='*.html' returns exactly out/index.html and out/insights/index.html. The other 14 pages that 02-page-content.md lists FAQPage for correctly omit it, so this is a single missed page, not a deliberate reading of the spec \u2014 and DECISIONS.md is the stated tiebreaker over 02-page-content.md. Two competing FAQPage entities on one domain is also the pattern that draws rich-result suppression.",
+  "fix": "Delete the `faqLd(insightsHub.faq.map((f) => ({ question: f.q, answer: f.a }))),` line from the graphLd([...]) array in src/app/insights/page.tsx (line 50) and drop `faqLd` from the import on line 7 if it becomes unused. Leave the visible <details> FAQ block on the page \u2014 D6 explicitly keeps it. Re-verify: grep -rl FAQPage out --include='*.html' must return only out/index.html."
+ },
+ {
+  "severity": "high",
+  "file": "src/data/insights/index.ts:52",
+  "problem": "The unresolved token {{VICTOR_FULL_NAME}} is emitted inside structured data, not just body copy: all four /insights/[slug]/ pages ship \"author\":{\"@type\":\"Person\",\"name\":\"{{VICTOR_FULL_NAME}}\"}. D6 requires Article \"with a real named author\". This is a known BLOCKERS.md item, but its severity is understated in the gate note \u2014 a literal brace token inside a Person entity is ingested by Google as the author's name and is far harder to walk back than the same token in prose. Same class applies to {{FOUNDER_FULL_NAME}}, which the gate note already identifies as the same human under a second spelling.",
+  "fix": "Owner is Victor, not an agent \u2014 do not invent the value. Escalate this specific instance in docs/plans/BLOCKERS.md as schema-level (blocks indexing correctness, not only copy), and unify {{VICTOR_FULL_NAME}} and {{FOUNDER_FULL_NAME}} into one token before resolution so the same string lands in src/data/insights/index.ts:52, /about/ and /imprint/."
+ },
+ {
+  "severity": "medium",
+  "file": "src/app/layout.tsx:24",
+  "problem": "The 404 shell (out/404.html, out/404/index.html, out/_not-found/index.html \u2014 byte-identical) carries two <title> tags and two contradictory robots metas. Its own inline title plus Next's auto-injected `noindex` are joined by the root layout's defaults: `<title>IT Recruitment & Engineering Talent in Eastern Europe | TalentSync</title>`, `robots: index, follow`, the homepage description and the homepage og:title. not-found.tsx cannot export metadata (documented at src/app/not-found.tsx:17-22), so it cannot override them. Real-world impact is limited \u2014 Google takes the most restrictive robots and the first <title> \u2014 but nginx.conf:43 serves this file for every typo and dead backlink, and it currently presents itself as a second copy of the homepage. Note the canonical half of this trap is already correctly defused: the layout sets no `alternates`, so 404.html emits zero canonical tags.",
+  "fix": "Move the homepage-specific values out of the layout default. In src/app/layout.tsx replace `title.default` and `description` with neutral site-level strings (or drop them, letting src/app/page.tsx's pageMeta supply the homepage copy it already sets via title.absolute), and remove `openGraph.title`, `openGraph.description` and `openGraph.url` \u2014 keep only metadataBase, openGraph.type/siteName/locale, twitter.card and icons. That leaves the 404 with one meaningful title and no homepage duplicate signal. While there: `title.template: '%s | TalentSync'` (line 26) contradicts 01-architecture.md:188 (\"No title.template\") and is inert anyway because pageMeta uses title.absolute \u2014 delete it."
+ },
+ {
+  "severity": "low",
+  "file": "src/app/page.tsx:35",
+  "problem": "The homepage <title> is 66 characters (\"IT Recruitment & Engineering Talent in Eastern Europe | TalentSync\"), over the 15-60 gate in 00-design-contract.md:964. Measured: it is the only one of 32 pages outside the range; the rest span 21-59. Flagging so it is not read as an escape \u2014 02-page-content.md:64 documents it as a client override (\"Over the 60-char budget, and the client fixed it. Shipping as instructed\"), so it is sanctioned, but any title-length gate will keep failing on it and Google will truncate the brand: \"...in Eastern Europe | Tale...\".",
+  "fix": "No code change required \u2014 it is a decision, not a defect. Either add an explicit exemption for '/' in the title-length check so the gate stays green and meaningful, or take 02-page-content.md:64's own recommendation to the client: \"IT Recruitment & Engineers, Eastern Europe | TalentSync\" (55 chars) keeps every element and keeps the brand visible."
+ },
+ {
+  "severity": "low",
+  "file": "src/app/insights/page.tsx",
+  "problem": "The four /insights/[slug]/ pages each have exactly 1 inbound internal link (the /insights/ hub) and the two /careers/[slug]/ pages have 2. Not orphans, so the brief's bar is met and no action is forced \u2014 but they are the thinnest-linked real pages on a site where every other route sits at 29 inbound. Measured over the full built link graph with /404/ and /_not-found/ excluded as sources.",
+  "fix": "Optional. 02-page-content.md already specifies contextual internal links out of the service pages; adding one body link from a topically matched service page to each insight (e.g. /b2b-engineer-recruitment/ -> /insights/b2b-contract-or-hourly-collaboration/, /technical-recruitment-moldova/ -> /insights/moldova-it-park-single-tax-explained/) would take each from 1 to 2 inbound. Owner is whoever holds the service page files, not this tester."
+ },
+ {
+  "severity": "critical",
+  "file": "src/data/services/pages/tech-recruitment-eastern-europe.ts",
+  "problem": "The Innovatec placement is stated as 2 engineers on /tech-recruitment-eastern-europe/ and /hourly-engineering-talent/ (count: 2, 'PLC and automation specialists') but as 1 engineer on /technical-recruitment-moldova/ (count: 1, 'PLC specialist'), on /case-studies/ ('Role placed 1 x PLC specialist') and on / ('PLC Specialist placement', singular). The 'nine engineers across five clients' total renders on 7 pages and only balances at Innovatec=2; at Innovatec=1 the itemised record totals 8. /hire-software-developers-eastern-europe/ prints 'Five clients, nine engineers, and that is the entire record. We publish it...' directly above its own table showing 2 for Innovatec. The site therefore both asserts a headline proof number and itemises it two incompatible ways in the same build, on the only pages a buyer reads for evidence. This is C2's open item, now confirmed as a rendered self-contradiction rather than a data ambiguity.",
+  "fix": "Victor confirms the real number, then propagate one value. If 1: change count to 1 and the role to singular in tech-recruitment-eastern-europe.ts and hourly-engineering-talent.ts, and change 'nine engineers' to 'eight engineers' in every one of the 7 pages plus content.ts faq[3].answer and about.ts. If 2: change technical-recruitment-moldova.ts count to 2 with the plural role, and content.ts caseStudies Innovatec results[0] to '2 x PLC and automation specialist placements'. Add a grep guard to scripts/validate-pages.mjs asserting the itemised evidence counts sum to the number in the ledger sentence."
+ },
+ {
+  "severity": "critical",
+  "file": "src/data/content.ts",
+  "problem": "testimonials[1] still reads 'They found us a senior Python developer in two days.' while the Qualiwise placement is stated as one week on 13 rendered pages (/case-studies/qualiwise/ H1 is literally 'A Senior Python Developer Signed in One Week'). 06-claims row 15 names this exact three-way number conflict as the credibility failure. It does not appear in any index.html because Testimonials.tsx server-renders only testimonials[current] (index 0), but it ships in out/_next/static/chunks/c748d93bf7122da7.js and displays the moment a visitor advances the carousel. An HTML-only claim grep gives a false pass here.",
+  "fix": "Do not reword the quote (content.ts correctly marks rows 18-20 BLOCKED). Get Victor to obtain the author's sign-off on the 06-claims row 19 replacement text with the reconciled figure and the full surname, or pull testimonials[1] from the array until sign-off exists. Separately: server-rendering only one of three testimonials also hides two endorsements from crawlers and no-JS users, so the carousel should render all three in the HTML and hide the inactive ones with CSS."
+ },
+ {
+  "severity": "high",
+  "file": "src/data/services/pages/tech-recruitment-eastern-europe.ts",
+  "problem": "engagementModels is [] on line 367, so /tech-recruitment-eastern-europe/ carries neither BLOCK B nor BLOCK C, and / carries neither either. 02-page-content.md line 27 names exactly five pages that must carry them verbatim (/, tech-recruitment-eastern-europe, hire-software-developers-eastern-europe, b2b-engineer-recruitment, hourly-engineering-talent); only three of the five do, plus /about/ which is not on the list. Both misses paraphrase instead: /tech-recruitment-eastern-europe/ keeps the spec's section heading 'How engineers are contracted here' but fills it with its own wording, and / compresses both models into process step 02. Part 0's stated reason for the blocks is that 'nine pages describing the same two products in nine slightly different ways is how a cluster cannibalises itself' - paraphrase is the failure mode the blocks exist to prevent, and it puts near-duplicate low-similarity variants of the same 156 words on the two highest-authority pages in the cluster.",
+  "fix": "Set engagementModels: ['b2b','hourly'] in tech-recruitment-eastern-europe.ts so section 5 renders the canonical blocks, keeping its unique EOR comparison as following prose. On / add the spec's H2 'Two ways to work with us' rendering ENGAGEMENT_MODELS.b2b.body and .hourly.body verbatim; the compressed 06-claims row 8 copy can stay as the process-step summary since it is a different slot."
+ },
+ {
+  "severity": "high",
+  "file": "src/components/sections/CaseStudies.tsx",
+  "problem": "06-claims rows 13, 16 and 17 are still unfixed in the built homepage. The client grid renders under the heading 'Our Clients' with the Orange logo in it, and the sub-head still reads 'Driving success across industries - from global sports clubs to fast-growing startups'. Row 13 calls this 'Legal - highest severity on the page' and says the heading change is specifically what makes the Orange tile lawful; row 17 flags 'global sports clubs' as implying FC Barcelona is a TalentSync client when the counterparty is New Era Visionary Group. The tile bullet text WAS corrected ('Engineers placed onto the MVNO integration...'), so the page now pairs accurate bullets with the two framing lines that carry the actual risk. Row 16's single measurement qualifier under the grid is also absent - grep for 'Where our engineers work', 'Companies and products our placed engineers', 'brief to signed offer' and 'measured from' in index.html all return 0.",
+  "fix": "Apply the three replacements exactly as 06-claims specifies: heading -> 'Where our engineers work'; sub-head -> \"Companies and products our placed engineers have contributed to, in their clients' own teams.\"; add the row 16 qualifier line under the grid defining the clock once. This is C1's carried-over open item and it is the last unapplied legal row in the audit."
+ },
+ {
+  "severity": "high",
+  "file": "src/data/content.ts",
+  "problem": "The homepage FAQ bypasses the 40-60 word discipline that every other FAQ on the site meets. All 64 template FAQ answers (<details name=\"faq\">) are inside 40-60 words; the six homepage answers measure 30, 67, 44, 73, 79 and 23 words - 5 of 6 out of band. Two also restate the question rather than answer an objection: faq[0] 'What regions do you source talent from?' answers 'We specialize in Eastern European talent, with our headquarters in Chisinau, Moldova...' (30w, no objection addressed), and faq[5] 'Do you provide ongoing support after placement?' answers 'Yes, you get a dedicated account manager...' (23w, pure restatement). These six are the only FAQPage JSON-LD on the site besides /insights/, so they are precisely the answers an AI answer engine lifts.",
+  "fix": "Rewrite the six homepage FAQ answers to 40-60 words each, and rewrite faq[0] and faq[5] to answer the buyer's actual objection (faq[0]: why Eastern Europe rather than nearshore Western Europe or India; faq[5]: what happens concretely if the engineer underperforms in month two, i.e. the replacement cover already described on /hire-software-developers-eastern-europe/). Extend scripts/validate-pages.mjs's FAQ word-count guard to cover content.ts faq[] as well as ServicePage.faqs, since the guard currently only sees the template path."
+ },
+ {
+  "severity": "high",
+  "file": "src/data/content.ts",
+  "problem": "Four strings on / put TalentSync in the delivery seat, two paragraphs below BLOCK D on the same page. Line 119: 'your dedicated account manager ensures seamless communication and successful delivery'. Line 303 (FAQ answer, also in the FAQPage JSON-LD): 'ensures seamless communication and successful delivery throughout the engagement'. Line 87: 'AWS, Azure, Google Cloud specialists ready to architect and scale your infrastructure' - TalentSync does not architect. Line 63: 'delivering exceptional quality at competitive rates' is a surviving copy of the phrase 06-claims row 3 retired from About.tsx; the audit only enumerated the About.tsx instance, so the rebuild fixed one and left the other. Promising 'successful delivery' is the outsourcer positioning that BLOCK D and case-studies.ts:160 explicitly disclaim, and it is unqualified enough to read as a performance commitment.",
+  "fix": "Line 119 and 303: replace 'successful delivery' with the scope TalentSync actually owns - 'one named contact for sourcing, contracting and replacement cover; delivery stays with your team'. Line 87: 'AWS, Azure and Google Cloud engineers who have run production platforms at this scale.' Line 63: drop 'delivering exceptional quality at competitive rates' - it is unmeasurable and the retired-phrase list should include it. Add 'successful delivery', 'we architect' and 'exceptional quality' to the scripts/validate-pages.mjs deny-list alongside the D7 strings."
+ },
+ {
+  "severity": "medium",
+  "file": "src/data/services/pages/hire-qa-engineers.ts",
+  "problem": "/hire-qa-engineers/ carries zero named placements (evidence: [], no 'Placements on record' section) and so fails the brief's requirement of one real named result - it is the only service page that does. The page handles this honestly rather than fabricating: 'our published placement record is in development roles. Nine engineers across five clients... and none of them was a QA or test-automation hire... it would be easy to let [Qualiwise] sit next to the word QA on this page and let you draw the wrong conclusion.' That is the correct call and it is why this is medium, not critical: draft: true is set in both the page and routes.ts:69, so it is noindexed and unlinked. It is also, at 2303 words, the shortest service page and the one 02-page-content already recommends cutting from launch.",
+  "fix": "Leave draft: true. Add a hard gate to assertServicePage so flipping draft to false without >=2 entries in evidence throws - the assertion currently only checks evidence >= 2 when draft is false, which is the right rule but should be accompanied by a comment on this page recording that the honest no-record section must be deleted at the same time the flip happens, or the page will contradict its own new evidence block."
+ },
+ {
+  "severity": "medium",
+  "file": "src/app/page.tsx",
+  "problem": "/ renders 1151 words in <main> against 2303-3572 on every service page, and its section skeleton is the pre-rebuild one ('The TalentSync Advantage', 'How It Works', 'Our Clients', 'What Our Clients Say', 'Join Our Team', \"Let's Work Together\") rather than 02-page-content section 1's outline, which specifies H2 'Two ways to work with us' and H2 'What TalentSync is not' among others. The 06-claims copy edits landed on the old structure, so the page is accurate but is the least developed commercial page on the site and the one every service page links back to. It is not thin in the doorway sense - BLOCK A, BLOCK D and the corrected process copy all carry real information - but it is half the length of the pages it is meant to lead.",
+  "fix": "Rebuild / against 02-page-content section 1's outline. Section 2 ('Two ways to work with us', BLOCK B and C, ~200 words) and section 3 ('What TalentSync is not', BLOCK D plus the concrete operational-control sentences, ~90 words) alone close most of the gap and fix the BLOCK B/C finding above. The 'What TalentSync is not' content already exists as prose immediately after BLOCK A - it just needs to become its own H2 section."
+ },
+ {
+  "severity": "low",
+  "file": "out/case-studies/barca-mobile/index.html",
+  "problem": "Six pages render under the brief's 800-word floor: /careers/ 377, /contact/ 499, /case-studies/silvertalent/ 662, /case-studies/qualiwise/ 698, /imprint/ 750, /case-studies/barca-mobile/ 755, /insights/ 757. None reads as thin - each has 5-9 unique H2s, a page-specific angle and no cross-page duplication (the three case studies share 0% of their sentences with anything). /careers/ and /insights/ are hubs whose depth lives in the leaves. Recording it because the three case-study leaves are commercial proof pages and are the shortest content on the site that a buyer evaluating evidence will actually land on from a service page.",
+  "fix": "No merge or draft flip needed. If depth is wanted cheaply, each case study already has an 'If you are hiring...' section that could carry the stack detail and the timeline caveat currently only stated on the service page linking to it - roughly 200 words each, and it makes the leaf standalone-useful rather than a stub of its parent."
+ },
+ {
+  "severity": "low",
+  "file": "out/about/index.html",
+  "problem": "92 raw {{TOKEN}} strings render inside visible body copy across 10 pages: privacy 28, terms 14, about 14, candidate-privacy 12, imprint 12, cookies 10, and one per article byline ({{VICTOR_FULL_NAME}}). This is D8's intended deploy blocker rather than a defect, and Victor owns it per docs/plans/BLOCKERS.md. Flagging only the content-quality consequence: /about/ is a commercial page carrying 14 of them, and all four articles carry an unresolved author byline, which is the field 06-claims requires be a real named person for E-E-A-T.",
+  "fix": "No code change - Victor resolves the values. When he does, unify {{VICTOR_FULL_NAME}} and {{FOUNDER_FULL_NAME}} to one token first, as the gate report notes they are the same fact under two spellings, so the article bylines and the /about/ founder paragraph cannot drift apart later."
+ },
+ {
+  "severity": "critical",
+  "file": "src/components/templates/LegalPageTemplate.tsx",
+  "problem": "Line 322: <div className=\"mt-10 grid gap-10 lg:grid-cols-[16rem_minmax(0,65ch)] lg:items-start lg:gap-x-16\"> declares grid columns ONLY at lg. Below lg the single implicit track is `auto`, whose minimum is the grid item's min-content. Prose gives every <table> `width:max-content` ([&_table]:w-max), so the widest table's max-content (measured 1870px on /terms/) becomes the article's min-content and the track blows out to the article's 65ch cap, 688.688px, inside a 321px container. Measured at 361x740: /terms/, /privacy/, /cookies/, /imprint/ all report documentElement.scrollWidth 704 vs clientWidth 353 \u2014 351px of horizontal scroll, a direct Rule 4 violation on the two most important pages on the site. /candidate-privacy/, the only legal page with zero tables, has overflow 0, which isolates the cause. `[&_table]:overflow-x-auto` does not save it: the table's own width is max-content, so the article, not the table, is what overflows.",
+  "fix": "Add a base-breakpoint track with a zero minimum to the wrapper: className=\"mt-10 grid grid-cols-[minmax(0,1fr)] gap-10 lg:grid-cols-[16rem_minmax(0,65ch)] lg:items-start lg:gap-x-16\". Verified live in the page: gridTemplateColumns 688.688px -> 321px, documentElement.scrollWidth 704 -> 353, articleW 321, and the widest table then becomes its own scroller (scrollWidth 325 vs clientWidth 321)."
+ },
+ {
+  "severity": "critical",
+  "file": "src/app/insights/[slug]/page.tsx",
+  "problem": "Line 291 carries the identical wrapper \u2014 \"mt-10 grid gap-10 lg:grid-cols-[16rem_minmax(0,65ch)] lg:items-start lg:gap-x-16\" \u2014 and the same bug. All four insights articles contain a table, and all four measure 351px of horizontal overflow at 361x740 (verified on /insights/moldova-it-park-single-tax-explained/: clientWidth 353, scrollWidth 704, gridTemplateColumns 688.688px). Eight of the 33 built routes scroll sideways on a phone.",
+  "fix": "Same one-token change: add grid-cols-[minmax(0,1fr)] at the base breakpoint. Fix both files together \u2014 they are the same expression and will drift apart otherwise."
+ },
+ {
+  "severity": "high",
+  "file": "docs/plans/BLOCKERS.md",
+  "problem": "{{VICTOR_FULL_NAME}} survives into four built insights pages (out/insights/*/index.html, 4 occurrences each; source src/data/insights/index.ts:52) but appears nowhere in BLOCKERS.md. Comparing the 29 unique tokens in out/ against the 104 named in BLOCKERS.md, it is the only one with no entry \u2014 so it is the one token Victor will never be asked to answer, and it will sit in four author bylines. BLOCKERS item 9 already asks for the same fact under {{FOUNDER_FULL_NAME}}.",
+  "fix": "Either add {{VICTOR_FULL_NAME}} to the BLOCKERS.md token table pointing at item 9, or (better, and what Gate C already recommends) collapse it: change src/data/insights/index.ts:52 to '{{FOUNDER_FULL_NAME}}' so one answer resolves /about/, /imprint/, the Person node and all four bylines at once. That drops the build's unresolved-token count from 29 to 28."
+ },
+ {
+  "severity": "medium",
+  "file": "src/data/legal/privacy.ts",
+  "problem": "Annex A is NOT reproduced inside /privacy/. out/privacy/#annex-a is an 836-byte pointer to /candidate-privacy/; the Art 14 phrases \"Where we got your details\", \"What we recorded\" and \"disproportionate effort\" return 0 hits on /privacy/ and 1 hit each on /candidate-privacy/. The spec's own justification for the annex is defeated by that: 03-privacy-policy.md says \"It is reproduced here so you can check that what we sent you matches what we publish.\" A candidate who was sent the notice and opens the privacy policy to check it now has to follow a link. The single-canonical-text rationale is sound and is stated on the page, but this is a legal-drafting call, not a code call.",
+  "fix": "Victor's decision. Either accept the pointer and amend the Annex A preamble so it no longer implies the text is reproduced there, or render the same LegalDoc block array in both places from one shared export so there is still one source of truth and two renderings. Do not hand-copy it."
+ },
+ {
+  "severity": "medium",
+  "file": "src/components/ui/Prose.tsx",
+  "problem": "The comment on the table rules claims \"the table is its own horizontal scroller (Rule 4)\", but [&_table]:block [&_table]:w-max [&_table]:max-w-full does not produce that. width:max-content with max-width:100% makes the table compress and wrap rather than overflow-and-scroll. Measured on /terms/ after correcting the grid: all 3 tables render at exactly 321px and only one has any internal scroll (scrollWidth 325 vs clientWidth 321) \u2014 the other two squash their columns to fit 321px. /privacy/ carries 15 tables, including the five-column international-transfers table that is legally load-bearing, and they will squash hardest. It is also the max-content width that feeds the grid blow-out in the two critical findings above.",
+  "fix": "Wrap the table instead of sizing it: render tables inside a <div class=\"overflow-x-auto\"> in LegalPageTemplate's table branch and drop w-max/max-w-full/overflow-x-auto from Prose, so the table takes its natural width and the wrapper scrolls. That also removes the max-content contribution that breaks the grid. If squashing is preferred instead, keep the classes but delete the comment claiming it scrolls."
+ },
+ {
+  "severity": "low",
+  "file": "src/components/layout/Footer.tsx",
+  "problem": "Line 78's <a href=\"#cookie-settings\"> is a dangling fragment in the static HTML on every page \u2014 it is the only broken in-page anchor found across all five legal pages (terms 102 unique fragments, 1 broken; same on the other four). It works only because ConsentBanner installs a capture-phase document click listener. With JS off it is a link that does nothing and jumps nowhere.",
+  "fix": "No change required for correctness \u2014 analytics cannot run without JS either, so the control is honestly inert. Worth one line of comment in Footer.tsx pointing at ConsentBanner's delegated listener, so the next anchor-integrity sweep does not file it as a broken link."
+ },
+ {
+  "severity": "low",
+  "file": "src/components/ConsentBanner.tsx",
+  "problem": "At 360x740 the banner measures 337.5px tall \u2014 45.6% of the viewport \u2014 and reserves all of it as document.body padding-bottom (measured 338px). On a phone the first screen of every page is more than half consent banner, which is the worst case exactly where the mobile-first contract cares most.",
+  "fix": "Tighten the mobile copy (the three-sentence body plus the policy link is the bulk of it) or put Reject/Accept side by side below sm instead of stacking them \u2014 the stack costs 52+12+52 = 116px on its own. Verify the buttons stay >=44px and >=8px apart after the change."
+ },
+ {
+  "severity": "low",
+  "file": "src/components/ConsentBanner.tsx",
+  "problem": "The role comment says the banner is \"mounted first in <body> so the first Tab lands on Reject\". Measured focus order at 361x740 is [Cookie policy, Reject, Accept, Skip to content, ...] \u2014 the in-banner \"Cookie policy\" link is the first stop, Reject is second. The property that actually matters (Reject before Accept) does hold, and both are identical btn-secondary, 321x52, 12px apart.",
+  "fix": "Correct the comment, or move the \"Cookie policy\" link after the button group in DOM order if Reject really should be the first stop. No functional change needed either way."
+ }
+]

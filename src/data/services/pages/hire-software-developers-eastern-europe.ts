@@ -12,9 +12,13 @@
  * placement outcomes and the internal-link anchors are all written for this
  * page alone. Read the sibling file before editing either.
  *
- * The ledger is the page's reason to exist: five clients, nine engineers, and
- * nothing else. Do not round it up, and do not repeat the same engineers in a
- * second table elsewhere on the site.
+ * The ledger is the page's reason to exist: the five most recent placements —
+ * five clients, eight engineers — and nothing else. It is NOT the whole
+ * engagement record: `/case-studies/` lists ten engagements, eight of them
+ * placements, and the programme rows deliberately publish no headcount. So
+ * scope every number on this page to those five placements. Do not round it
+ * up, do not restate it as a total ("the entire record", "to date"), and do
+ * not repeat the same engineers in a second table elsewhere on the site.
  */
 
 import type { ServicePage } from '../types'
@@ -24,11 +28,11 @@ export const hireSoftwareDevelopersEasternEurope: ServicePage = {
   label: 'Hire Engineers',
   metaTitle: 'Hire Software Developers in Eastern Europe | TalentSync',
   metaDescription:
-    'Hire vetted senior developers from Eastern Europe. Nine engineers placed across five teams, each signed within one to two weeks of the brief.',
+    'Hire vetted senior developers from Eastern Europe. Eight engineers placed across five teams, each signed within one to two weeks of the brief.',
   h1: 'Hire Software Developers in Eastern Europe',
 
   answerParagraph:
-    'TalentSync places senior software developers from Eastern Europe into existing engineering teams, either on a direct B2B contract you hold with the engineer or on an hourly basis through us. Across our five most recent engagements — nine engineers for SocialBee, Silvertalent, Qualiwise, Foodamigos and Innovatec — each signed within one to two weeks of the brief.',
+    'TalentSync places senior software developers from Eastern Europe into existing engineering teams, either on a direct B2B contract you hold with the engineer or on an hourly basis through us. Across our five most recent engagements — eight engineers for SocialBee, Silvertalent, Qualiwise, Foodamigos and Innovatec — each signed within one to two weeks of the brief.',
 
   whoFor: {
     audience: 'Product teams adding one to five senior developers',
@@ -50,7 +54,7 @@ export const hireSoftwareDevelopersEasternEurope: ServicePage = {
       blocks: [
         {
           kind: 'table',
-          caption: 'Every engineer TalentSync has placed, by client, role, headcount and time from brief to signature',
+          caption: 'Our five most recent placements, by client, role, headcount and time from brief to signature',
           columns: ['Client', 'Role and stack', 'Engineers', 'Brief to signature'],
           rows: [
             {
@@ -71,14 +75,15 @@ export const hireSoftwareDevelopersEasternEurope: ServicePage = {
             },
             {
               label: 'Innovatec',
-              cells: ['PLC specialists, industrial automation', '2', 'Two weeks'],
+              cells: ['PLC specialist, industrial automation', '1', 'Two weeks'],
             },
           ],
         },
         {
           kind: 'prose',
           body: [
-            'Five clients, nine engineers, and that is the entire record. We publish it whole rather than in fragments, because a partial ledger is how a small firm makes itself look larger, and anyone who checks will notice.',
+            'Across our five most recent placements: five clients, eight engineers. We publish every row of it rather than a selected fragment, because a partial ledger is how a small firm makes itself look larger, and anyone who checks will notice.',
+            'Our remaining engagements are listed on the case studies page, including the programme work where we publish no headcount because we do not have one we can stand behind.',
             'The clock runs from an agreed written brief to a signed offer. Your own interview schedule sits inside that window, which is why a client who can interview at two days’ notice always beats one who cannot, on identical roles.',
           ],
         },
@@ -116,7 +121,7 @@ export const hireSoftwareDevelopersEasternEurope: ServicePage = {
         {
           kind: 'prose',
           body: [
-            'We do not publish a rejection ratio. It could be computed, but with nine placements the denominator is far too small for the number to carry meaning, and a manufactured funnel statistic is exactly the sort of claim this site exists to stop making.',
+            'We do not publish a rejection ratio. It could be computed, but with eight placements the denominator is far too small for the number to carry meaning, and a manufactured funnel statistic is exactly the sort of claim this site exists to stop making.',
           ],
         },
       ],
@@ -217,15 +222,15 @@ export const hireSoftwareDevelopersEasternEurope: ServicePage = {
         {
           kind: 'stats',
           items: [
-            { value: '9', label: 'engineers placed to date' },
-            { value: '5', label: 'client teams, which is the whole record' },
-            { value: '1–2 weeks', label: 'brief to signature on every placement so far' },
+            { value: '8', label: 'engineers in our five most recent placements' },
+            { value: '5', label: 'client teams across those placements' },
+            { value: '1–2 weeks', label: 'brief to signature on each of the eight' },
           ],
         },
         {
           kind: 'prose',
           body: [
-            'Read those as a distribution of nine events, not as a service level. Two were single senior hires into common stacks, which is the easy case. Five were paired or tripled hires into one team, which is easier still, because a single interview loop covers several candidates at once.',
+            'Read those as a distribution of eight events, not as a service level. Three were single senior hires into common stacks, which is the easy case. Five were paired or tripled hires into one team, which is easier still, because a single interview loop covers several candidates at once.',
             'Roles with a narrow stack, a security-clearance requirement or a hard on-site element take longer, and we tell you that at the brief rather than at week three.',
           ],
         },

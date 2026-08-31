@@ -179,7 +179,7 @@ export const b2bOrHourly: Insight = {
     },
     {
       k: 'p',
-      t: 'On speed, the honest version: across our five most recent engagements — nine engineers for SocialBee, Silvertalent, Qualiwise, Foodamigos and Innovatec — the engineer signed within one to two weeks of the brief. Roles with a narrow stack, a security-clearance requirement or a hard on-site element take longer, and we tell you that at the brief rather than at week three. The full record, with stacks and timings, is on the [case studies page](/case-studies/).',
+      t: 'On speed, the honest version: across our five most recent engagements — eight engineers for SocialBee, Silvertalent, Qualiwise, Foodamigos and Innovatec — the engineer signed within one to two weeks of the brief. Roles with a narrow stack, a security-clearance requirement or a hard on-site element take longer, and we tell you that at the brief rather than at week three. The full record, with stacks and timings, is on the [case studies page](/case-studies/).',
     },
     {
       k: 'p',

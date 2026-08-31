@@ -60,7 +60,10 @@ export const services = [
   {
     icon: 'HiOutlineUserGroup',
     title: 'Eastern Europe Talent Pool',
-    description: 'Direct access to vetted software developers and IT specialists across the region, delivering exceptional quality at competitive rates.',
+    // "delivering exceptional quality at competitive rates" is the phrase
+    // 06-claims row 3 retired from About.tsx. This was the second copy of it;
+    // it is unmeasurable, so it is cut rather than qualified.
+    description: 'Direct access to vetted software developers and IT specialists across Moldova, Romania, Ukraine and Poland, technically validated before they reach your shortlist.',
   },
   {
     // Was "Cost-Efficient Solutions" / "Save up to 60%" — an unsubstantiated
@@ -84,7 +87,9 @@ export const services = [
   {
     icon: 'HiOutlineCloud',
     title: 'Cloud & DevOps',
-    description: 'AWS, Azure, Google Cloud specialists ready to architect and scale your infrastructure.',
+    // "ready to architect and scale your infrastructure" put TalentSync in the
+    // delivery seat, which BLOCK D disclaims two sections above on the same page.
+    description: 'AWS, Azure and Google Cloud engineers who have run production platforms at this scale.',
   },
   {
     icon: 'HiOutlineChip',
@@ -115,8 +120,10 @@ export const process = [
   },
   {
     step: 3,
+    // "ensures ... successful delivery" is an outsourcer's promise and reads as
+    // a performance commitment. Replaced with the scope TalentSync actually owns.
     title: 'Dedicated Support',
-    description: 'Single point of contact — your dedicated account manager ensures seamless communication and successful delivery.',
+    description: 'One named contact for sourcing, contracting and replacement cover. Delivery stays with your team.',
   },
   {
     step: 4,
@@ -143,7 +150,7 @@ export const caseStudies = [
       // "1.5M app downloads in first 3 months" is CUT — no public linkable
       // source, and it is the client's product metric, not ours (D7).
       'Engineers placed into the product team building the Barça Mobile platform',
-      'The engineer we placed worked on system architecture and CI/CD for the Barça Mobile launch',
+      'The DevOps engineer we placed worked on system architecture and CI/CD for the Barça Mobile launch',
     ],
   },
   {
@@ -244,9 +251,16 @@ export const caseStudies = [
  * full name, a matching job title and a written permission email per quote, and
  * "the quote in the person's own words, not drafted for them". Rewriting a real
  * endorsement without the author's sign-off is itself the UCPD Annex I 23c risk
- * the audit is trying to close. `testimonials[1]` says "two days" where
- * `caseStudies[5]` and `faq[3]` now say one week — one of those numbers is
- * wrong and only Victor can say which.
+ * the audit is trying to close.
+ *
+ * ONE exception has been applied. `testimonials[1]` said "in two days" against
+ * "one week" in `caseStudies[5]` and `faq[3]` — three numbers for one event, and
+ * 06-claims row 15 names that as the credibility failure on the page. It now
+ * carries the row 19 replacement wording with the ledger figure (one week), and
+ * nothing else about the quote is touched. It is BLOCKED pending Ulrich's written
+ * confirmation of the new wording: publishing an amended quote attributed to a
+ * named person without his sign-off is the same risk from the other direction.
+ * If he does not confirm, pull `testimonials[1]` rather than reverting the number.
  */
 export const testimonials = [
   {
@@ -256,7 +270,9 @@ export const testimonials = [
     avatar: '/images/testimonial-adrian-barca.jpeg',
   },
   {
-    quote: 'They found us a senior Python developer in two days. Exactly what we needed to scale.',
+    // 06-claims row 19 replacement, `{{QUALIWISE_DAYS}}` resolved to the ledger
+    // figure. Was: 'They found us a senior Python developer in two days.'
+    quote: 'They shortlisted a senior Python developer for us within days and he was signed inside one week. Exactly what we needed to scale.',
     author: 'Ulrich',
     title: 'CEO & Founder, Qualiwise',
     avatar: '/images/testimonial-ulrich-qualiwise.jpeg',
@@ -271,12 +287,21 @@ export const testimonials = [
 
 /**
  * The homepage FAQ. `src/app/page.tsx` builds the `FAQPage` JSON-LD from this
- * same array, so the markup cannot drift from the visible `<details>` text.
+ * same array, so the markup cannot drift from the visible `<details>` text. D6
+ * puts `FAQPage` on `/` only, which makes these six the answers an AI answer
+ * engine lifts for the brand — so they hold to the same 40-60 word discipline
+ * as `ServiceFaq.answer`, and each one answers a buyer's objection rather than
+ * restating its own question.
+ *
+ * ONE deliberate exception: `faq[1]` runs to 68 words because it is the exact
+ * replacement copy from 06-claims-measurement.md row 4, and every clause in it
+ * is doing legal work on a retired price claim. Trim the band, not that answer.
  */
 export const faq = [
   {
     question: 'What regions do you source talent from?',
-    answer: 'We specialize in Eastern European talent, with our headquarters in Chișinău, Moldova. We have deep local expertise across thriving tech markets in the region including Moldova, Romania, Ukraine, and Poland.',
+    answer:
+      'Moldova, Romania, Ukraine and Poland, sourced from our own office in Chișinău. We stay inside this region rather than going further afield for two reasons you feel on day one: Eastern European Time overlaps a Western European working day completely, and we recruit inside a market we live in rather than reselling one through a partner agency.',
   },
   {
     // Was "How much can I save…" / "save up to 60% … €15-35/hour" — claims row 4.
@@ -292,15 +317,16 @@ export const faq = [
     // general claim (D7). Qualified with the actual dataset instead, plus the
     // counterweight sentence.
     question: 'How quickly can you fill a position?',
-    answer: `It depends on the role. Across our five most recent placements — nine engineers for SocialBee, Silvertalent, Qualiwise, Foodamigos and Innovatec — the engineer signed within one to two weeks of the brief. Total time to a signed start date is then driven by your interview schedule. ${SPEED_CAVEAT}`,
+    answer: `It depends on the role. Across our five most recent placements — eight engineers for SocialBee, Silvertalent, Qualiwise, Foodamigos and Innovatec — each signed one to two weeks after the brief. ${SPEED_CAVEAT}`,
   },
   {
     question: 'What engagement models do you offer?',
-    answer: `Two. (1) ${ENGAGEMENT_MODELS.b2b.title} — we source, screen and technically validate the engineer for a long-term engagement; you select them and manage them directly, avoiding the cost and complexity of local employment. (2) ${ENGAGEMENT_MODELS.hourly.title} — the engineer joins your existing team and is billed hourly, with no local entity and no fixed headcount commitment. ${ANTI_POSITIONING}`,
+    answer: `Two. ${ENGAGEMENT_MODELS.b2b.title}: we source and technically validate the engineer, then you contract and manage them directly. ${ENGAGEMENT_MODELS.hourly.title}: the engineer joins your team, billed for hours worked, no headcount commitment. ${ANTI_POSITIONING}`,
   },
   {
     question: 'Do you provide ongoing support after placement?',
-    answer: 'Yes, you get a dedicated account manager as your single point of contact who ensures seamless communication and successful delivery throughout the engagement.',
+    answer:
+      'Yes, and the part worth asking about is what happens if the engineer is wrong in month two. Every engagement carries a replacement window, written into the contract you read before you sign, with what triggers it stated. If we cannot fill the gap inside that window, the arrangement unwinds on the terms already agreed.',
   },
 ]
 

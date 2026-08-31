@@ -11,11 +11,20 @@ const fails = []
 const fail = (f, sel, msg) => fails.push(`${f}\n    [${sel}] ${msg}`)
 
 const pages = []
+// The 404 shell is emitted three times, byte-identical (404.html, 404/index.html,
+// _not-found/index.html). It is exempt from the per-route checks below — it has no
+// canonical, no sitemap entry and no route — but nginx serves it for every typo and
+// every dead backlink, so it is NOT exempt from check 2f (one <title>, one robots).
+const isShell = r => /^(404|_not-found)(\/|\.html$)/.test(r)
+const allPages = []
 ;(function walk(d) {
   for (const e of readdirSync(d, { withFileTypes: true })) {
     const p = join(d, e.name)
-    if (e.isDirectory()) { if (!['_next','_not-found','404'].includes(e.name)) walk(p) }
-    else if (e.name.endsWith('.html') && e.name !== '404.html') pages.push(p)
+    if (e.isDirectory()) { if (e.name !== '_next') walk(p) }
+    else if (e.name.endsWith('.html')) {
+      allPages.push(p)
+      if (!isShell(relative(OUT, p))) pages.push(p)
+    }
   }
 })(OUT)
 if (!pages.length) { console.error(`FATAL: no .html under ${OUT}/ — run \`npm run build\` first`); process.exit(1) }
@@ -97,10 +106,15 @@ for (const file of pages) {
 
   const rawTitle = (raw.match(/<title[^>]*>([\s\S]*?)<\/title>/i) || [])[1]?.trim()
   const title = rawTitle && decode(rawTitle)
-  // 02-page-content.md §1: the homepage title is client-fixed at 66 chars and
-  // shipped over the 60-char budget on the client's explicit instruction, with
-  // a recommendation on file to trim it. That one exemption, and no other.
-  const titleMax = f === 'index.html' ? 66 : 60
+  // 02-page-content.md §1 / BLOCKERS.md §2 row 13: the homepage title is
+  // client-fixed at `IT Recruitment & Engineering Talent in Eastern Europe |
+  // TalentSync` (66 chars). An explicit client instruction outranks a guard
+  // default, so the homepage ceiling is 70 — NOT laxity, and not headroom for
+  // anyone else: 66 exactly was a knife-edge that failed the build on a
+  // one-character edit to a title the client had already signed off. The
+  // recommendation to trim it to 55 stands and is still on the blocker list.
+  // Every other route keeps the 15-60 discipline of 00-design-contract.md:964.
+  const titleMax = f === 'index.html' ? 70 : 60
   if (!title) fail(f, '<title>', 'missing or empty')
   else if (title.length < 15 || title.length > titleMax) fail(f, '<title>', `${title.length} chars, need 15-${titleMax} — "${title}"`)
   else if (seen.title.has(title)) fail(f, '<title>', `duplicate of ${seen.title.get(title)}`)
@@ -127,12 +141,24 @@ for (const file of pages) {
   if (isHidden(route) && !/<meta[^>]+name="robots"[^>]*content="[^"]*noindex/i.test(raw))
     fail(f, 'meta[robots]', 'draft/noindex route must emit content="noindex"')
 
+  let hasFaq = false
   for (const [, json] of raw.matchAll(/<script[^>]+type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/gi)) {
     let parsed
     try { parsed = JSON.parse(json) } catch (e) { fail(f, 'script[ld+json]', `invalid JSON: ${e.message}`); continue }
     const flat = JSON.stringify(parsed)
     if (/"@type":"Review"|"aggregateRating":/.test(flat)) fail(f, 'script[ld+json]', 'emits Review/aggregateRating — banned by D6')
+    if (/"@type":"FAQPage"/.test(flat)) hasFaq = true
+    // A token in prose is a hole a reader can see. A token inside an entity is
+    // ingested as the VALUE — `"author":{"name":"{{VICTOR_FULL_NAME}}"}` is a
+    // person Google believes is called that, and it is far harder to walk back
+    // than the same string in body copy. Structured data is a stricter gate.
+    for (const [, t] of flat.matchAll(/\{\{([A-Z0-9_]+)\}\}/g))
+      fail(f, 'script[ld+json]', `{{${t}}} is unresolved INSIDE structured data — a placeholder ingested as an entity value`)
   }
+  // D6: FAQPage on / only. Two FAQPage entities on one domain is the pattern that
+  // draws rich-result suppression; the visible <details> blocks stay everywhere.
+  if (hasFaq !== (route === '/'))
+    fail(f, 'script[ld+json]', hasFaq ? 'emits FAQPage — D6 allows it on / only' : 'missing FAQPage — D6 requires it on /')
 
   // Scoped OUTSIDE <nav>: a <summary> in a nav landmark is the collapsed table
   // of contents, whose label ("On this page", "Contents") is identical on every
@@ -177,6 +203,72 @@ for (const file of pages) {
   }
 }
 
+/* 2f. one <title>, one robots meta — INCLUDING the 404 shell -------------- */
+// The 404 shipped two of each: not-found.tsx's own `Page not found` + `noindex`,
+// joined by the root layout's homepage title + `index, follow`. Google takes the
+// first title and the most restrictive robots so the damage is bounded, but nginx
+// serves that file for every typo and every dead backlink, and it presented itself
+// as a second copy of the homepage. Deduped on content: the shell is emitted three
+// times, byte-identical, and one finding is enough to fix all three.
+const seenBody = new Set()
+for (const file of allPages) {
+  const raw = readFileSync(file, 'utf8')
+  if (seenBody.has(raw)) continue
+  seenBody.add(raw)
+  const f = relative(OUT, file)
+  const titles = raw.match(/<title[\s>]/gi) || []
+  if (titles.length !== 1)
+    fail(f, '<title>', `${titles.length} <title> tags, need exactly 1 — ${(raw.match(/<title[^>]*>([\s\S]*?)<\/title>/gi) || []).map(t => JSON.stringify(text(t))).join(' + ') || '(none)'}`)
+  const robots = (raw.match(/<meta[^>]+name="robots"[^>]*>/gi) || []).map(t => attr(t, 'content'))
+  if (robots.length > 1)
+    fail(f, 'meta[robots]', `${robots.length} robots metas, need at most 1 — "${robots.join('" + "')}". A layout default and a page override both emitted; move the page-specific value out of the layout.`)
+}
+
+/* 2g. the Organization node must name the REGISTERED entity -------------- */
+// TalentSync is a trading name. The state register lists S.R.L. “UNQENERGY”,
+// IDNO 1020600034949, and no company called TalentSync — /imprint/ says exactly
+// that in prose. The Organization node emitted on all 33 pages carried only
+// `name: "TalentSync"`, so the one identity a procurement reviewer's crawler
+// actually reads asserted the opposite of the page it sat on. That was reported,
+// left open, and reported again a wave later, which is why it is a guard now.
+//
+// Asserted against /imprint/'s own rendered text, not a hardcoded string: if the
+// registered name or number ever changes, the prose and the schema move together
+// or this fails. That is the same D5 rule the footer NAP already lives under.
+const ldOrg = html => {
+  for (const [, json] of html.matchAll(/<script[^>]+type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/gi)) {
+    let p
+    try { p = JSON.parse(json) } catch { continue }
+    const org = (p['@graph'] ?? [p]).find(n => n && n['@type'] === 'Organization')
+    if (org) return org
+  }
+  return null
+}
+const homePath = join(OUT, 'index.html')
+const imprintPath = join(OUT, 'imprint', 'index.html')
+if (!existsSync(homePath) || !existsSync(imprintPath)) {
+  fail('out/', 'organization', 'index.html or imprint/index.html is missing — the entity-identity check cannot run. Re-point it, do not drop it.')
+} else {
+  const org = ldOrg(readFileSync(homePath, 'utf8'))
+  const imprint = text(readFileSync(imprintPath, 'utf8'))
+  // PropertyValue is the shape organizationLd() emits; a bare string is also legal
+  // schema.org, so read both rather than failing on a valid alternative.
+  const ids = [org && org.identifier].flat().filter(Boolean)
+    .map(i => (typeof i === 'string' ? i : i.value)).filter(Boolean).map(String)
+  if (!org) fail('out/index.html', 'script[ld+json]', 'no Organization node in the JSON-LD graph — it is emitted from the root layout and every page needs it')
+  else if (!org.legalName)
+    fail('src/lib/schema.ts', 'organizationLd().legalName', `absent, while /imprint/ states in the built HTML that TalentSync is only a trading name. A machine reader is told TalentSync IS the registered person; the page beside it says no such company is registered. Add the registered name exactly as /imprint/ renders it.`)
+  else if (!imprint.includes(org.legalName))
+    fail('src/lib/schema.ts', 'organizationLd().legalName', `is ${JSON.stringify(org.legalName)}, which does not appear anywhere in the rendered text of /imprint/. Schema and prose must carry one spelling of the registered entity (D5) — fix whichever is wrong, do not relax this check.`)
+  if (org && org.legalName && org.legalName === org.name)
+    fail('src/lib/schema.ts', 'organizationLd()', `legalName equals name (${JSON.stringify(org.name)}). The registered person and the trading name are different strings here; if they ever genuinely converge, delete this assertion deliberately.`)
+  if (org && !ids.length)
+    fail('src/lib/schema.ts', 'organizationLd().identifier', 'no identifier — the IDNO is published on /imprint/, /terms/ and /about/ but not in the structured data, so the registry number cannot be cross-checked by machine')
+  else for (const v of ids)
+    if (!imprint.includes(v))
+      fail('src/lib/schema.ts', 'organizationLd().identifier', `value ${JSON.stringify(v)} does not appear in the rendered text of /imprint/ — the number the site publishes to crawlers is not the number it shows a reader`)
+}
+
 /* 3. sitemap ------------------------------------------------------------- */
 const smPath = join(OUT, 'sitemap.xml')
 if (!existsSync(smPath)) fail('out/sitemap.xml', 'sitemap', `missing — ${routes.size} routes are unlisted`)
@@ -196,6 +288,21 @@ for (const r of routes)
   if (declared.length && !declares(r)) fail(`out${r}`, 'route', `exists in the export but is not declared in ${ROUTES_TS}`)
 
 /* 3c. unresolved {{TOKEN}} placeholders anywhere in out/ (D8) ------------ */
+// Two jobs, and the second is the one that was missing. (1) Fail the deploy on any
+// surviving token — D8. (2) Prove every token IS ON THE ASK LIST. A token nobody
+// knows about never gets answered: {{VICTOR_FULL_NAME}} shipped into four Article
+// author bylines without a single line in BLOCKERS.md, so the one person who could
+// resolve it was never going to be asked. The ledger is printed in full — every
+// distinct token with every page it renders on, not a truncated sample — because
+// the list is what gets pasted into the email that unblocks the launch.
+const routeLabel = p => {
+  const r = relative(OUT, p)
+  if (r.startsWith('_next/')) return '(js bundle)'
+  const i = r.lastIndexOf('/')
+  const dir = i < 0 ? '/' : '/' + r.slice(0, i) + '/'
+  // index.html, index.txt and the __next.*.txt RSC payloads are all one route.
+  return /^(index|__next)\./.test(r.slice(i + 1)) ? dir : dir + r.slice(i + 1)
+}
 const tokens = new Map()
 ;(function scan(d) {
   for (const e of readdirSync(d, { withFileTypes: true })) {
@@ -204,12 +311,26 @@ const tokens = new Map()
     if (!/\.(html|xml|txt|json|js|css)$/i.test(e.name)) continue
     for (const [, t] of readFileSync(p, 'utf8').matchAll(/\{\{([A-Z0-9_]+)\}\}/g)) {
       if (!tokens.has(t)) tokens.set(t, new Set())
-      tokens.get(t).add(relative(OUT, p))
+      tokens.get(t).add(routeLabel(p))
     }
   }
 })(OUT)
-for (const [t, where] of tokens)
-  fail('out/', `{{${t}}}`, `unresolved placeholder on ${[...where].slice(0, 6).join(', ')}${where.size > 6 ? ` (+${where.size - 6} more)` : ''} — see docs/plans/BLOCKERS.md`)
+
+const BLOCKERS = 'docs/plans/BLOCKERS.md'
+const blockers = existsSync(BLOCKERS) ? readFileSync(BLOCKERS, 'utf8') : null
+if (blockers === null) fail(BLOCKERS, 'blockers', 'missing — no token in the build can be traced to an owner')
+const byName = [...tokens].sort(([a], [b]) => (a < b ? -1 : 1))
+if (byName.length) {
+  console.log(`\n{{TOKEN}} ledger — ${byName.length} distinct placeholder(s) still in ${OUT}/:`)
+  for (const [t, where] of byName)
+    console.log(`  {{${t}}}${blockers && !blockers.includes(t) ? '  [NOT IN BLOCKERS.md]' : ''}\n      ${[...where].sort().join(' ')}`)
+  console.log('')
+}
+for (const [t, where] of byName) {
+  fail('out/', `{{${t}}}`, `unresolved placeholder on ${where.size} page(s): ${[...where].sort().join(' ')} — see ${BLOCKERS}`)
+  if (blockers && !blockers.includes(t))
+    fail(BLOCKERS, `{{${t}}}`, 'in the build but not on the ask list — nobody will ever be asked for this value. Add a row before it ships.')
+}
 
 /* 3d. routes 2 and 3 must not share prose (D1.2) ------------------------- */
 const [a, b] = ['/tech-recruitment-eastern-europe/', '/hire-software-developers-eastern-europe/']
@@ -230,6 +351,137 @@ if (sentences[a] && sentences[b])
     if (/['"`]framer-motion['"`]/.test(readFileSync(p, 'utf8'))) fail(p, 'import', 'imports framer-motion — only / may (rule 10)')
   }
 })('src/app')
+
+/* 3f. one client, one number (06-claims row 15) -------------------------- */
+// Two self-contradictions shipped in wave C, and neither was catchable by grepping
+// the rendered HTML for a phrase:
+//   · Innovatec was "2 engineers" on two pages and "1" on three others, while the
+//     headline "nine engineers across five clients" only balances at 2. A buyer
+//     reading the evidence pages sees the site itemise its own proof two ways.
+//   · the Qualiwise testimonial said "in two days" against a ledger row and an H1
+//     that both say one week — and it lives in a JS chunk, because the carousel
+//     server-renders only the active slide. An HTML-only check passes it. So the
+//     corpus here is HTML *plus* the chunks.
+// Both assertions bind the STRUCTURED shapes the site renders numbers in. A general
+// "number near a client name" scan was tried first and is pure noise: the hourly
+// page says "one or two days a week" eleven times about cadence, not about speed.
+const claimCorpus = []
+;(function claims(d) {
+  for (const e of readdirSync(d, { withFileTypes: true })) {
+    const p = join(d, e.name)
+    if (e.isDirectory()) { claims(p); continue }
+    if (!/\.(html|js)$/.test(e.name)) continue
+    const raw = readFileSync(p, 'utf8')
+    claimCorpus.push([routeLabel(p), e.name.endsWith('.html') ? text(raw.replace(/<script[\s\S]*?<\/script>/gi, ' ')) : raw])
+  }
+})(OUT)
+
+// "2 engineers Innovatec" / "1 engineer Qualiwise" — the evidence block's own shape,
+// which also gives us the client roster for free rather than hardcoding a list that drifts.
+const HEADCOUNT = /\b(\d+)\s+engineers?\s+([A-Z][\p{L}\d]*)/gu
+const clientNames = new Set()
+for (const [, t] of claimCorpus) for (const m of t.matchAll(HEADCOUNT)) clientNames.add(m[2])
+const nearestClient = (t, i) => {
+  let best = null
+  for (const c of clientNames) for (const j of [t.lastIndexOf(c, i), t.indexOf(c, i)]) {
+    const d = j < 0 ? Infinity : Math.abs(j - i)
+    if (d < 140 && (!best || d < best[1])) best = [c, d]
+  }
+  return best && best[0]
+}
+const WORDNUM = { one: 1, two: 2, three: 3, four: 4, five: 5, six: 6, seven: 7, eight: 8, nine: 9, ten: 10 }
+const num = w => WORDNUM[String(w).toLowerCase()] ?? +w
+const toDays = (n, u) => num(n) * { day: 1, week: 7, month: 30 }[u.toLowerCase()]
+
+const claimed = new Map()   // "<client> <fact>" -> value -> Set(route)
+const claim = (c, fact, v, p) => {
+  const k = `${c} ${fact}`
+  if (!claimed.has(k)) claimed.set(k, new Map())
+  if (!claimed.get(k).has(v)) claimed.get(k).set(v, new Set())
+  claimed.get(k).get(v).add(p)
+}
+const itemised = new Map()  // the /case-studies/ ledger: client -> engineers placed
+for (const [p, t] of claimCorpus) {
+  for (const m of t.matchAll(HEADCOUNT)) claim(m[2], 'engineers placed', +m[1], p)
+  // The ledger card: "<client> <sector> Role placed N × <role> … Time to signature <dur>".
+  // Time-to-signature is read from the SAME match as the count, never by proximity —
+  // /case-studies/ renders every record twice (table + cards) and the nearest client
+  // name to a lone "Time to signature" cell is frequently the wrong one.
+  for (const m of t.matchAll(/Role placed\s+(\d+)\s*×(?:[^.!?]{0,120}?Time to signature\s+([A-Za-z\d]+)\s+(day|week|month)s?\b)?/g)) {
+    const c = nearestClient(t, m.index)
+    if (!c) continue
+    claim(c, 'engineers placed', +m[1], p)
+    if (m[2]) claim(c, 'time to signature (days)', toDays(m[2], m[3]), p)
+    if (p === '/case-studies/') itemised.set(c, +m[1])
+  }
+}
+for (const [k, vals] of [...claimed].sort(([a], [b]) => (a < b ? -1 : 1)))
+  if (vals.size > 1)
+    fail('out/', `claim: ${k}`, 'stated two different ways in one build — ' +
+      [...vals].sort(([a], [b]) => a - b).map(([v, w]) => `${v} on ${[...w].sort().join(', ')}`).join('  vs  ') +
+      '. One client, one number: pick the true value and propagate it (06-claims row 15).')
+
+// The headline "nine engineers across five clients" must equal the itemised record
+// it summarises. It rendered on five pages directly above a table that summed to eight.
+const total = [...itemised.values()].reduce((a, b) => a + b, 0)
+const conflicted = [...claimed].some(([k, v]) => k.endsWith('engineers placed') && v.size > 1)
+if (clientNames.size && !itemised.size)
+  fail('out/case-studies/', 'ledger', 'named clients exist but /case-studies/ yielded no itemised "Role placed N ×" counts — the headline total cannot be checked against anything. The ledger markup changed: re-point this guard, do not drop it.')
+if (total && !conflicted) {
+  const HEADLINE = /\b(one|two|three|four|five|six|seven|eight|nine|ten|\d+)\s+engineers?\b[^.!?]{0,120}?\b(one|two|three|four|five|\d+)\s+(?:clients?|companies)\b|\b(one|two|three|four|five|\d+)\s+(?:clients?|companies)\b[^.!?]{0,120}?\b(one|two|three|four|five|six|seven|eight|nine|ten|\d+)\s+engineers?\b/gi
+  for (const [p, t] of claimCorpus) for (const m of t.matchAll(HEADLINE)) {
+    const eng = num(m[1] ?? m[4]), cli = num(m[2] ?? m[3])
+    if (eng !== total || cli !== itemised.size)
+      fail(p, 'headline claim', `"${m[0].trim()}" does not match the itemised ledger on /case-studies/, which totals ${total} engineer(s) across ${itemised.size} client(s) (${[...itemised].map(([c, n]) => `${c} ${n}`).join(', ')})`)
+  }
+}
+
+// A count can agree with the ledger and still be a lie about SCOPE, and the check
+// above cannot see it: the arithmetic is right and the falsehood is one adjective.
+// /hire-software-developers-eastern-europe/ shipped "Five clients, eight engineers,
+// and that is the entire record" directly under a table whose rows sum to exactly
+// that — while /case-studies/ lists ten engagements, two of them non-placements, so
+// eight placement clients. A buyer finds the ninth engineer at the sixth client two
+// clicks away, and the sentence's own rhetoric ("anyone who checks will notice")
+// makes it worse. The other ten pages scope the same number correctly as "our five
+// most recent placements"; only this one asserted totality.
+//
+// Scoped to a SINGLE SENTENCE, and to HTML routes only. A page-wide scan fires on
+// any page that happens to carry both a headcount and the words "in total"; the
+// chunks are excluded because splitting minified JS on sentence punctuation is
+// noise. The remedy is never to delete the transparency — scope the denominator.
+const TOTALITY = /\b(the (?:entire|whole|complete) record|in total|in all|altogether|that is all there is)\b/i
+const SCOPED_COUNT = /\b(?:one|two|three|four|five|six|seven|eight|nine|ten|\d+)\s+(?:engineers?|clients?|companies|placements?)\b/i
+for (const [p, t] of claimCorpus) {
+  if (p.startsWith('(js')) continue
+  for (const s of t.split(/(?<=[.!?])\s+/)) {
+    const m = s.match(TOTALITY)
+    // Excerpt centred on the phrase, not on the sentence start: a table flattens
+    // into one very long "sentence" and the first 170 chars are column headers.
+    if (m && SCOPED_COUNT.test(s))
+      fail(p, 'totality claim', `"${m[0]}" says the count beside it is the COMPLETE record — "…${s.slice(Math.max(0, m.index - 110), m.index + m[0].length + 60).trim()}…". /case-studies/ lists more placement engagements than any one page itemises, so an unscoped total invites the reader to find what it left out. Scope it the way the other pages do ("our five most recent placements"), or restate the denominator to match /case-studies/. Keep the transparency sentence either way.`)
+  }
+}
+
+// A testimonial is the one place a number escapes the ledger's shape entirely, and
+// the carousel keeps two of the three out of the HTML altogether. Match the data
+// object, not the markup: {quote:"…",author:"…",title:"CEO & Founder, <client>"}.
+let quotes = 0
+for (const [p, t] of claimCorpus) {
+  if (!p.startsWith('(js')) continue
+  for (const m of t.matchAll(/quote:"((?:[^"\\]|\\.)*)"[^}]{0,300}?title:"((?:[^"\\]|\\.)*)"/g)) {
+    quotes++
+    const c = [...clientNames].find(x => m[2].includes(x))
+    const ledger = c && claimed.get(`${c} time to signature (days)`)
+    if (!ledger) continue
+    for (const d of m[1].matchAll(/\b(a|one|two|three|four|five|six|seven|eight|nine|ten|\d+)\s+(day|week|month)s?\b/gi)) {
+      const said = toDays(d[1].toLowerCase() === 'a' ? 1 : d[1], d[2])
+      if (!ledger.has(said))
+        fail(p, `testimonial: ${c}`, `quote says "${d[0]}" (${said}d) but the ${c} ledger says ${[...ledger.keys()].join('/')}d — "${m[1].slice(0, 80)}…". The quote is a client's words: reconcile it with the client, do not silently reword it.`)
+    }
+  }
+}
+if (!quotes) fail('out/_next', 'testimonials', 'no testimonial {quote,author,title} objects found in the chunks — the data shape changed and this guard is now blind. Re-point it, do not delete it.')
 
 /* 4. optional live check ------------------------------------------------- */
 if (BASE) {

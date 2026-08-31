@@ -46,6 +46,7 @@ export default function ArticleCard({
   return (
     <Link
       href={href}
+      prefetch={false}
       className="group block rounded-2xl focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
     >
       <Card className={cn('flex h-full flex-col overflow-hidden p-4 sm:p-6', className)}>

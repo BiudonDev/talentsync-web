@@ -300,8 +300,8 @@ export const hourlyEngineeringTalent: ServicePage = {
   evidence: [
     {
       client: 'Innovatec',
-      role: 'PLC and automation specialists',
-      count: 2,
+      role: 'PLC specialist, industrial control systems',
+      count: 1,
       outcome: 'A specialist industrial search, filled in two weeks.',
     },
     {

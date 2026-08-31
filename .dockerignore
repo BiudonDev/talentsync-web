@@ -7,6 +7,7 @@ out
 .gitignore
 .github
 .claude
+.serena
 
 # 1.1 MB of specification. It is not read at build time and must not sit in a
 # production image.

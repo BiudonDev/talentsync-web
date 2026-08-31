@@ -37,6 +37,20 @@ type PageMetaInput = {
 const NOINDEX = { index: false, follow: true } as const
 
 /**
+ * The indexable default. It lives HERE, not in the root layout, for exactly the
+ * reason `alternates` does: a layout-level `robots` is inherited by every
+ * segment that does not override it, and `not-found.tsx` is neither a layout nor
+ * a page module, so it cannot override anything. The 404 shell was inheriting
+ * `index, follow` and shipping it beside the `noindex` Next injects for `/404`.
+ * Every real route calls `pageMeta()`, so nothing is lost by moving it.
+ */
+const INDEXABLE = {
+  index: true,
+  follow: true,
+  googleBot: { index: true, follow: true, 'max-image-preview': 'large', 'max-snippet': -1 },
+} as const
+
+/**
  * The root OG card, named explicitly on every page.
  *
  * `src/app/opengraph-image.png` is Next's file convention, and the root layout
@@ -59,7 +73,7 @@ const DEFAULT_OG_IMAGE = {
 /**
  * Build a COMPLETE Metadata object.
  *
- * Two verified Next.js behaviours are baked in here and must not be undone:
+ * Three verified Next.js behaviours are baked in here and must not be undone:
  *
  * 1. A child segment's `openGraph` REPLACES the parent's — it does not merge.
  *    So every field the root layout declares (type, siteName, locale) is
@@ -70,6 +84,10 @@ const DEFAULT_OG_IMAGE = {
  *    route missing pageMeta() would silently canonicalise itself to the
  *    homepage with no build error. Canonical is set here and only here.
  *
+ * 3. `robots` is set here for the same reason as `alternates`: `not-found.tsx`
+ *    cannot export metadata, so anything the layout declares lands on the 404
+ *    shell with no way to override it.
+ *
  * noindex is derived from the route registry as well as being available
  * explicitly via `noindexMeta`, so a legal or draft route cannot leak into the
  * index just because someone forgot which helper to call.
@@ -78,7 +96,7 @@ export function pageMeta({ path, title, description, image, type = 'website' }: 
   const url = absUrl(path)
   const registered = allRoutes.find((r) => r.path === href(path))
   const blocked = registered ? !registered.index || registered.draft === true : false
-  // `title.absolute` bypasses the layout's '%s | TalentSync' template, so a spec
+  // `title.absolute` is a hard override — no template can wrap it, so a spec
   // title that already ends in the brand cannot come out doubled.
   const full = /talentsync/i.test(title) ? title : `${title} | ${SITE_NAME}`
   const images = { images: [image ?? DEFAULT_OG_IMAGE] }
@@ -88,7 +106,7 @@ export function pageMeta({ path, title, description, image, type = 'website' }: 
     title: { absolute: full },
     description,
     alternates: { canonical: url },
-    ...(blocked ? { robots: NOINDEX } : {}),
+    robots: blocked ? NOINDEX : INDEXABLE,
     // `type` is written out per branch rather than passed as a variable: Next's
     // OpenGraph type is a discriminated union and a union-typed discriminant
     // (`'website' | 'article'`) narrows to no member of it.

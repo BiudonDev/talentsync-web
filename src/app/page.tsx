@@ -6,8 +6,10 @@ import {
   Careers,
   CaseStudies,
   Contact,
+  EngagementModels,
   FAQ,
   Hero,
+  NotOutsourcing,
   Process,
   Services,
   Testimonials,
@@ -23,10 +25,11 @@ import { pageMeta } from '@/lib/seo'
  * its own. Every section already declares its own directive where it needs one,
  * so removing it here costs nothing.
  *
- * Title is 66 characters, over the 60 the SEO budget and `scripts/validate-
- * pages.mjs` both want. It is client-fixed (02-page-content.md §1) and shipping
- * as instructed; `pageMeta` emits it through `title.absolute` so the layout's
- * `%s | TalentSync` template cannot double the brand onto the end.
+ * Title is 66 characters, over the 60 the SEO budget originally set. It is
+ * client-fixed (02-page-content.md §1) and the client wins, so the guard's
+ * ceiling moves to 70 rather than the title being trimmed. `pageMeta` emits it
+ * through `title.absolute`, which no template can wrap, so the brand cannot be
+ * doubled onto the end.
  *
  * No `PageShell`: `/` is the one route with a full-bleed hero, no breadcrumb
  * trail and no `BreadcrumbList` (D6), so it composes Navbar/main/Footer itself
@@ -62,6 +65,13 @@ export default function Home() {
         <MotionRoot>
           <Hero />
           <About />
+          {/* §1's outline, rows 2 and 3. `/` was the shortest commercial page on
+              the site and the only one of the five that must carry BLOCK B and
+              BLOCK C paraphrasing them instead — it compressed both models into
+              a single process step. These two sections restore the canonical
+              blocks and give BLOCK D the H2 the outline gives it. */}
+          <EngagementModels />
+          <NotOutsourcing />
           <Services />
           <Process />
           <CaseStudies />

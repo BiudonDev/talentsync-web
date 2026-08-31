@@ -140,11 +140,11 @@ export default function ContactPage() {
             <p className={`mt-2 ${BODY}`}>
               Access, correction, deletion, objection: within one month, free of charge, as set out
               in the{' '}
-              <Link href="/privacy/" className={INLINE_LINK}>
+              <Link prefetch={false} href="/privacy/" className={INLINE_LINK}>
                 privacy policy
               </Link>
               . If we sourced you from a public profile, the{' '}
-              <Link href="/candidate-privacy/" className={INLINE_LINK}>
+              <Link prefetch={false} href="/candidate-privacy/" className={INLINE_LINK}>
                 candidate privacy notice
               </Link>{' '}
               is the shorter route.
@@ -155,7 +155,7 @@ export default function ContactPage() {
             <p className={`mt-2 ${BODY}`}>
               Engineers: email us with the stack you work in and what you are looking for. Roles at
               TalentSync itself are on the{' '}
-              <Link href="/careers/" className={INLINE_LINK}>
+              <Link prefetch={false} href="/careers/" className={INLINE_LINK}>
                 careers page
               </Link>
               .
@@ -195,7 +195,7 @@ export default function ContactPage() {
         <p className="mt-6 max-w-2xl text-sm leading-relaxed text-text-secondary">
           We work with clients across the EU, the UK and the US, in English, Romanian and Russian.
           Company registration details are on the{' '}
-          <Link href="/imprint/" className={INLINE_LINK}>
+          <Link prefetch={false} href="/imprint/" className={INLINE_LINK}>
             imprint
           </Link>
           .

@@ -304,7 +304,7 @@ export const hireFullStackDevelopers: ServicePage = {
     {
       question: 'How long does a multi-engineer brief take to fill?',
       answer:
-        'Across our five most recent placements — nine engineers for SocialBee, Silvertalent, Qualiwise, Foodamigos and Innovatec — the engineer signed within one to two weeks of the brief. Roles with a narrow stack, a security-clearance requirement or a hard on-site element take longer, and we say so at the brief.',
+        'Across our five most recent placements — eight engineers for SocialBee, Silvertalent, Qualiwise, Foodamigos and Innovatec — the engineer signed within one to two weeks of the brief. Roles with a narrow stack, a security-clearance requirement or a hard on-site element take longer, and we say so at the brief.',
     },
   ],
 

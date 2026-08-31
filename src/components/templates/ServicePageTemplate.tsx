@@ -229,7 +229,7 @@ export default function ServicePageTemplate({ page }: ServicePageTemplateProps) 
                 <p className="mt-1 font-semibold text-text-primary">{item.role}</p>
                 <p className={cn('mt-3', BODY)}>{item.outcome}</p>
                 {item.href && (
-                  <Link href={href(item.href)} className={cn(TEXT_LINK, 'mt-4')}>
+                  <Link href={href(item.href)} prefetch={false} className={cn(TEXT_LINK, 'mt-4')}>
                     Read the {item.client} case study
                   </Link>
                 )}
@@ -261,7 +261,7 @@ export default function ServicePageTemplate({ page }: ServicePageTemplateProps) 
         <ul className="mt-8 grid grid-cols-1 gap-2 sm:grid-cols-2">
           {page.internalLinks.map((link) => (
             <li key={link.href}>
-              <Link href={href(link.href)} className={cn(TEXT_LINK, 'w-full')}>
+              <Link href={href(link.href)} prefetch={false} className={cn(TEXT_LINK, 'w-full')}>
                 {link.anchor}
               </Link>
             </li>
@@ -380,7 +380,7 @@ function Overview({ page }: { page: ServicePage }) {
                 <Card key={model.title}>
                   <h3 className="text-xl sm:text-2xl font-bold">{model.title}</h3>
                   <p className={cn('mt-3', BODY)}>{model.body}</p>
-                  <Link href={href(model.href)} className={cn(TEXT_LINK, 'mt-3')}>
+                  <Link href={href(model.href)} prefetch={false} className={cn(TEXT_LINK, 'mt-3')}>
                     {model.linkAnchor}
                   </Link>
                 </Card>

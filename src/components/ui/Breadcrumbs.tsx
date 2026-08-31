@@ -39,6 +39,7 @@ export default function Breadcrumbs({ items, className }: BreadcrumbsProps) {
               {c.href && !last ? (
                 <Link
                   href={c.href}
+                  prefetch={false}
                   className="inline-flex min-h-11 items-center rounded px-1 hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
                 >
                   {c.label}

@@ -289,7 +289,7 @@ export const techRecruitmentEasternEurope: ServicePage = {
         {
           kind: 'prose',
           body: [
-            'Our own dataset is small and we will not dress it up. Nine engineers have gone to five companies — SocialBee, Silvertalent, Qualiwise, Foodamigos and Innovatec — with each one signing one to two weeks after the role was briefed in writing.',
+            'Our own dataset is small and we will not dress it up. Across our five most recent placements, eight engineers have gone to five companies — SocialBee, Silvertalent, Qualiwise, Foodamigos and Innovatec — with each one signing one to two weeks after the role was briefed in writing.',
             'That is a handful of common stacks, and it is not a forecast for your role. A narrow stack, a clearance requirement or a genuine on-site element pushes any search past that range, and the moment to hear so is the brief rather than the third week of silence.',
             'Regional norms move the start date more than the search does. Notice runs from immediate for an established contractor to three months for an employed engineer in Poland or Romania, so two candidates who accept on the same day can begin three months apart.',
           ],
@@ -375,8 +375,8 @@ export const techRecruitmentEasternEurope: ServicePage = {
     },
     {
       client: 'Innovatec',
-      role: 'PLC and automation specialists',
-      count: 2,
+      role: 'PLC specialist, industrial control systems',
+      count: 1,
       outcome: 'An industrial-automation search, closed regionally in a fortnight.',
     },
   ],

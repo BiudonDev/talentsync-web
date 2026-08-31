@@ -31,11 +31,20 @@
  * describing the same two products in nine slightly different ways is how a
  * cluster cannibalises itself. A page picks keys; it cannot reword the block.
  *
- * Part 0's rule on WHERE they appear: `/`, `/tech-recruitment-eastern-europe/`,
- * `/hire-software-developers-eastern-europe/`, `/b2b-engineer-recruitment/` and
- * `/hourly-engineering-talent/` carry both. The six role pages carry NEITHER —
- * they set `engagementModels: []` and link out through `internalLinks` instead,
- * which bounds the duplication at five pages.
+ * WHERE they appear: `/`, `/hire-software-developers-eastern-europe/`,
+ * `/b2b-engineer-recruitment/` and `/hourly-engineering-talent/`. Every other
+ * service page carries NEITHER — it sets `engagementModels: []` and links out
+ * through `internalLinks` instead, which bounds the duplication at four pages.
+ *
+ * `/tech-recruitment-eastern-europe/` is the trap. 02-page-content.md Part 0
+ * lists it as a fifth carrier; DECISIONS.md D1.2 says the opposite — route 2 is
+ * an informational country-selection guide with NO engagement-model blocks —
+ * and DECISIONS.md wins outright over a spec document that disagrees with it.
+ * D1.2 also mounts the guard that settles it independently: routes 2 and 3 may
+ * not share one 12+-word sentence (`scripts/validate-pages.mjs`, check 3d), and
+ * route 3 carries BLOCK B and BLOCK C verbatim. Adding `['b2b','hourly']` to
+ * route 2 puts all 156 of those words on both pages and fails the build. Do not
+ * "fix" that `[]`; it is the correct value.
  */
 export const ENGAGEMENT_MODELS = {
   b2b: {

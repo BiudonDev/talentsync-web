@@ -15,6 +15,14 @@ import { companyNav, legalNav, servicesNav } from '@/data/routes'
  *
  * Stacked columns, never accordions (§4.9): an accordion means useState in
  * shared chrome on every route to solve a problem two columns already solve.
+ *
+ * `prefetch={false}` on every internal <Link> in the codebase, and this is the
+ * file that made it necessary. Next prefetches a route's whole RSC payload when
+ * the link scrolls into view, so one scroll to the bottom of `/` pulled 72
+ * payloads / 1,371,029 B on top of a 327,233 B page — 5x the 320 KB budget,
+ * with __next.terms.__PAGE__.txt alone at 238,857 B. `out/` ships 194 of these
+ * files, 4,869,827 B, 35% of the export. On a static export the payload is a
+ * flat file either way; this just fetches it on click instead of on sight.
  */
 
 const COLUMNS = [
@@ -44,7 +52,7 @@ export default function Footer() {
               <ul className="mt-4 space-y-2">
                 {col.links.map((r) => (
                   <li key={r.path}>
-                    <Link href={r.path} className={LINK}>
+                    <Link href={r.path} prefetch={false} className={LINK}>
                       {r.label}
                     </Link>
                   </li>

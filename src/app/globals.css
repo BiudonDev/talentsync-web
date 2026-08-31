@@ -59,7 +59,16 @@ details[open] > summary svg { rotate: 180deg; }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .color-ray { animation: none !important; }
-  *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+  /* The DELAY reset is not decoration. `.animate-fade-up` uses `both` fill, so a
+     staggered element sits at `from { opacity: 0 }` for the whole delay — zeroing
+     only the duration would leave the hero lede blank for 100ms and the CTA row
+     for 200ms for exactly the visitors Rule 7 exists to protect. */
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-delay: -.01ms !important;
+    transition-duration: .01ms !important;
+    transition-delay: 0s !important;
+  }
 }
 
 /* Component Classes */
@@ -207,16 +216,32 @@ details[open] > summary svg { rotate: 180deg; }
   background-image: radial-gradient(60rem 20rem at 50% -10%, color-mix(in srgb, var(--color-primary) 12%, transparent), transparent 70%);
 }
 
-/* Testimonial crossfade. Replaces framer-motion's AnimatePresence: the quote
-   block is keyed by index, so React remounts it and the animation replays.
-   The prefers-reduced-motion block above collapses it to .01ms. */
+/* The site's one entrance animation. Two jobs:
+   1. Testimonial crossfade — the quote block is keyed by index, so React
+      remounts it and the animation replays (replaces AnimatePresence).
+   2. The homepage hero and About reveals. framer-motion's `initial` serialised
+      into out/index.html as `style="opacity:0;transform:…"` on 8 elements, so a
+      no-JS reader or a non-executing crawler got an invisible h1. This runs the
+      other way round: the SSR markup carries no inline opacity and CSS animates
+      AWAY from 0, so the visible state is what ships.
+   The prefers-reduced-motion block above collapses it to .01ms.
+
+   Longhand, NOT the `animation:` shorthand. This rule is unlayered, so it beats
+   anything Tailwind emits into @layer utilities, and the shorthand resets
+   `animation-delay` to 0s — which would silently swallow any stagger set from a
+   utility class. The stagger the hero and the stat tiles use is an inline
+   `style={{ animationDelay }}`, which wins either way, but longhand keeps the
+   class composable with a delay from any source. */
 @keyframes fade-up {
   from { opacity: 0; transform: translateY(1rem); }
   to { opacity: 1; transform: none; }
 }
 
 .animate-fade-up {
-  animation: fade-up 0.4s ease-out both;
+  animation-name: fade-up;
+  animation-duration: 0.4s;
+  animation-timing-function: ease-out;
+  animation-fill-mode: both;
 }
 
 /* Scrollbar - Dark theme only */

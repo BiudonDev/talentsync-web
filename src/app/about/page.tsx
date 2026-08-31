@@ -49,6 +49,19 @@ const LEDE = 'text-lg sm:text-xl leading-relaxed text-text-secondary text-pretty
 const BODY = 'text-base sm:text-lg leading-relaxed text-text-secondary text-pretty'
 const FOCUS = 'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary'
 
+/**
+ * Every `<Link>` on this route — and on every other route file under `src/app` —
+ * carries `prefetch={false}`. Next prefetches the full RSC payload of any link
+ * that enters the viewport, and under `output: 'export'` those payloads are
+ * static `__next.*.__PAGE__.txt` files: 4.9 MB of them, 35% of the whole export.
+ * The eight distinct routes linked from this page alone sum to 593,352 B —
+ * /terms/ is 238,857 B of that — pulled by a scroll to the footer, against a
+ * ≤ 320 KB total-page-weight budget. `prefetch={false}` disables viewport AND
+ * hover prefetch in Next 16, so the payload is fetched on click instead; static
+ * navigation is unaffected. The shared chrome (Navbar, Footer, Button, cards)
+ * is the larger half of the same problem and is fixed in its own components.
+ */
+
 /** Mid-sentence link. WCAG 2.2 exempts text inline in a sentence from 2.5.8, so
  *  this one grows no hit box — a `min-h-11` inline-flex mid-paragraph breaks the
  *  line box. Standalone links below use the 44px pattern. */
@@ -130,7 +143,7 @@ export default function AboutPage() {
     <PageShell crumbs={[{ label: 'About' }]}>
       <JsonLd data={graphLd(aboutPageLd, personLd)} />
 
-      {/* 1 — H1 + BLOCK A verbatim. Interior hero, not min-h-screen (§4.3): the
+      {/* 1 — H1 + BLOCK A verbatim. Interior hero, not full-viewport (§4.3): the
           answer paragraph has to be above the fold on a 360px phone. */}
       <SectionWrapper density="tight">
         <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-balance">
@@ -246,7 +259,7 @@ export default function AboutPage() {
             adverts somewhere else. When a candidate says they can start in two weeks, we usually
             know their employer well enough to say whether that is true. Most placements are
             Moldovan; when a stack or a seniority band is thin here we source across{' '}
-            <Link href="/tech-recruitment-eastern-europe/" className={INLINE}>
+            <Link prefetch={false} href="/tech-recruitment-eastern-europe/" className={INLINE}>
               the Eastern European market
             </Link>{' '}
             and say which country the answer came from.
@@ -257,7 +270,7 @@ export default function AboutPage() {
             turnover, currently 7%, which keeps a Moldovan contractor&apos;s own tax position stable
             across the life of an engagement. The mechanics, the salary bands and the risks worth
             knowing are on the page about{' '}
-            <Link href="/technical-recruitment-moldova/" className={INLINE}>
+            <Link prefetch={false} href="/technical-recruitment-moldova/" className={INLINE}>
               recruiting in Moldova
             </Link>
             .
@@ -275,7 +288,7 @@ export default function AboutPage() {
           cost us work, and the reason clients can believe the rest of what we tell them. Where we
           have something specific to say about contracts, tax or the regional market we write it
           down instead:{' '}
-          <Link href="/insights/" className={INLINE}>
+          <Link prefetch={false} href="/insights/" className={INLINE}>
             what we publish
           </Link>{' '}
           is there to be checked, quoted and argued with.
@@ -306,7 +319,7 @@ export default function AboutPage() {
               <h3 className="text-xl sm:text-2xl font-bold">{m.title}</h3>
               <p className={cn('mt-3 grow', BODY)}>{m.body}</p>
               <p className="mt-4">
-                <Link href={m.href} className={LINK}>
+                <Link prefetch={false} href={m.href} className={LINK}>
                   {m.linkAnchor}
                 </Link>
               </p>
@@ -324,7 +337,7 @@ export default function AboutPage() {
           <p className={BODY}>
             TalentSync has staffed engineering roles for ten named companies, from a senior backend
             Python developer at Qualiwise to a three-engineer full-stack team at Silvertalent.
-            Across our five most recent placements — nine engineers for SocialBee, Silvertalent,
+            Across our five most recent placements — eight engineers for SocialBee, Silvertalent,
             Qualiwise, Foodamigos and Innovatec — the engineer signed within one to two weeks of the
             brief. Roles with a narrow stack, a security-clearance requirement or a hard on-site
             element take longer, and we tell you that at the brief rather than at week three.
@@ -332,7 +345,7 @@ export default function AboutPage() {
           <p className={BODY}>
             Each engagement is listed on its own — the client, the role, the stack, the time from
             brief to signature and what the engineer worked on — in{' '}
-            <Link href="/case-studies/" className={INLINE}>
+            <Link prefetch={false} href="/case-studies/" className={INLINE}>
               the full placement record
             </Link>
             .
@@ -347,11 +360,11 @@ export default function AboutPage() {
         </h2>
         <p className={cn('mt-6 max-w-3xl', BODY)}>
           These are the registry facts for the entity you would be contracting with. They match the{' '}
-          <Link href="/imprint/" className={INLINE}>
+          <Link prefetch={false} href="/imprint/" className={INLINE}>
             imprint
           </Link>
           , the{' '}
-          <Link href="/terms/" className={INLINE}>
+          <Link prefetch={false} href="/terms/" className={INLINE}>
             terms
           </Link>{' '}
           and the organisation data this site publishes to search engines — one address, one
@@ -382,13 +395,13 @@ export default function AboutPage() {
                 <a href={applyHref(role)} className={LINK}>
                   Apply by email
                 </a>
-                <Link href={rolePath(role)} className={LINK}>
+                <Link prefetch={false} href={rolePath(role)} className={LINK}>
                   Full role description
                 </Link>
               </p>
               <p className="mt-2 text-sm leading-relaxed text-text-secondary">
                 By emailing your CV you accept our{' '}
-                <Link href="/candidate-privacy/" className={INLINE}>
+                <Link prefetch={false} href="/candidate-privacy/" className={INLINE}>
                   candidate privacy notice
                 </Link>
                 , which sets out what we keep, why, and for how long.
@@ -397,7 +410,7 @@ export default function AboutPage() {
           ))}
         </div>
         <p className="mt-8">
-          <Link href="/careers/" className={LINK}>
+          <Link prefetch={false} href="/careers/" className={LINK}>
             All open roles
           </Link>
         </p>

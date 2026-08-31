@@ -58,7 +58,7 @@ export default function Button({
 
   if (href) {
     return (
-      <Link href={href} className={cls} {...linkDisabled} {...rest}>
+      <Link href={href} prefetch={false} className={cls} {...linkDisabled} {...rest}>
         {children}
       </Link>
     )

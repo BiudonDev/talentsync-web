@@ -30,16 +30,17 @@ export const imprint: LegalDoc = {
     { k: 'h', level: 2, id: 'provider', t: 'Provider' },
     {
       k: 'p',
-      t: 'This website is operated by the company identified below. Trading name: **TalentSync**.',
+      t: 'This website is operated by the company identified below. **TalentSync** is a trading name of S.R.L. “UNQENERGY”; there is no company registered under the name TalentSync, so procurement and invoicing use the registered name and IDNO in the table.',
     },
     {
       k: 'table',
       head: ['', ''],
       rows: [
-        ['**Registered name**', '{{LEGAL_ENTITY_NAME}}'],
-        ['**Legal form**', '{{LEGAL_FORM}}'],
+        ['**Registered name**', 'S.R.L. “UNQENERGY”'],
+        ['**Trading name**', 'TalentSync'],
+        ['**Legal form**', 'societate cu răspundere limitată (SRL)'],
         ['**Country of incorporation**', 'Republic of Moldova'],
-        ['**State registration number (IDNO)**', '{{IDNO}}'],
+        ['**State registration number (IDNO)**', '1020600034949'],
         ['**Registered office**', '{{REGISTERED_ADDRESS}}, Chișinău, Republic of Moldova'],
         ['**VAT / fiscal status**', '{{VAT_STATUS}}'],
         [

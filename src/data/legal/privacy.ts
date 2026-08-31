@@ -24,6 +24,9 @@ import type { LegalDoc } from './types'
  *    exist — is gone; D1 row 23 builds it).
  *  · Annex A is not duplicated here. It is its own route, /candidate-privacy/,
  *    per D1 row 21; two copies of a 1,500-word Art 14 notice is a drift trap.
+ *    Note that the "reproduced here so you can check it" promise is made ON
+ *    /candidate-privacy/ and is kept there — this annex says the opposite in as
+ *    many words. See the comment at the annex block before changing that.
  *
  * Surviving {{TOKEN}}s are business facts no agent may invent (D8). The A4 guard
  * fails `npm run verify` while any remain, so none can reach production.
@@ -68,8 +71,8 @@ export const privacy: LegalDoc = {
       k: 'table',
       head: ['', ''],
       rows: [
-        ['**Legal name**', '{{LEGAL_ENTITY_NAME}} (trading as “TalentSync”)'],
-        ['**Company number (IDNO)**', '{{IDNO}}'],
+        ['**Legal name**', 'S.R.L. “UNQENERGY”, trading as “TalentSync”'],
+        ['**Company number (IDNO)**', '1020600034949'],
         ['**Registered address**', '{{REGISTERED_ADDRESS}}, Chișinău, Republic of Moldova'],
         ['**Website**', 'https://talentsync.eu'],
         ['**Email**', '[victor@talentsync.eu](mailto:victor@talentsync.eu)'],
@@ -80,7 +83,7 @@ export const privacy: LegalDoc = {
     },
     {
       k: 'p',
-      t: '“TalentSync”, “we”, “us” and “our” mean that company. “You” means whoever is reading — a website visitor, a client contact, or an engineer.',
+      t: '**TalentSync is a trading name, not the registered entity.** The controller is S.R.L. “UNQENERGY” (IDNO 1020600034949); “TalentSync”, “we”, “us” and “our” mean that company throughout this policy. “You” means whoever is reading — a website visitor, a client contact, or an engineer.',
     },
 
     { k: 'h', level: 3, id: 's1-2', t: '1.2 Our privacy contact' },
@@ -1197,6 +1200,16 @@ export const privacy: LegalDoc = {
       k: 'p',
       t: 'It is published in full, word for word, as its own page: **[talentsync.eu/candidate-privacy/](/candidate-privacy/)**. That page also carries the short version we use where a channel cannot take the full text, and the internal rules we hold ourselves to when we use it. It lives at its own URL so that it can be linked from an outreach email, read on its own, and checked against what we actually sent you.',
     },
+    /**
+     * Reproducing the notice HERE as well needs one shared export, imported from
+     * `./candidate-privacy` — never a hand-copy. That import is blocked today:
+     * `scripts/check-legal-fidelity.mjs` loads each of these five files straight
+     * into Node with type stripping, and Node cannot resolve an extensionless
+     * relative VALUE import (`import type` is erased, so the existing `./types`
+     * import is fine). Adding `.ts` to the specifier needs
+     * `allowImportingTsExtensions` in tsconfig.json. Until one of those two is
+     * changed, the annex points instead of reproducing, and says so plainly.
+     */
     {
       k: 'p',
       t: 'It is not reproduced here as well. One notice, one canonical text, one place to change it.',

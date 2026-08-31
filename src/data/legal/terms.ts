@@ -86,7 +86,7 @@ export const terms: LegalDoc = {
     { k: 'h', level: 2, id: 'provider', t: 'Provider and contact' },
     {
       k: 'p',
-      t: 'These terms are issued by **{{LEGAL_ENTITY_NAME}}**, a {{LEGAL_FORM}} incorporated in the Republic of Moldova, registration number (IDNO) {{IDNO}}, registered office {{REGISTERED_ADDRESS}}, Chișinău, Republic of Moldova. VAT / fiscal status: {{VAT_STATUS}}. Employment-placement licence status: {{PLACEMENT_LICENCE_STATUS}}. Trading as **TalentSync**.',
+      t: 'These terms are issued by **S.R.L. “UNQENERGY”** (IDNO 1020600034949), trading as **“TalentSync”**, a societate cu răspundere limitată (SRL) incorporated in the Republic of Moldova, registered office {{REGISTERED_ADDRESS}}, Chișinău, Republic of Moldova. VAT / fiscal status: {{VAT_STATUS}}. Employment-placement licence status: {{PLACEMENT_LICENCE_STATUS}}. TalentSync is a trading name only; the contracting party is the registered company named here.',
     },
     {
       k: 'p',

@@ -2,18 +2,26 @@
 
 Every `{{TOKEN}}` in the legal drafts, in one table, with the draft's own recommended
 default already filled in. **You are not being asked 96 questions.** You are being asked
-**thirteen**. The rest have a defensible default that ships today and can be changed
+**fourteen**. The rest have a defensible default that ships today and can be changed
 later in a one-line edit.
 
-> **Updated after waves B and C.** Wave B landed the legal pages, wave C landed the
-> analytics, the founder block and the service copy. Three things changed: a handful of
-> new tokens now exist in `src/` that were not in the original 96 (§1.9), one token that
-> was a *nice to have* is now a **hard deploy blocker** (§2 row 4), and the
-> `npm run smoke` path has been run against a real image for the first time (§4).
+> **Updated after wave D.** Three of the thirteen are **answered** — the Moldovan state
+> registry gave us the registered name, the legal form and the IDNO (§1.1). That resolves
+> `{{LEGAL_ENTITY_NAME}}`, `{{LEGAL_FORM}}` and `{{IDNO}}` on six pages. It also surfaced
+> something the drafts did not anticipate: **the registered company is not called
+> TalentSync.** Read §1.1 before writing any legal copy. Four questions replace the three
+> that closed, so the list is fourteen, not thirteen.
+>
+> Wave B landed the legal pages; wave C landed the analytics, the founder block and the
+> service copy; wave D fixed what verification found. `npm run verify` now prints a full
+> `{{TOKEN}}` ledger — every distinct placeholder in `out/` with every route it renders on —
+> and **fails if any token in the build has no row in this file**. That check exists because
+> `{{VICTOR_FULL_NAME}}` reached four `Article` author bylines in structured data without a
+> single line here, so the one person who could answer it was never going to be asked.
 
 **How to use this file**
 
-1. Answer the thirteen in [§2](#2-answer-these-13-to-unblock-80-of-the-work). That is the
+1. Answer the fourteen in [§2](#2-answer-these-14-to-unblock-80-of-the-work). That is the
    whole ask for launch.
 2. Everything in [§3](#3-before-the-first-client-contract) is deferred to a named
    milestone. Do not read it this week.
@@ -33,16 +41,43 @@ recommendation is taken automatically, Victor only needs to override it.
 
 ### 1.1 Entity identity — shared by /terms/, /privacy/, /cookies/ and /imprint/
 
-These seven are why the thirteen-question list exists. One registry extract answers the
-first four, and they unblock five pages at once.
+**Three of these are now answered, from the official state registry
+([data2b.md, IDNO 1020600034949](https://data2b.md/en/companies/1020600034949/srl-unqenergy)).**
+
+| Resolved | Value |
+|---|---|
+| `{{LEGAL_ENTITY_NAME}}` | `S.R.L. "UNQENERGY"` |
+| `{{LEGAL_FORM}}` | `SRL` (*societate cu răspundere limitată*) |
+| `{{IDNO}}` | `1020600034949` |
+
+> **The registered company is not called TalentSync.**
+>
+> **TalentSync is a trading name. The legal person is `S.R.L. "UNQENERGY"`.** Every legal
+> document must say so in the same breath, in this exact shape:
+>
+> > **S.R.L. "UNQENERGY" (IDNO 1020600034949), trading as "TalentSync"**
+>
+> That form is binding on the privacy controller block, the terms' party definition and the
+> imprint. It is not pedantry: an EU client's procurement team receives a proposal from
+> "TalentSync", an invoice from "UNQENERGY" and a contract naming a third string, and the
+> engagement stops at supplier onboarding while somebody proves the three are one company.
+> A single unexplained mismatch is enough to trigger it. Stating it plainly once, on every
+> legal page, costs nothing and closes the question before it is asked.
+>
+> That is why §2 row 4 asks Victor to **confirm UNQENERGY is the entity that will actually
+> sign client contracts and issue invoices.** The registry proves a company exists with that
+> name and number. It does not prove it is the contracting party, and no agent may assume it.
+
+The registry page gives **nothing else** — no registered address, no director, no VAT
+status, no share capital, no NACE codes. Those stay open below, and nobody invents them.
 
 | Token | What it is | Recommended default | Blocks | Owner |
 |---|---|---|---|---|
-| `{{LEGAL_ENTITY_NAME}}` | The company's exact registered name, as printed on the state registration extract. A trading name is not enough. | — (no default possible) | /terms/, /privacy/, /cookies/, /imprint/, `Organization` JSON-LD | **V** |
-| `{{LEGAL_FORM}}` | The legal form of the company. | `societate cu răspundere limitată (SRL)` | /terms/ A1, /imprint/ | **V** |
-| `{{IDNO}}` | The 13-digit Moldovan company registration number, from the same extract. | — (no default possible) | /terms/, /privacy/, /cookies/, /imprint/ | **V** |
-| `{{REGISTERED_ADDRESS}}` | The registered street address in Chișinău exactly as the registry has it — not the working office, if they differ. | — (no default possible) | /terms/, /privacy/, /cookies/, /imprint/ | **V** |
-| `{{VAT_STATUS}}` | Whether the company is VAT-registered in Moldova, and the code if it is. | `not VAT-registered` — or the code, if there is one | /terms/ A1, /imprint/ | **V** |
+| `{{LEGAL_ENTITY_NAME}}` | ~~The company's exact registered name~~ | **RESOLVED** — `S.R.L. "UNQENERGY"`, always with `trading as "TalentSync"` | — | **done** |
+| `{{LEGAL_FORM}}` | ~~The legal form of the company~~ | **RESOLVED** — `SRL` (*societate cu răspundere limitată*) | — | **done** |
+| `{{IDNO}}` | ~~The 13-digit Moldovan company registration number~~ | **RESOLVED** — `1020600034949` | — | **done** |
+| `{{REGISTERED_ADDRESS}}` | The registered street address in Chișinău exactly as the registry extract has it — not the working office, if they differ. **The public registry listing does not show it; it is on the extract.** | — (no default possible) | /terms/, /privacy/, /cookies/, /imprint/, /about/, the footer NAP and `Organization` JSON-LD, which must match it character for character (D5) | **V** |
+| `{{VAT_STATUS}}` | Whether the company is VAT-registered in Moldova, and the code if it is. | `not VAT-registered` — or the code, if there is one. Do **not** default this silently: /terms/ A1 states it as fact, and a B2B client in the EU reads it to decide whether reverse charge applies | **V** |
 | `{{PLACEMENT_LICENCE_STATUS}}` | Whether placing Moldovan citizens with foreign employers needs a licence, and the number if so. | — blocked on the Moldovan legal opinion in §3.1 | /terms/ A1, /imprint/ | **V+MD** |
 | `{{LEGAL_CONTACT_EMAIL}}` / `{{NOTICES_EMAIL}}` | The address for legal, contractual and logo-takedown notices. | `legal@talentsync.eu`, forwarding to Victor — create the alias before publishing | /terms/ A1, D-clauses | **V** (5 min) |
 
@@ -55,7 +90,7 @@ first four, and they unblock five pages at once.
 | `{{EU_REP_NAME}}` | The GDPR Art 27 representative's name. Not optional for a recruiter — the "occasional processing" exemption does not apply. | Appoint a provider in Romania (largest candidate concentration, shared language, cheapest) | /privacy/ §1, §17, Annex A | **V** |
 | `{{EU_REP_ADDRESS}}` | Their postal address in the EU. | as above | /privacy/, Annex A | **V** |
 | `{{EU_REP_EMAIL}}` | Their contact email. | as above | /privacy/ (6 places), Annex A | **V** |
-| `{{EU_REP_MANDATE_DATE}}` | The date the Art 27 mandate was signed. New in wave B (`src/data/legal/privacy.ts`) — the policy states when the appointment took effect. | The date the mandate is signed; falls out of the §2 row 3 answer | /privacy/ §17 | **V** |
+| `{{EU_REP_MANDATE_DATE}}` | The date the Art 27 mandate was signed. New in wave B (`src/data/legal/privacy.ts`) — the policy states when the appointment took effect. | The date the mandate is signed; falls out of the §2 row 5 answer | /privacy/ §17 | **V** |
 | `{{UK_REPRESENTATIVE_BLOCK}}` | One of two paragraphs: either a UK representative's details, or a statement that none is needed. | The "no UK representative" paragraph drafted at 03 Open Q7 — valid while UK contacts are corporate clients only | /privacy/ §1 | **DEFAULT** |
 | `{{FONTS_SELF_HOSTED_DATE}}` | The date Montserrat stopped being loaded from Google's CDN. Until then every EU visitor's IP goes to Google without consent. | Ship `next/font` in the launch release, then use that date | /privacy/ §4.3 | **DEV** |
 | `{{ANALYTICS_STATUS}}` | A marker saying whether GA4 is live yet. | `live` — GA4 ships in the launch release (D2) | /privacy/ §4 | **DEFAULT (D2)** |
@@ -178,11 +213,12 @@ what a client actually negotiates, and they leak straight into every proposal.
 **New in waves B and C.** These six tokens are not part of the original 96 — they entered
 `src/` when the founder block, the entity history and the Moldova market page were written.
 They are listed here so `npm run verify` (D8) has a triage row for every token it can find,
-not just the legal ones. The first four are one answer, already asked as §2 rows 8 and 9.
+not just the legal ones. The first four are one answer, already asked as §2 rows 7 and 11.
 
 | Token | What it is | Recommended default | Blocks | Owner |
 |---|---|---|---|---|
 | `{{FOUNDER_FULL_NAME}}` | Victor's full legal name. | — (no default possible) | `src/data/about.ts`, `src/data/legal/imprint.ts`, the `Person` node, every `Article` author | **V** |
+| `{{VICTOR_FULL_NAME}}` | **The same fact as the row above, under a second spelling.** It reached the build unlisted — four `Article` author bylines in `src/data/insights/index.ts` — which is exactly the failure this file exists to prevent: a token nobody was asked about never gets answered. It is worse than a token in prose, because a brace string inside a `Person` entity is ingested by Google *as the author's name*. | — same answer as `{{FOUNDER_FULL_NAME}}`. Collapse the two spellings to one token in `src/data/insights/index.ts` so one answer resolves /about/, /imprint/, the `Person` node and all four bylines at once | four `/insights/[slug]/` bylines and their `Article` JSON-LD | **V** |
 | `{{FOUNDER_TITLE}}` | His job title, in the words he actually uses. | `Founder` if nothing better — but pick one and use it in both files | `src/data/about.ts`, `src/data/legal/imprint.ts` | **V** |
 | `{{FOUNDER_LINKEDIN_URL}}` | His personal LinkedIn profile URL — the company page is already in `siteConfig` and is not a substitute. | — the `sameAs` edge that makes the `Person` node resolvable | `src/data/about.ts` | **V** (2 min) |
 | `{{FOUNDED_YEAR}}` | Year the company started trading. | — same registry extract as §1.1 | `src/data/about.ts`, `foundingDate` in `Organization` JSON-LD | **V** |
@@ -191,26 +227,43 @@ not just the legal ones. The first four are one answer, already asked as §2 row
 
 ---
 
-## 2. Answer these 13 to unblock ~80% of the work
+## 2. Answer these 14 to unblock ~80% of the work
 
-Thirteen answers. Most are a lookup, not a decision. Nothing else on this page needs your
-attention before launch.
+Fourteen answers. Most are a lookup, not a decision. Nothing else on this page needs your
+attention before launch. Rows 1–4 are the entity block: the registry answered three of the
+old thirteen and opened four more, and they are the ones an EU client's procurement team
+checks first.
 
 | # | Question | Why it is blocking | What happens with no answer |
 |---|---|---|---|
-| **1** | **Registered name and legal form** — exactly as on the state registration extract. | Art 13/14 GDPR controller identification, Moldovan Law 284/2004 on e-commerce, and every EU procurement checklist. | /terms/, /privacy/, /cookies/, /imprint/ cannot publish. The `Organization` JSON-LD — the entity signal the whole SEO plan rests on — ships with a trading name only. |
-| **2** | **IDNO and registered address** — same extract, one photo of one document. | Same as above. The address must also match the footer NAP and the JSON-LD exactly (D5). | Four pages blocked. Schema that contradicts visible content gets ignored. |
-| **3** | **EU Art 27 representative — yes/no, plus budget approval.** Romania recommended. | Not optional for a recruiter; the "occasional processing" exemption does not apply. Typically low four figures a year. | /privacy/ and /cookies/ ship with the omission documented in writing, which is worse than not publishing. |
-| **4** | **Analytics = GA4 — confirm, and create the property.** Needed: the `G-XXXXXXXXXX` ID. | D2 already froze this. The consent banner, Consent Mode v2 defaults, /cookies/ tables and the privacy policy's §4/§13 all hang off it. | **Escalated in wave C — this now blocks the deploy, not just the copy.** The analytics code has landed, so `{{GA4_MEASUREMENT_ID}}` is a live token in `src/lib/analytics.ts` as well as /cookies/ §5. `npm run verify` exits non-zero while it survives into `out/` (D8), so **nothing ships until the property exists**. 15 minutes in the GA4 admin. |
-| **5** | **AI screening = no — confirm.** Includes no ad-hoc use of ChatGPT to rank, score or filter candidates. | D3 assumes no. If any AI ranking is used the surrounding text must be rewritten, a human reviewer with real override authority named, overrides logged, and a DPIA completed first. | Publishing "we do not" while doing it is the single cheapest way to lose an enforcement argument. |
-| **6** | **Engineer engagement status under the hourly model** — employee, contractor, or contracted direct by the client? | Decides whether TalentSync is their employer-controller, whether timesheet and billing flow is joint controllership, and whether Part C's IP chain actually holds. | /privacy/ §6 and /terms/ Part C both make claims that must match the contracts in force. |
-| **7** | **Median working days from brief to first shortlist.** | The site says "1–2 weeks". D7 requires it qualified, never bare, and 06-claims-measurement.md needs a real number behind it. | The process claim on four pages has no substantiation file. |
-| **8** | **Founded year.** | `foundingDate` in the `Organization` JSON-LD and the /about/ copy. | /about/ ships without a company history and the entity node is thinner than it needs to be. |
-| **9** | **Victor's full name, job title, LinkedIn URL, and a photo.** | Every `Article` needs a real named author; the E-E-A-T the plan is buying is attribution, and a bare first name provides none. | Wave C wrote the founder block against four tokens — `{{FOUNDER_FULL_NAME}}`, `{{FOUNDER_TITLE}}`, `{{FOUNDER_LINKEDIN_URL}}`, `{{FOUNDED_YEAR}}` (§1.9) — in `src/data/about.ts` and `src/data/legal/imprint.ts`. They are D8 deploy-gate tokens now, so /about/, /imprint/, the `Person` node and four insights bylines all block on this one answer. |
-| **10** | **Barça Mobile "1.5M downloads in first 3 months" — written source, or cut.** | D7 has already cut it for want of a public linkable source. One email from the client reinstates it. | Stays cut. The Barça case study loses its only quantified outcome. Ask it in the same email as row 11 and §3.4 — one email per client, not three. |
-| **11** | **Orange and Barça — may the site name them and show their marks?** Two parts: (a) was Orange a direct client or was NEVG the counterparty, and (b) is there written permission to display the Orange and FC Barcelona / Barça Mobile **names and logos** in a case study? | (a) decides whether the site may name Orange at all. (b) is separate and stricter: both are aggressively enforced marks, FC Barcelona licenses its brand commercially, and most enterprise MSAs carry a no-publicity clause. Permission to *have worked* with someone is not permission to *use their mark*. Clause A5.2 warrants that this consent is held. | Without (a) the Orange case study cannot ship at all. Without (b) both case studies ship **text-only** — named in prose, no logo, no wordmark styling, no favicon-scraped tile — which is the safe default and is what the pages must be built to today. A takedown after launch costs more than the email. |
-| **12** | **Placement fee percentage and minimum fee.** | The two numbers a client negotiates. They also set the Fee Confirmation template. | /terms/ Part B cannot publish, and there is no proposal template. |
-| **13** | **Homepage `<title>` — keep the 66-character version, or trim it?** You specified `IT Recruitment & Engineering Talent in Eastern Europe \| TalentSync` (66 chars). The guard ceiling is 60. | Google renders ~60 chars, so it truncates to `…in Eastern Europe \| Tale…` — **the brand is the half that gets cut**, on the one page whose whole job is the brand. `scripts/validate-pages.mjs` fails the build at >60 (`15-60` chars), so this is not a soft warning. | **Recommended: trim.** `IT Recruitment & Engineers, Eastern Europe \| TalentSync` (55) keeps every element and the brand survives. Say the word and it is a one-line edit in `src/app/page.tsx`. If you want the 66-char version regardless, that is a legitimate call — but then the 60-char ceiling in the guard has to be raised deliberately, in the same commit, with this decision cited, rather than the guard being edited around by whoever hits it next. |
+| **1** | **Registered street address** — as printed on the state registration extract, not the working office if they differ. One photo of one document. | Art 13/14 GDPR controller identification and Moldovan Law 284/2004 on e-commerce both require it. It must also match the footer NAP and the `Organization` JSON-LD character for character (D5). | Six pages carry `{{REGISTERED_ADDRESS}}` and `npm run verify` fails the deploy while it survives (D8). **Nothing ships.** Schema that contradicts visible content is ignored, so the entity signal the whole SEO plan rests on stays unproven. |
+| **2** | **VAT status** — VAT-registered in Moldova or not, and the code if yes. | /terms/ A1 and /imprint/ state it as fact. An EU B2B client reads it to decide whether reverse charge applies to your invoice, which is the first thing their finance team asks. | `{{VAT_STATUS}}` blocks /terms/, /imprint/ and /about/. A wrong guess is worse than a gap: it misprices the engagement on both sides. |
+| **3** | **The director's full legal name** — the administrator on the registry extract, i.e. the person with authority to sign a client contract. | The imprint must name a responsible natural person, and clause A1 identifies who binds the company. **Say whether that is the same person as row 7** — if the founder and the administrator differ, the site currently implies they do not. | /imprint/ ships without an accountable human. A contract signed by someone the counterparty cannot verify as an authorised signatory is the second thing procurement checks. |
+| **4** | **Confirm `S.R.L. "UNQENERGY"` is the entity that will sign client contracts and issue invoices.** | The registry proves a company with that name and IDNO exists. It does **not** prove it is the contracting party, and no agent may assume it. **TalentSync is a trading name** (§1.1), so every legal page has to read `S.R.L. "UNQENERGY" (IDNO 1020600034949), trading as "TalentSync"`. | If a different entity actually contracts, every legal page names the wrong party and has to be rewritten. If UNQENERGY is right, this costs you one word — and the mismatch between the proposal, the invoice and the contract stops being a supplier-onboarding hold. |
+| **5** | **EU Art 27 representative — yes/no, plus budget approval.** Romania recommended. | Not optional for a recruiter; the "occasional processing" exemption does not apply. Typically low four figures a year. | /privacy/ and /cookies/ ship with the omission documented in writing, which is worse than not publishing. |
+| **6** | **Analytics = GA4 — confirm, and create the property.** Needed: the `G-XXXXXXXXXX` ID. 15 minutes in the GA4 admin. | D2 already froze this. The consent banner, Consent Mode v2 defaults, /cookies/ tables and the privacy policy's §4/§13 all hang off it. | **A hard deploy gate, not a copy gap.** The analytics code has landed, so `{{GA4_MEASUREMENT_ID}}` is live in the JS bundle as well as /cookies/ §5, and `npm run verify` exits non-zero while it survives into `out/` (D8). |
+| **7** | **Victor's full name, job title, LinkedIn URL, and a photo.** | Every `Article` needs a real named author; the E-E-A-T this plan buys is attribution, and a bare first name provides none. | Four tokens block on this one answer — `{{FOUNDER_FULL_NAME}}`, `{{FOUNDER_TITLE}}`, `{{FOUNDER_LINKEDIN_URL}}` (§1.9) and `{{VICTOR_FULL_NAME}}`, the second spelling of the same fact that reached **four `Article` author bylines inside structured data**. Google ingests a brace string there as the author's name, which is far harder to walk back than the same text in prose. |
+| **8** | **AI screening = no — confirm.** Includes no ad-hoc use of ChatGPT to rank, score or filter candidates. | D3 assumes no. If any AI ranking is used the surrounding text must be rewritten, a human reviewer with real override authority named, overrides logged, and a DPIA completed first. | Publishing "we do not" while doing it is the single cheapest way to lose an enforcement argument. |
+| **9** | **Engineer engagement status under the hourly model** — employee, contractor, or contracted direct by the client? | Decides whether TalentSync is their employer-controller, whether timesheet and billing flow is joint controllership, and whether Part C's IP chain actually holds. | /privacy/ §6 and /terms/ Part C both make claims that must match the contracts in force. |
+| **10** | **Median working days from brief to first shortlist.** | The site says "1–2 weeks". D7 requires it qualified, never bare, and 06-claims-measurement.md needs a real number behind it. | The process claim on four pages has no substantiation file. |
+| **11** | **Founded year.** | `foundingDate` in the `Organization` JSON-LD and the /about/ copy. Not on the public registry listing — it is on the extract, alongside rows 1 and 3. | /about/ ships without a company history and the entity node is thinner than it needs to be. |
+| **12** | **Placement fee percentage and minimum fee.** | The two numbers a client actually negotiates. They also set the Fee Confirmation template. | /terms/ Part B cannot publish, and there is no proposal template. |
+| **13** | **Orange and Barça — may the site name them and show their marks?** Three parts, one email: **(a)** was Orange a direct client or was NEVG the counterparty; **(b)** is there written permission to display the Orange and FC Barcelona / Barça Mobile **names and logos**; **(c)** is there a written source for "1.5M downloads in first 3 months"? | (a) decides whether the site may name Orange at all. (b) is separate and stricter: both are aggressively enforced marks, FC Barcelona licenses its brand commercially, and most enterprise MSAs carry a no-publicity clause. Permission to *have worked* with someone is not permission to *use their mark*. Clause A5.2 warrants that this consent is held. | Without (a) the Orange case study cannot ship at all. Without (b) both case studies ship **text-only** — named in prose, no logo, no wordmark styling, no favicon-scraped tile — which is the safe default and what the pages are built to today. Without (c) the figure stays cut (D7) and the Barça case study keeps no quantified outcome. A takedown after launch costs more than the email. |
+| **14** | **Schedule 3 — the Data Processing Agreement — does not exist.** Decide: write it, or amend the two clauses that point at it. | Clause **C14.2 incorporates Schedule 3 by reference**, so the terms already say it is part of the agreement, and clause **C1.3 gates Engineer access to client systems on it being in place.** Nothing was ever drafted. As written the first hourly assignment cannot lawfully start under its own contract. | The first client either signs a self-contradicting contract or notices before signing. This is a drafting defect, not a business fact — it is fixed by writing Schedule 3 (Module 1 + Module 2 SCCs and a transfer impact assessment summary) **or** by amending C1.3 and C14.2 in the same pass. The **Assignment Schedule**, the **Onsite Addendum** and the C13.5 **security schedule** are missing for the same reason. Detail in §3.2. |
+
+**Answered since the last revision — no action needed, recorded so they are not re-asked:**
+
+- **Registered name, legal form and IDNO** — `S.R.L. "UNQENERGY"`, SRL, `1020600034949`, from
+  the state registry. See §1.1, including the trading-name rule that comes with them.
+- **The homepage `<title>`.** You specified
+  `IT Recruitment & Engineering Talent in Eastern Europe | TalentSync` (66 chars) and an
+  explicit client instruction outranks a guard default, so `scripts/validate-pages.mjs` now
+  allows 70 on `/` and keeps 15–60 everywhere else. The trade-off is unchanged and still
+  yours to revisit: Google renders ~60 characters, so it truncates to
+  `…in Eastern Europe | Tale…` — **the brand is the half that gets cut**, on the one page
+  whose whole job is the brand. `IT Recruitment & Engineers, Eastern Europe | TalentSync`
+  (55) keeps every element and keeps the brand visible. One line in `src/app/page.tsx` if
+  you want it.
 
 ---
 
@@ -224,7 +277,7 @@ not block a page from publishing. Grouped by the milestone that forces the answe
 - **Moldovan legal opinion — is a private employment agency licence required** under Law
   105/2018 / Law 180/2008 to introduce Moldovan engineers to foreign employers? Needs a
   Moldovan employment lawyer, not a web search. Gates `{{PLACEMENT_LICENCE_STATUS}}` and
-  possibly the whole Part B model. *Highest-priority item on this page after the twelve.*
+  possibly the whole Part B model. *Highest-priority item on this page after the fourteen.*
 - **`{{MD_LIMITATION_PERIOD}}`** — confirm the Moldovan contract limitation period with the
   same counsel while you have them. Commonly 3 years.
 - **`{{MD_ACCOUNTING_RETENTION}}`** — ask the accountant. A statutory obligation, not a choice.
@@ -251,7 +304,8 @@ not block a page from publishing. Grouped by the milestone that forces the answe
 - **Belgium** — confirm the C16.4 exclusion is commercially acceptable, or take Belgian
   advice. Art 31 of the Law of 24 July 1987 can make the supplier's invoices unenforceable.
 - **Schedule 3 — the Data Processing Agreement — does not exist, and the contract
-  self-blocks without it.** Clause **C14.2 incorporates Schedule 3 by reference**, so the
+  self-blocks without it.** *Promoted to §2 row 14 — it is a drafting defect with a deadline,
+  not a deferred nicety.* Clause **C14.2 incorporates Schedule 3 by reference**, so the
   terms already say it is part of the agreement. Clause **C1.3 then gates Engineer access to
   client systems on that schedule being in place.** Nothing was ever drafted. As written, the
   first hourly assignment cannot lawfully start under its own contract: the engineer may not
@@ -299,6 +353,10 @@ not block a page from publishing. Grouped by the milestone that forces the answe
   contacts being asked separately for: logo/name consent, testimonial name + title + photo,
   case-study copy, the Barça figure, a savings baseline, and a Clutch review call. Six asks
   with six reply-rate decays, blocking four workstreams. One email each, six questions.
+- **Two numbers in the same batch, because the build now blocks on them (§4):** ask
+  **Innovatec** whether the placement was one engineer or two, and ask **Qualiwise's founder**
+  to sign off the corrected time-to-signature in his testimonial — it currently says two days
+  against a case study that says one week.
 - **Substantiation files for the surviving marketing claims.** Clause A4.3 promises to make
   the basis available on request. D7 has already cut "€15–35/hour", "save up to 60%" and the
   Barça download figure; what remains still needs a file.
@@ -320,6 +378,100 @@ not block a page from publishing. Grouped by the milestone that forces the answe
 
 Owned by the developer, recorded here so they are not lost.
 
+### 4.0 Gate status — what is actually red, and who owns each red
+
+`node scripts/validate-pages.mjs` → **exit 1.** Re-verified after wave D, and the failures
+sort into exactly two piles.
+
+**Pile 1 — 32 unresolved `{{TOKEN}}`s. Victor's, not a developer's.**
+
+- **25 distinct tokens** still render into `out/`, on 10 pages — /privacy/, /terms/,
+  /about/, /candidate-privacy/, /imprint/, /cookies/ and the four article bylines.
+- **7 of the 32** are the louder JSON-LD variant: `{{FOUNDER_FULL_NAME}}` inside
+  `Article.author.name` on all four `/insights/` posts, and `{{FOUNDER_LINKEDIN_URL}}`
+  plus `{{FOUNDER_FULL_NAME}}` on /about/. A placeholder there is ingested by a crawler
+  **as the author's name**, which is why it fails separately from the same token in prose.
+- **Zero** of the 32 come from markup, metadata, schema, routing, links or the sitemap.
+  Those checks all pass, verified by re-running the gate against a copy of `out/` with the
+  wave-D schema fix patched in: 32 failures, all of them tokens, nothing else.
+
+`{{LEGAL_ENTITY_NAME}}`, `{{LEGAL_FORM}}` and `{{IDNO}}` are **gone from the failure list**
+— the registry answered them (§1.1). The remaining 25 are the §2 ask plus the deferred
+milestones in §3. Answer §2 and re-run `npm run verify`; this pile clears with no code
+change. That is D8 working as designed: the gate exits non-zero while any placeholder
+survives into `out/`, and `npm run build` still passes throughout so local review is never
+blocked.
+
+**Pile 2 — two new assertions added in wave D, both currently reporting real defects.**
+Neither is a token, and both go green when the copy they name is corrected. They exist
+because both defects had already been reported once, left open, and reported again:
+
+1. **`Organization` must name the registered entity.** The node emitted on all 33 pages
+   carried only `name: "TalentSync"` — while /imprint/ states in the built HTML that
+   *there is no company registered under the name TalentSync*. The one identity a
+   procurement reviewer's crawler reads asserted the opposite of the page it sat on.
+   Fixed in `src/lib/schema.ts` (`legalName: 'S.R.L. “UNQENERGY”'` plus an `identifier`
+   PropertyValue carrying the IDNO), and now guarded: both strings are checked against
+   **/imprint/'s own rendered text**, so prose and schema can only move together. Passes
+   against the fixed tree; will still show red until the next build.
+2. **No page may claim its headcount is the *complete* record.** Fires twice, both on
+   /hire-software-developers-eastern-europe/: *"Five clients, eight engineers, and that is
+   the entire record"* and *"5 client teams, which is the whole record"*. The arithmetic
+   is right — those five rows do sum to eight — which is why the existing headline-vs-ledger
+   check passes them. The falsehood is the adjective: /case-studies/ lists ten engagements,
+   two of them non-placements, so **eight** placement clients, and a buyer who checks finds
+   a ninth engineer at a sixth client two clicks away. The other ten service pages scope
+   the same number correctly as "our five most recent placements". **Owner: whoever owns
+   `src/data/services/pages/`** — scope the denominator, keep the transparency sentence.
+   The guard is sentence-scoped and HTML-only; it flags no other page in the build.
+
+- **Fonts overrun the §6 budget by 2.3× and it cannot be fixed in code.** 103,732 B on
+  every route against `00-design-contract.md` §6's ≤ 45 KB. `subsets: ['latin']` is
+  declared and is doing its job — it is only ever a *preload* filter in `next/font`
+  (`findFontFilesInCss(css, preload ? subsets : undefined)`), never a prune of the
+  `@font-face` set, so the Google CSS is inlined whole and all five faces are self-hosted.
+  Two are actually requested: latin 35,508 B (preloaded) and **latin-ext 68,224 B**, pulled
+  in by exactly **three codepoints** that appear on all 33 pages — `ă` U+0103, `ș` U+0219,
+  `ț` U+021B, i.e. *Chișinău* in the footer NAP and *răspundere limitată* in the legal copy.
+  Cyrillic, cyrillic-ext and vietnamese are emitted but never fetched.
+  The three ways out are all closed: dropping the diacritics is banned by **D5** (one
+  spelling everywhere), letting them fall to the fallback face swaps typeface mid-word in
+  the NAP, and `next/font/google` in Next 16.1.3 has **no `text` option**, so a three-glyph
+  subset needs a hand-built woff2 vendored into the repo. **Decision: accept the 68 KB and
+  amend the §6 budget line to ≤ 105 KB** (`00-design-contract.md` §6 is frozen spec, so the
+  amendment is recorded here rather than edited in). It is not as bad as the number looks:
+  latin-ext is deliberately kept **out** of the preload list, so it is discovered during
+  layout, serves only below-the-fold text, and never gates the LCP element — which carries
+  no diacritics. Do not "fix" this by adding `'latin-ext'` to `subsets`; that preloads
+  68 KB into LCP's bandwidth on every route. Reopen only if a hand-subset face is ever
+  vendored. Full working recorded in the comment at `src/app/layout.tsx`.
+
+- **Link prefetch was blowing the ≤ 320 KB page-weight budget by 5×, now half-fixed.**
+  Next prefetches the full RSC payload of every `<Link>` that enters the viewport, and
+  under `output: 'export'` those are static `__next.*.__PAGE__.txt` files — `out/` ships
+  **194** of them totalling **4,869,827 B** — 35% of the 14 MB export, and `/terms/` alone is 238,857 B. A single scroll
+  down the homepage took it from 29 resources / 327,233 B to 114 / 1,630,719 B.
+  Every `<Link>` in `src/app/**` (30 of them, 9 route files) now carries
+  `prefetch={false}`, which in Next 16 disables viewport **and** hover prefetch; the
+  payload is fetched on click and static navigation is unaffected. `/about/` alone stops
+  pulling 593,352 B on scroll. The shared chrome — `Navbar`, `Footer`, `Button`,
+  `ArticleCard`, `ServicePageTemplate` — is the larger half of the same total and is fixed
+  in `src/components/**`. **Re-measure `/` at 390px after a full-page scroll before
+  calling this closed.**
+
+- **Design-contract gate row 15 is not implemented in any guard.** The matrix at
+  `00-design-contract.md` §8.1 has 15 rows; `scripts/check-design-contract.mjs` asserts 12
+  and prints `PASS — all 12 assertions clean`. Rows 13–15 — orphan tokens, the per-route
+  JS budget, and **row 15, `find public/images -size +60k` must be empty** — are unguarded,
+  so a green run does not mean row 15 holds. It currently does not:
+  `case-foodamigos.png` (126,030 B) and `testimonial-adrian-barca.jpeg` (106,004 B) both
+  exceed 60 KB, and the `-384/-768.webp` derivatives that should replace them already
+  exist unused. Fixing the references is a `src/data/**` change (`case-studies.ts:447`,
+  `content.ts:232`) — note that `src/app/case-studies/page.tsx` builds `srcSet` from
+  `logo.src` alone, so repointing the data fixes the render with no component change.
+  Add the three missing rows to the guard once the images land, or the row goes on
+  being decorative.
+
 - **No Content-Security-Policy is shipped.** `nginx.conf` carries `X-Frame-Options`,
   `X-Content-Type-Options`, `Referrer-Policy` and `Permissions-Policy`. A CSP is
   deliberately out of scope: it needs auditing against `next/font`, the GA4 and Consent
@@ -336,26 +488,79 @@ Owned by the developer, recorded here so they are not lost.
   never exercised against a live nginx. Getting either wrong is an infinite redirect loop on
   the production domain. **Verify first** whether Railway's edge already handles both; if it
   does not, add them and re-run `npm run smoke`.
-- **`npm run verify` currently fails, by design.** It is the D8 deploy gate: it exits
-  non-zero while any `{{TOKEN}}` survives into `out/`. `npm run build` still passes, so
-  local review works throughout. Nothing deploys until this file is answered.
-- **`npm run smoke` needs Docker** and skips cleanly with exit 0 when the daemon is not
-  running — so it never blocks a laptop build, and never silently passes in CI either.
-- **The nginx layer is now verified against a real `nginx:alpine`, not just reasoned about.**
-  Wave C ran it. `/privacy` → **301** with a **relative** `Location: /privacy/` — no scheme,
-  no host, no `:3000`. A nested path behaves the same: `/case-studies/barca-mobile` → 301 →
-  `/case-studies/barca-mobile/`, path intact. `/nonexistent` → **404** serving the branded
-  `404.html` body, not the homepage. `/sitemap.xml` and `/robots.txt` → 200. The
-  `absolute_redirect off; port_in_redirect off;` pair in `nginx.conf` is doing real work and
-  must not be removed — without it every slashless inbound link would bounce a visitor to
-  `http://host:3000/…` behind Railway's TLS termination.
 - **`src/app/not-found.tsx` now exists**, so `out/404.html` is a branded page rather than
   Next's stock white one. Next injects `noindex` on it automatically. The Dockerfile also
   clears `/usr/share/nginx/html` before copying, so nginx's stock `index.html` and
   `50x.html` can no longer be reached at a real URL (`/50x.html` → 404, verified).
-- **`npm run smoke` cannot complete end-to-end yet** — not an nginx problem. The image build
-  fails at `next build` because `src/data/services/index.ts` still exports an empty
-  `servicePages` registry while `src/data/services/pages/*.ts` holds eight written pages that
-  nothing imports, so `/hire-ai-engineers` throws `Cannot read properties of undefined
-  (reading 'draft')` during page-data collection. One wiring change in that registry file
-  clears it. Re-run `npm run smoke` after it lands — that run is what proves the deploy.
+- **`npm run smoke` PASSES end-to-end, 12/12, against a real image.** Wave C could not get
+  past `next build` inside the container; that is fixed and the whole path now runs. The
+  Docker daemon was available on this machine and the run is real output, not a skip — the
+  script still exits 0 with `SKIP:` when there is no daemon, so it never blocks a laptop
+  build and never silently passes in CI either:
+
+  ```
+  container talentsync-smoke listening on http://127.0.0.1:32769
+  ok   /privacy -> 301 Location: /privacy/
+  ok   /privacy/ -> 200
+  ok   /b2b-engineer-recruitment -> 301 Location: /b2b-engineer-recruitment/
+  ok   /b2b-engineer-recruitment/ -> 200
+  ok   /case-studies -> 301 Location: /case-studies/
+  ok   /case-studies/ -> 200
+  ok   /case-studies/barca-mobile -> 301 Location: /case-studies/barca-mobile/
+  ok   /case-studies/barca-mobile/ -> 200
+  ok   /nonexistent -> 404
+  ok   /nonexistent body == /404.html
+  ok   /sitemap.xml -> 200
+  ok   /robots.txt -> 200
+  SMOKE PASS — 12/12
+  ```
+
+  Every `Location` is **relative** — no scheme, no host, no `:3000` — which is the whole
+  point of the `absolute_redirect off; port_in_redirect off;` pair in `nginx.conf` behind
+  Railway's TLS termination. Do not remove it. `/case-studies` is new to the set: a hub that
+  is both a page and a parent directory, where `try_files` has to fall past `$uri` (a
+  directory) and `$uri.html` (absent) to `$uri/`. The image is **76.1 MB**, of which 14.0 MB
+  is the static tree.
+
+- **The smoke script no longer uses a fixed port, and that was a real bug, not tidying.**
+  The first wave-D run reported **9 of 10 assertions failed** against an image that was
+  perfect: an unrelated `node` process on this machine already held `4399`, so every request
+  was graded against a stranger's server. The readiness loop made it worse by accepting *any*
+  HTTP response as "the container is up". `scripts/smoke-nginx.sh` now publishes an ephemeral
+  port (`-p 127.0.0.1:0:3000`), reads the real one back with `docker port`, and waits for a
+  genuine `200` on `/`. `PORT=` still pins it if you want a stable URL. A test that can grade
+  a server it did not start is not a test.
+
+- **`docs/` is confirmed absent from the image.** Verified by building the builder stage and
+  listing `/app`: no `docs`, no `TalentSync.pdf`. 1.1 MB of specification and a 1.4 MB brief
+  stay out of the build context, and the production stage only copies `/app/out/` regardless.
+  `.serena/` was reaching the context and is now excluded too.
+
+- **`npm run verify` fails by design, and now fails on more.** It is the D8 deploy gate: it
+  exits non-zero while any `{{TOKEN}}` survives into `out/`, and `npm run build` still passes
+  so local review works throughout. Wave D added four checks for defects that had already
+  shipped, so they cannot come back:
+  1. **Every token must have a row in this file.** Printed as a full ledger — token, then
+     every route it renders on — and a token in the build with no row here is a failure in
+     its own right.
+  2. **A token inside JSON-LD is its own, louder failure.** `"author":{"name":"{{VICTOR_FULL_NAME}}"}`
+     is ingested by Google *as the author's name*; a brace string in prose is merely visible.
+  3. **Exactly one `<title>` and at most one `robots` meta per page — the 404 included.**
+     The 404 shipped two of each and presented itself as a second copy of the homepage.
+  4. **`FAQPage` on `/` and nowhere else** (D6). `/insights/` had a second one.
+
+- **Two published numbers contradict themselves, and `npm run verify` now blocks on both.**
+  Both need Victor, not a developer, because both are facts about real placements:
+  - **Innovatec: one engineer or two?** The site says **2** on
+    /tech-recruitment-eastern-europe/ and /hourly-engineering-talent/, and **1** on
+    /technical-recruitment-moldova/ and in the /case-studies/ ledger. The headline "nine
+    engineers across five clients" renders on five pages and only balances at 2; at 1 the
+    itemised record sums to eight. The guard now asserts both — one number per client, and
+    the headline total equal to the sum of the ledger — so answering it once propagates
+    everywhere or the build fails.
+  - **Qualiwise: one week or two days?** The testimonial says "They found us a senior Python
+    developer in two days" while the case study's own H1 is "A Senior Python Developer Signed
+    in One Week". It never appeared in a page grep because the carousel server-renders only
+    the active slide — it ships in a JS chunk and appears the moment a visitor clicks next.
+    It is a **client's quote**, so it cannot be silently reworded: get the author's sign-off
+    on the corrected figure, or pull the testimonial until you have it.

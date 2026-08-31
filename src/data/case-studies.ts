@@ -113,7 +113,7 @@ export const caseStudies: CaseStudy[] = [
       'Backend and DevOps engineers placed into the product team building the Barça Mobile super app, working under the client’s technical leadership.',
     body: [
       'Barça Mobile is a consumer super app built for a global football audience and delivered by New Era Visionary Group, which is the company TalentSync actually contracted with. We sourced and technically vetted engineers for the product team building it.',
-      'Roles filled included backend and DevOps engineers, working under the client’s technical leadership on the client’s architecture and roadmap. The engineer we placed worked on system architecture and CI/CD for the Barça Mobile launch.',
+      'Roles filled included backend and DevOps engineers, working under the client’s technical leadership on the client’s architecture and roadmap. The DevOps engineer we placed worked on system architecture and CI/CD for the Barça Mobile launch.',
       'We did not build the app, we did not run the programme, and we publish no figures about how the product performed in the market — those are the client’s numbers to publish, not ours. What we can state is who was placed, into which team, and what they worked on.',
     ],
     logo: { src: '/images/case-barca.jpg', width: 1440, height: 960 },
@@ -149,7 +149,7 @@ export const caseStudies: CaseStudy[] = [
         {
           heading: 'What the engineers worked on',
           body: [
-            'The engineer we placed worked on system architecture and CI/CD for the Barça Mobile launch. That is a description of the engineer’s scope inside the client’s team — the architecture was the client’s, and so were the decisions.',
+            'The DevOps engineer we placed worked on system architecture and CI/CD for the Barça Mobile launch. That is a description of the engineer’s scope inside the client’s team — the architecture was the client’s, and so were the decisions.',
             'The wider programme included the MVNO integration between Barça Mobile and the Orange network, which is carrier-side work: provisioning flows, a telecom counterparty with its own release calendar, and failure modes that cannot be reproduced on a laptop.',
             'That is the useful part of this entry for a hiring manager. It tells you the kind of system our engineers have worked against, which is a better predictor of fit than a logo.',
           ],

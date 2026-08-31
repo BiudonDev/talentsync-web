@@ -153,7 +153,7 @@ export const hireBackendDevelopers: ServicePage = {
           kind: 'prose',
           body: [
             'One engagement covered Orange network integration with the Barça Mobile MVNO. That is carrier-side systems integration: subscriber provisioning, SIM and number lifecycle, a telecom counterparty with its own release calendar, and failure modes you cannot reproduce on a laptop.',
-            'The engineer we placed worked on system architecture and CI/CD for that launch. We are describing the engineer’s scope, not claiming TalentSync delivered the platform — the client’s own team built the product.',
+            'The DevOps engineer we placed worked on system architecture and CI/CD for that launch. We are describing the engineer’s scope, not claiming TalentSync delivered the platform — the client’s own team built the product.',
             'Integration work of that kind rewards a different temperament from product backend work. Progress is measured in cleared blockers rather than merged features, half the debugging happens in someone else’s logs, and the engineer has to be able to write the email that gets a counterparty to fix their end without escalating it into a contractual argument.',
           ],
         },
@@ -182,7 +182,7 @@ export const hireBackendDevelopers: ServicePage = {
         {
           kind: 'stats',
           items: [
-            { value: '9', label: 'engineers placed across five clients' },
+            { value: '8', label: 'engineers across five clients, our most recent placements' },
             { value: '1 week', label: 'from brief to signature, Qualiwise senior Python' },
             { value: '2', label: 'Java engineers placed with SocialBee' },
           ],
@@ -190,7 +190,7 @@ export const hireBackendDevelopers: ServicePage = {
         {
           kind: 'prose',
           body: [
-            'Across our five most recent placements — nine engineers for SocialBee, Silvertalent, Qualiwise, Foodamigos and Innovatec — the engineer signed within one to two weeks of the brief.',
+            'Across our five most recent placements — eight engineers for SocialBee, Silvertalent, Qualiwise, Foodamigos and Innovatec — the engineer signed within one to two weeks of the brief.',
             'Qualiwise is the cleanest backend example: an AI copilot platform needed one senior Python developer, the brief was specific about the system rather than about the years of experience, and the engineer was signed within a week. The SocialBee pair are Java and Angular full-stack engineers — they are counted here because the backend half is real, and the full-stack page carries the detail so the two pages are not both claiming the same two people.',
             'Roles with a narrow stack, a security-clearance requirement or a hard on-site element take longer, and we tell you that at the brief rather than at week three.',
           ],
@@ -293,10 +293,10 @@ export const hireBackendDevelopers: ServicePage = {
     },
     {
       client: 'Barça Mobile',
-      role: 'Backend and platform engineer, Orange MVNO integration',
+      role: 'Backend engineer, Barça Mobile programme',
       count: 1,
       outcome:
-        'The engineer we placed worked on system architecture and CI/CD for the launch. That is the engineer’s scope — the platform was the client’s own delivery.',
+        'Placed into the product team building the Barça Mobile platform, working on the client’s architecture and roadmap under the client’s technical leadership. Time from brief to signature was not recorded for this engagement, so we do not quote one.',
       href: '/case-studies/barca-mobile/',
     },
     {
@@ -304,7 +304,7 @@ export const hireBackendDevelopers: ServicePage = {
       role: 'Java / Angular full-stack engineers',
       count: 2,
       outcome:
-        'Both signed within two weeks of the brief. The full-stack page carries the detail so the two pages do not claim the same engineers.',
+        'Both signed within two weeks of the brief. These are the same two engineers the full-stack page describes in more detail — one placement, counted once in the ledger, not two.',
     },
   ],
 

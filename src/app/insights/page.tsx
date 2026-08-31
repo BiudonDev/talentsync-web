@@ -4,7 +4,7 @@ import PageShell from '@/components/layout/PageShell'
 import { ArticleCard, CtaBand, Faq, Prose, SectionWrapper } from '@/components/ui'
 import { siteConfig } from '@/data/content'
 import { GROUPS, insights, insightsHub, readingMinutes } from '@/data/insights'
-import { ORG_ID, faqLd, graphLd, itemListLd } from '@/lib/schema'
+import { ORG_ID, graphLd, itemListLd } from '@/lib/schema'
 import { SITE_URL, absUrl, pageMeta } from '@/lib/seo'
 
 /**
@@ -15,6 +15,11 @@ import { SITE_URL, absUrl, pageMeta } from '@/lib/seo'
  * short and every article appears twice on purpose — once as a card under
  * "Latest" with its date and reading time, once in the grouped listing that
  * tells a reader which of three subjects they are in.
+ *
+ * NO `faqLd` here. D6 puts `FAQPage` on `/` and nowhere else — two competing
+ * FAQPage entities on one domain is the pattern that draws rich-result
+ * suppression. The visible <details> block below stays: D6 restricts the
+ * markup, not the content.
  */
 export const metadata = pageMeta({
   path: insightsHub.path,
@@ -47,7 +52,6 @@ export default function InsightsPage() {
             name: 'TalentSync insights',
             items: insights.map((a) => ({ name: a.title, path: a.path, description: a.dek })),
           }),
-          faqLd(insightsHub.faq.map((f) => ({ question: f.q, answer: f.a }))),
         )}
       />
 
@@ -61,16 +65,16 @@ export default function InsightsPage() {
         <Prose className="mt-6 text-lg sm:text-xl">
           <p>{insightsHub.answer}</p>
           <p>
-            Start with <Link href="/technical-recruitment-moldova/">recruiting in Moldova</Link> if
+            Start with <Link prefetch={false} href="/technical-recruitment-moldova/">recruiting in Moldova</Link> if
             you are weighing the market,{' '}
-            <Link href="/b2b-engineer-recruitment/">how B2B engineer recruitment works</Link> if you
+            <Link prefetch={false} href="/b2b-engineer-recruitment/">how B2B engineer recruitment works</Link> if you
             are weighing the contract, or{' '}
-            <Link href="/tech-recruitment-eastern-europe/">
+            <Link prefetch={false} href="/tech-recruitment-eastern-europe/">
               the Eastern European market overview
             </Link>{' '}
             if you have not picked a country yet. The alternative to a direct contract is{' '}
-            <Link href="/hourly-engineering-talent/">hourly engineering collaboration</Link>, and{' '}
-            <Link href="/case-studies/">what we have actually delivered</Link> is the record behind
+            <Link prefetch={false} href="/hourly-engineering-talent/">hourly engineering collaboration</Link>, and{' '}
+            <Link prefetch={false} href="/case-studies/">what we have actually delivered</Link> is the record behind
             all of it.
           </p>
         </Prose>
@@ -111,6 +115,7 @@ export default function InsightsPage() {
                 {items.map((a) => (
                   <li key={a.slug}>
                     <Link
+                      prefetch={false}
                       href={a.path}
                       className="flex min-h-11 items-center rounded-lg text-base font-semibold text-text-primary underline underline-offset-4 hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary sm:text-lg"
                     >

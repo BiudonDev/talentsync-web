@@ -59,7 +59,7 @@ export default function NotFound() {
           <ul className="mt-4 grid grid-cols-1 gap-1 sm:grid-cols-2">
             {primaryNav.map((r) => (
               <li key={r.path}>
-                <Link href={r.path} className={LINK}>
+                <Link prefetch={false} href={r.path} className={LINK}>
                   {r.label}
                 </Link>
               </li>

@@ -83,7 +83,7 @@ export default function CareersPage() {
                 {role.intro}
               </p>
               <p className="mt-4">
-                <Link href={rolePath(role)} className={LINK}>
+                <Link prefetch={false} href={rolePath(role)} className={LINK}>
                   Read the role and apply
                 </Link>
               </p>
@@ -131,7 +131,7 @@ export default function CareersPage() {
         </p>
         <p className="mt-4 max-w-2xl text-sm leading-relaxed text-text-secondary">
           Emailing us your CV means we hold your personal data. The{' '}
-          <Link href="/candidate-privacy/" className={INLINE_LINK}>
+          <Link prefetch={false} href="/candidate-privacy/" className={INLINE_LINK}>
             candidate privacy notice
           </Link>{' '}
           says exactly what we record, how long we keep it, and how to make us delete it.

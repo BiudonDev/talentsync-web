@@ -193,7 +193,7 @@ function Entry({ study }: { study: CaseStudy }) {
         )}
 
         {study.detail && (
-          <Link href={caseHref(study)} className={TEXT_LINK}>
+          <Link prefetch={false} href={caseHref(study)} className={TEXT_LINK}>
             {`Read the full ${study.client} case study`}
           </Link>
         )}
@@ -259,7 +259,7 @@ export default function CaseStudiesPage() {
           <ul className="mt-8 grid grid-cols-1 gap-2 sm:grid-cols-2">
             {NEXT_LINKS.map((link) => (
               <li key={link.href}>
-                <Link href={link.href} className={cn(TEXT_LINK, 'w-full')}>
+                <Link prefetch={false} href={link.href} className={cn(TEXT_LINK, 'w-full')}>
                   {link.anchor}
                 </Link>
               </li>
@@ -297,7 +297,7 @@ export default function CaseStudiesPage() {
         )}
       />
 
-      {/* Interior hero — §4.3, NOT min-h-screen. PageShell supplies the nav clearance. */}
+      {/* Interior hero — §4.3, NOT full-viewport. PageShell supplies the nav clearance. */}
       <header className="hero-glow bg-background-alt pt-28 pb-14 sm:pt-32 sm:pb-16 lg:pt-40 lg:pb-24">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-balance">

@@ -7,8 +7,9 @@
  *
  * 1. **`draft: true`, and this one is furthest from publishable.** §9 opens by
  *    recommending the page be cut from launch, and the reason is not squeamishness:
- *    there is no QA placement anywhere in the record. Not one of the nine
- *    engineers placed across five clients was a QA or test-automation hire.
+ *    there is no QA placement anywhere in the record. Not one of the eight
+ *    engineers in our five most recent placements was a QA or test-automation
+ *    hire, and nor is there one in the programme engagements.
  *    D1.1 resolved that as "build it, gate it" rather than "cut it", which is what
  *    this file is.
  *
@@ -118,7 +119,7 @@ export const hireQaEngineers: ServicePage = {
         {
           kind: 'prose',
           body: [
-            'Stated plainly, because you can check it: our published placement record is in development roles. Nine engineers across five clients — backend, full-stack, and architecture and CI/CD work — and none of them was a QA or test-automation hire.',
+            'Stated plainly, because you can check it: our published placement record is in development and platform roles. Eight engineers across five clients — our five most recent placements: backend, full-stack, front-end and industrial-control work — and none of them was a QA or test-automation hire; nor is there one anywhere else on the case studies page, which is backend, DevOps and platform work throughout.',
             'We could dress that up. Qualiwise, one of our clients, builds an AI copilot for product quality, and it would be easy to let that sit next to the word QA on this page and let you draw the wrong conclusion. It is a client in the quality space, not a QA placement, and treating it as one would be the kind of small dishonesty that should make you doubt every other figure on this site.',
             'What we do have is a technical screen run by engineers rather than recruiters, the same sourcing network across the same region, and clients who hire from us again. What we do not yet have is a named QA engagement with a suite we can point at. When we do, it will be on this page with the framework, the state of the suite the engineer inherited, and what changed afterwards.',
             'If you would rather wait for that, we understand. If you want a shortlist now, we will run the same screen we run for developers, adapted to the role, and you can judge the candidates rather than our record.',

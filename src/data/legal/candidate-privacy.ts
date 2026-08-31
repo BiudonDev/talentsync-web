@@ -46,7 +46,7 @@ export const candidatePrivacy: LegalDoc = {
       k: 'note',
       t: 'About this message and your data',
       body: [
-        '**Who we are.** {{LEGAL_ENTITY_NAME}}, trading as TalentSync, a technical recruitment company registered in the Republic of Moldova (company number {{IDNO}}), at {{REGISTERED_ADDRESS}}, Chișinău. **We are the controller of your personal data.**',
+        '**Who we are.** S.R.L. “UNQENERGY” (IDNO 1020600034949), trading as “TalentSync” — a technical recruitment company registered in the Republic of Moldova, at {{REGISTERED_ADDRESS}}, Chișinău. **We are the controller of your personal data.**',
         '**Our representative in the EU.** {{EU_REP_NAME}}, {{EU_REP_ADDRESS}}, {{EU_REP_EMAIL}}. You can contact them instead of us about anything below.',
         '**Where we got your details.** From your public professional profile on **[platform]** — [profile URL]. We found you there while searching for engineers for a specific, live role. We did not buy your details, scrape them, or get them from a data broker, and we have not looked at any personal social media.',
         '**What we recorded.** Your name, your public profile URL, your current job title and employer, the skills and technologies listed on your profile, your seniority, your location, and the contact route you have made available. Nothing else.',
@@ -77,7 +77,7 @@ export const candidatePrivacy: LegalDoc = {
     {
       k: 'note',
       body: [
-        '**Privacy:** I found your public [platform] profile while searching for a live role and recorded your name, title, employer, skills and profile URL. Controller: {{LEGAL_ENTITY_NAME}} (TalentSync), Chișinău, Moldova. EU representative: {{EU_REP_NAME}}, {{EU_REP_EMAIL}}. Legal basis: legitimate interests, Art 6(1)(f) GDPR. Nothing is shared with any client unless you agree first. Deleted in 6 months if you do not reply. Reply “remove me” and I will stop and never source you again. Your rights and how to complain: talentsync.eu/candidate-privacy/',
+        '**Privacy:** I found your public [platform] profile while searching for a live role and recorded your name, title, employer, skills and profile URL. Controller: S.R.L. “UNQENERGY” (IDNO 1020600034949), trading as TalentSync, Chișinău, Moldova. EU representative: {{EU_REP_NAME}}, {{EU_REP_EMAIL}}. Legal basis: legitimate interests, Art 6(1)(f) GDPR. Nothing is shared with any client unless you agree first. Deleted in 6 months if you do not reply. Reply “remove me” and I will stop and never source you again. Your rights and how to complain: talentsync.eu/candidate-privacy/',
       ],
     },
     { k: 'hr' },

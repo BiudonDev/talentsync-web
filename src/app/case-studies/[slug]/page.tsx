@@ -156,7 +156,7 @@ export default async function CaseStudyPage({ params }: { params: Promise<Params
               { anchor: 'The full placement record', href: '/case-studies/' },
             ].map((link) => (
               <li key={link.href}>
-                <Link href={link.href} className={cn(TEXT_LINK, 'w-full')}>
+                <Link prefetch={false} href={link.href} className={cn(TEXT_LINK, 'w-full')}>
                   {link.anchor}
                 </Link>
               </li>

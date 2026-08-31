@@ -127,9 +127,9 @@ export const hireAiEngineers: ServicePage = {
         {
           kind: 'prose',
           body: [
-            'Two of our named clients build AI products. Qualiwise builds an AI copilot for product quality; we filled a senior backend Python role there and the engineer signed within one week of the brief. Barça Mobile is an AI super app; the engineer we placed on that engagement worked on system architecture and CI/CD for the launch.',
+            'Two of our named clients build AI products. Qualiwise builds an AI copilot for product quality; we filled a senior backend Python role there and the engineer signed within one week of the brief. Barça Mobile is an AI super app; the DevOps engineer we placed on that engagement worked on system architecture and CI/CD for the launch.',
             'Neither of those was an AI-engineering hire, and we are not going to present them as one. They are evidence that we can staff engineering roles inside an AI product company against a real deadline. They are not evidence that we have placed a retrieval engineer or an MLOps specialist. The day we do, that placement will be named here with the same detail as everything else on this site.',
-            'Across our five most recent placements — nine engineers for SocialBee, Silvertalent, Qualiwise, Foodamigos and Innovatec — the engineer signed within one to two weeks of the brief. Roles with a narrow stack, a security-clearance requirement or a hard on-site element take longer, and we tell you that at the brief rather than at week three.',
+            'Across our five most recent placements — eight engineers for SocialBee, Silvertalent, Qualiwise, Foodamigos and Innovatec — the engineer signed within one to two weeks of the brief. Roles with a narrow stack, a security-clearance requirement or a hard on-site element take longer, and we tell you that at the brief rather than at week three.',
           ],
         },
       ],

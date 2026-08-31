@@ -1,9 +1,11 @@
 import { SectionWrapper } from '@/components/ui'
 import { process } from '@/data/content'
+import ScrollFillLine from './ScrollFillLine'
 
-// Server component (Rule 10). The connectors used to be framer-motion `useScroll`
-// progress bars — a scroll listener on every route for a decorative line that is
-// aria-hidden anyway. They are now static gradients; nothing readable changed.
+// Server component (Rule 10). The connectors are the one moving part on this
+// section, so they live in `ScrollFillLine`, a `'use client'` leaf that owns the
+// framer-motion `useScroll` progress fill and nothing else. This file imports no
+// framer-motion and stays server-rendered.
 export default function Process() {
   return (
     <SectionWrapper id="process">
@@ -17,19 +19,8 @@ export default function Process() {
       </div>
 
       <div className="relative">
-        {/* Horizontal connector - lg only. Circles are 80px tall and start at y=0,
-            so their centre is y=40; h-1 line sits at 38 to straddle it. */}
-        <div
-          className="hidden lg:block absolute top-[38px] left-0 right-0 h-1 gradient-primary"
-          aria-hidden="true"
-        />
-
-        {/* Vertical connector - single-column layout only. left-6 = the 48px
-            circle's centre; it is meaningless once sm: goes two columns. */}
-        <div
-          className="sm:hidden absolute left-6 top-0 bottom-0 w-1 gradient-primary"
-          aria-hidden="true"
-        />
+        <ScrollFillLine orientation="horizontal" />
+        <ScrollFillLine orientation="vertical" />
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
           {process.map((step) => (

@@ -1,6 +1,3 @@
-'use client'
-
-import { motion } from 'framer-motion'
 import { HiChevronDown } from 'react-icons/hi'
 import { Button } from '@/components/ui'
 import { siteConfig } from '@/data/content'
@@ -12,12 +9,23 @@ import { siteConfig } from '@/data/content'
  * The brand moved into the lede, where it still does entity work.
  *
  * Heading string is the display role from 00-design-contract.md 2.3 minus its
- * `md:text-6xl` step: `md:` is banned (Rule 1), and 5xl -> 7xl at `lg` is the
- * same curve with one fewer breakpoint.
+ * 6xl step at the md breakpoint, which Rule 1 bans; 5xl -> 7xl at `lg` is the
+ * same curve with one fewer breakpoint. The class name is spelled out in words
+ * on purpose — Tailwind's scanner reads comments, so writing it literally here
+ * would emit the very banned utility this note explains the absence of.
  *
- * `motion` here is safe because `src/app/page.tsx` wraps the page in
- * `<MotionConfig reducedMotion="user">` — every `initial`/`animate` below is
- * dropped for a visitor who asked for reduced motion (Rule 7).
+ * NO framer-motion, and therefore no `'use client'` (Rule 10). `initial` is
+ * serialised into the static export as `style="opacity:0;transform:…"`, so with
+ * JS off — or for any crawler that reads raw HTML without executing scripts —
+ * the target-query h1 and the canonical entity paragraph rendered INVISIBLE.
+ * `MotionConfig reducedMotion="user"` cannot help: it is a runtime JS guard and
+ * the artifact is already written by then.
+ *
+ * The entrance is `.animate-fade-up` (globals.css) instead. Its visible state is
+ * the SSR default and CSS animates *away from* opacity 0, so the static markup
+ * carries no inline opacity at all. Rule 7 is met by the global
+ * `@media (prefers-reduced-motion: reduce)` block, which zeroes both duration
+ * and delay — same mechanism Testimonials.tsx already relies on.
  */
 export default function Hero() {
   return (
@@ -31,30 +39,21 @@ export default function Hero() {
 
       {/* Content */}
       <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <motion.h1
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="text-4xl sm:text-5xl lg:text-7xl font-extrabold tracking-tight text-balance mb-6"
-        >
+        <h1 className="animate-fade-up text-4xl sm:text-5xl lg:text-7xl font-extrabold tracking-tight text-balance mb-6">
           Hire Senior Software Engineers from{' '}
           <span className="text-gradient">Eastern Europe</span>
-        </motion.h1>
+        </h1>
 
-        <motion.p
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.1 }}
-          className="text-lg sm:text-xl leading-relaxed text-text-secondary text-pretty mb-8 max-w-2xl mx-auto"
+        <p
+          style={{ animationDelay: '100ms' }}
+          className="animate-fade-up text-lg sm:text-xl leading-relaxed text-text-secondary text-pretty mb-8 max-w-2xl mx-auto"
         >
           {siteConfig.tagline}
-        </motion.p>
+        </p>
 
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="flex flex-col sm:flex-row gap-4 justify-center"
+        <div
+          style={{ animationDelay: '200ms' }}
+          className="animate-fade-up flex flex-col sm:flex-row gap-4 justify-center"
         >
           <Button href={siteConfig.calendlyUrl} external>
             Book a 30-minute call
@@ -62,7 +61,7 @@ export default function Hero() {
           <Button variant="secondary" href={`mailto:${siteConfig.email}?subject=Role%20brief`}>
             Email the role to Victor
           </Button>
-        </motion.div>
+        </div>
       </div>
 
       {/* Scroll indicator */}

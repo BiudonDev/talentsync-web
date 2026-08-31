@@ -19,6 +19,11 @@ const ORG_REF = { '@id': ORG_ID }
 
 /** Chișinău, with diacritics, everywhere — copy, schema and footer NAP (D5). */
 const LOCALITY = 'Chișinău'
+// The registered entity, from the Moldovan state register. TalentSync is the
+// trading name only — see organizationLd() below. Curly quotes because that is
+// how every legal page renders it; one spelling everywhere is the same D5 rule.
+const LEGAL_NAME = 'S.R.L. “UNQENERGY”'
+const IDNO = '1020600034949'
 const EMAIL = 'victor@talentsync.eu'
 // Spaced, not E.164. D5 requires the visible footer NAP and this block to match
 // exactly, and siteConfig.phone (what the footer renders) is the spaced form —
@@ -45,16 +50,31 @@ export const graphLd = (...nodes: object[]) => ({
  * does not have, so it would be ineligible for the Local Business rich result
  * anyway — Place semantics paid for nothing.
  *
- * Properties whose values are business facts nobody may invent (legal entity
- * name, street address, postal code, founding year) are OMITTED rather than
- * guessed or tokenised: a wrong value is worse than a missing one, Organization
- * has no required properties, and a surviving {{TOKEN}} fails `npm run verify`.
+ * `name` is the TRADING name; `legalName` is the registered person. They differ,
+ * and that is the point: the state register lists no company called TalentSync,
+ * so /imprint/, /terms/ and /about/ all state in prose that TalentSync trades
+ * under S.R.L. “UNQENERGY”. Until this node said the same thing, the one identity
+ * an EU procurement reviewer actually scrapes contradicted the four pages beside
+ * it. The two strings are written EXACTLY as the prose renders them, curly quotes
+ * included — same D5 rule that keeps one spelling of Chișinău everywhere.
+ *
+ * Still OMITTED, because these remain business facts nobody may invent: street
+ * address, postal code, founding year, and `vatID`/`taxID` — VAT status is still
+ * an open row in BLOCKERS.md. A wrong value is worse than a missing one,
+ * Organization has no required properties, and a surviving placeholder token
+ * fails `npm run verify`.
  */
 export const organizationLd = () => ({
   '@type': 'Organization',
   '@id': ORG_ID,
   additionalType: 'https://schema.org/EmploymentAgency',
   name: SITE_NAME,
+  legalName: LEGAL_NAME,
+  identifier: {
+    '@type': 'PropertyValue',
+    propertyID: 'IDNO',
+    value: IDNO,
+  },
   url: `${SITE_URL}/`,
   logo: {
     '@type': 'ImageObject',

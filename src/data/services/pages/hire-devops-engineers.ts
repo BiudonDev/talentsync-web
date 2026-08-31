@@ -52,7 +52,7 @@ export const hireDevopsEngineers: ServicePage = {
   h1: 'Hire DevOps Engineers in Eastern Europe',
 
   answerParagraph:
-    'TalentSync places DevOps, platform and SRE engineers from Eastern Europe who own CI/CD, infrastructure-as-code, observability and cloud cost. Our engineer on the Barça Mobile engagement worked on system architecture and CI/CD for a consumer launch. Engineers engage on a direct B2B contract with you or hourly, including part-time, which suits teams without full-time platform work.',
+    'TalentSync places DevOps, platform and SRE engineers from Eastern Europe who own CI/CD, infrastructure-as-code, observability and cloud cost. Our DevOps engineer on the Barça Mobile engagement worked on system architecture and CI/CD for a consumer launch. Engineers engage on a direct B2B contract with you or hourly, including part-time, which suits teams without full-time platform work.',
 
   whoFor: {
     audience: 'Product engineering teams that ship faster than their pipeline allows',
@@ -125,7 +125,7 @@ export const hireDevopsEngineers: ServicePage = {
         {
           kind: 'prose',
           body: [
-            'The engineer we placed on the Barça Mobile engagement worked on system architecture and CI/CD for the launch. That is the engineer’s scope, stated precisely: TalentSync placed an engineer into the team, we did not build the product, and we are not going to describe someone else’s platform as our delivery.',
+            'The DevOps engineer we placed on the Barça Mobile engagement worked on system architecture and CI/CD for the launch. That is the engineer’s scope, stated precisely: TalentSync placed an engineer into the team, we did not build the product, and we are not going to describe someone else’s platform as our delivery.',
             'What made it a useful proving ground is the shape of the work rather than any headline number. A consumer launch tied to a named brand has a date set outside engineering, which changes every technical decision underneath it.',
           ],
         },
@@ -359,7 +359,7 @@ export const hireDevopsEngineers: ServicePage = {
   evidence: [
     {
       client: 'Barça Mobile',
-      role: 'Engineer on system architecture and CI/CD',
+      role: 'DevOps engineer, system architecture and CI/CD',
       count: 1,
       outcome:
         'Worked on system architecture and CI/CD for the launch, and on the MVNO integration with the Orange network. That is the engineer’s scope; TalentSync placed the engineer and did not deliver the platform.',
@@ -381,7 +381,7 @@ export const hireDevopsEngineers: ServicePage = {
     {
       question: 'Do you place engineers who have handled a launch spike?',
       answer:
-        'Yes. On the Barça Mobile engagement the engineer we placed worked on system architecture and CI/CD for a consumer launch with a fixed external date. Launch work is a distinct screen: we look for rollback design, load headroom planning and experience shipping under a deadline that cannot move.',
+        'Yes. On the Barça Mobile engagement the DevOps engineer we placed worked on system architecture and CI/CD for a consumer launch with a fixed external date. Launch work is a distinct screen: we look for rollback design, load headroom planning and experience shipping under a deadline that cannot move.',
     },
     {
       question: 'Which cloud and tooling experience should we expect?',

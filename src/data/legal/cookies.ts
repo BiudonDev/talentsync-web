@@ -43,7 +43,7 @@ export const cookies: LegalDoc = {
     { k: 'h', level: 2, id: 'c1', t: '1. Who we are' },
     {
       k: 'p',
-      t: 'This policy explains how **{{LEGAL_ENTITY_NAME}}** (“TalentSync”, “we”, “us”), registered in the Republic of Moldova under {{IDNO}}, registered office {{REGISTERED_ADDRESS}}, Chișinău, Republic of Moldova, uses cookies and similar technologies on **https://talentsync.eu** (the “Site”).',
+      t: 'This policy explains how **S.R.L. “UNQENERGY”** (IDNO 1020600034949), trading as “TalentSync” (“we”, “us”), registered in the Republic of Moldova, registered office {{REGISTERED_ADDRESS}}, Chișinău, Republic of Moldova, uses cookies and similar technologies on **https://talentsync.eu** (the “Site”).',
     },
     {
       k: 'p',

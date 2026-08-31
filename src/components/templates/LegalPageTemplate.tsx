@@ -177,7 +177,18 @@ function Blocks({ blocks }: { blocks: Block[] }) {
 
 /* -------------------------------------------------------------------- chrome */
 
-const DATE = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })
+/* `timeZone: 'UTC'` is load-bearing, not decoration. `fmt` parses the ISO date
+   as UTC midnight; without this option Intl renders it in the BUILD MACHINE's
+   zone, so every effective date on every legal document shipped one day early
+   from any CI runner west of UTC (America/Los_Angeles: '2026-08-30' printed
+   "29 August 2026", contradicting the hardcoded "Effective from 30 August 2026"
+   in the document-control table lower on the same page). */
+const DATE = new Intl.DateTimeFormat('en-GB', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+  timeZone: 'UTC',
+})
 const fmt = (iso: string) => DATE.format(new Date(`${iso}T00:00:00Z`))
 
 /*
@@ -319,7 +330,15 @@ export default function LegalPageTemplate({ doc }: LegalPageTemplateProps) {
         </section>
       )}
 
-      <div className="mt-10 grid gap-10 lg:grid-cols-[16rem_minmax(0,65ch)] lg:items-start lg:gap-x-16">
+      {/* `grid-cols-[minmax(0,1fr)]` at the base breakpoint is load-bearing, not
+          decoration — the twin of the wrapper in src/app/insights/[slug]/page.tsx,
+          which carries the full derivation. Declaring columns only at lg leaves
+          one implicit `auto` track whose minimum is the item's min-content, and
+          Prose gives every table `width: max-content`, so a legal doc with a
+          table blows the track out to the 65ch cap inside a phone viewport.
+          Measured on /privacy/ at 390px: gridTemplateColumns 688.688px and
+          documentElement scrollWidth 704 vs clientWidth 382. Change both. */}
+      <div className="mt-10 grid grid-cols-[minmax(0,1fr)] gap-10 lg:grid-cols-[16rem_minmax(0,65ch)] lg:items-start lg:gap-x-16">
         <TableOfContents items={toc} title="Contents" />
         <Prose as="article" className="legal-doc">
           <Blocks blocks={doc.body} />

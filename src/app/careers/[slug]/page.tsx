@@ -59,7 +59,7 @@ function Apply({ role }: { role: CareerRole }) {
       <p className="mt-3 max-w-xl text-sm leading-relaxed text-text-secondary">
         Your email opens with the subject line already filled in. Attach your CV and add a few lines
         on why this role. By emailing it you accept our{' '}
-        <Link href="/candidate-privacy/" className={INLINE_LINK}>
+        <Link prefetch={false} href="/candidate-privacy/" className={INLINE_LINK}>
           candidate privacy notice
         </Link>
         , which says what we record, how long we keep it, and how to make us delete it.
@@ -122,7 +122,7 @@ export default async function CareerRolePage({ params }: { params: Promise<{ slu
         <p className="mt-6 max-w-2xl text-base leading-relaxed text-text-secondary text-pretty">
           Every application is read by a person, and you will hear back either way. If this role is
           not the one, the{' '}
-          <Link href="/careers/" className={INLINE_LINK}>
+          <Link prefetch={false} href="/careers/" className={INLINE_LINK}>
             other open role
           </Link>{' '}
           might be — and if neither fits, say so in the same email.

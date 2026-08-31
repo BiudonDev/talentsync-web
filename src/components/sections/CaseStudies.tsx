@@ -17,6 +17,23 @@ const srcSet = (src: string) => `${base(src)}-384.webp 384w, ${base(src)}-768.we
 const SPOTLIGHT_SIZES = '(min-width: 1024px) 34rem, 100vw'
 const CARD_SIZES = '(min-width: 1024px) 22rem, (min-width: 640px) 45vw, 18rem'
 
+/* 06-claims rows 13 and 17, verbatim. The heading is what makes the Orange tile
+   lawful: TalentSync's counterparty is New Era Visionary Group, not Orange and
+   not FC Barcelona, so "Our Clients" over those logos was a false statement
+   about the trader's commercial connections and an implied endorsement. "Where
+   our engineers work" claims only what is true — an engineer we placed worked
+   there, inside someone else's team. Held as string constants, not JSX text,
+   so the apostrophe can be a real typographic apostrophe rather than an HTML
+   entity spliced into a legally-reviewed sentence. */
+const GRID_SUBHEAD =
+  'Companies and products our placed engineers have contributed to, in their clients’ own teams.'
+
+/* 06-claims row 16. Four bullets say "team scaled within N weeks"; rather than
+   hedge each one, the clock is defined once, here, under the grid they sit in. */
+const TIMING_QUALIFIER =
+  'Timings are measured from agreed role brief to signed offer, for the engagements shown. ' +
+  'Your timeline depends on role scarcity and your interview schedule.'
+
 export default function CaseStudies() {
   const highlighted = caseStudies.find((s) => s.highlight)
   const others = caseStudies.filter((s) => !s.highlight)
@@ -41,10 +58,10 @@ export default function CaseStudies() {
     <SectionWrapper id="case-studies" band>
       <div className="text-center mb-20">
         <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-balance mb-6">
-          Our <span className="text-gradient">Clients</span>
+          Where our <span className="text-gradient">engineers work</span>
         </h2>
         <p className="text-lg sm:text-xl leading-relaxed text-text-secondary text-pretty max-w-2xl mx-auto">
-          Driving success across industries — from global sports clubs to fast-growing startups
+          {GRID_SUBHEAD}
         </p>
       </div>
 
@@ -159,6 +176,10 @@ export default function CaseStudies() {
           </button>
         ))}
       </div>
+
+      <p className="mt-8 max-w-2xl text-sm leading-relaxed text-text-secondary text-pretty">
+        {TIMING_QUALIFIER}
+      </p>
     </SectionWrapper>
   )
 }

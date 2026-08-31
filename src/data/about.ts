@@ -41,7 +41,7 @@ type Fact = { term: string; value: string }
  * positioning implied by omission.
  */
 export const facts: Fact[] = [
-  { term: 'Legal name', value: '{{LEGAL_ENTITY_NAME}}' },
+  { term: 'Legal name', value: 'S.R.L. “UNQENERGY”, trading as “TalentSync”' },
   { term: 'Founded', value: FOUNDED_YEAR },
   { term: 'Headquarters', value: 'Chișinău, Moldova' },
   { term: 'What it does', value: 'Technology recruitment and engineering talent partner' },
@@ -62,9 +62,10 @@ export const facts: Fact[] = [
  * exactly (D5), so the locality is spelled `Chișinău` here as everywhere else.
  */
 export const companyDetails: Fact[] = [
-  { term: 'Registered name', value: '{{LEGAL_ENTITY_NAME}}' },
-  { term: 'Legal form', value: '{{LEGAL_FORM}}' },
-  { term: 'Registration number (IDNO)', value: '{{IDNO}}' },
+  { term: 'Registered name', value: 'S.R.L. “UNQENERGY”' },
+  { term: 'Trading name', value: 'TalentSync' },
+  { term: 'Legal form', value: 'societate cu răspundere limitată (SRL)' },
+  { term: 'Registration number (IDNO)', value: '1020600034949' },
   { term: 'VAT status', value: '{{VAT_STATUS}}' },
   { term: 'Registered address', value: '{{REGISTERED_ADDRESS}}, Chișinău, Republic of Moldova' },
   { term: 'Email', value: siteConfig.email },
@@ -114,7 +115,12 @@ export const faqs: { q: string; a: string }[] = [
   },
   {
     q: 'How long have you been operating?',
-    a: `Since ${FOUNDED_YEAR}. Our published record covers ten named clients including Barça Mobile, Orange, SocialBee and Silvertalent, with the placements, stacks and timelines listed individually rather than summarised into a number. We would rather show you five verifiable engagements than claim a hundred you cannot check.`,
+    // Orange was named here as a "client". TalentSync has no contract with
+    // Orange — the engineers reached the Orange network through the Barça Mobile
+    // programme, and case-studies.ts flags the entry as an exception for exactly
+    // that reason. 06-claims row 13 is a legal finding, not a wording preference,
+    // and it applies to prose as much as to the grid heading.
+    a: `Since ${FOUNDED_YEAR}. Our published record covers ten named engagements — Barça Mobile, SocialBee and Silvertalent among them — with the placements, stacks and timelines listed individually rather than summarised into a number. Two of the ten are flagged on that page as not placements at all. We would rather show you a record you can check than a headline figure you cannot.`,
   },
   {
     q: 'Are you hiring?',

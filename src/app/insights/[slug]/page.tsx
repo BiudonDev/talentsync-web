@@ -44,7 +44,7 @@ function inline(text: string, base = ''): ReactNode[] {
             {label}
           </a>
         ) : (
-          <Link key={key} href={href}>
+          <Link prefetch={false} key={key} href={href}>
             {label}
           </Link>
         ),
@@ -195,7 +195,18 @@ function Blocks({ blocks }: { blocks: Block[] }) {
 
 /* --------------------------------------------------------------------- page */
 
-const DATE = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })
+// `timeZone: 'UTC'` is load-bearing, not decoration. `fmt` parses the ISO date as
+// UTC midnight; without this option Intl renders it in the BUILD MACHINE's zone,
+// so on any host west of UTC the visible byline is a day earlier than the
+// `datePublished` in this page's own Article JSON-LD, and the value changes with
+// wherever CI happens to run. Verified: '2026-08-26' printed "25 August 2026" on
+// America/Los_Angeles beside `"datePublished":"2026-08-26"`.
+const DATE = new Intl.DateTimeFormat('en-GB', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+  timeZone: 'UTC',
+})
 const fmt = (iso: string) => DATE.format(new Date(`${iso}T00:00:00Z`))
 
 type Params = { params: Promise<{ slug: string }> }
@@ -255,6 +266,7 @@ export default async function InsightPage({ params }: Params) {
           <p className="mt-4 text-sm leading-relaxed text-text-secondary">
             By{' '}
             <Link
+              prefetch={false}
               href={AUTHOR.url}
               className="rounded-lg underline underline-offset-4 hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
             >
@@ -287,8 +299,20 @@ export default async function InsightPage({ params }: Params) {
         </header>
 
         {/* lg only MOVES the contents into a sticky rail. Nothing appears or
-            disappears at any breakpoint (Rule 8). */}
-        <div className="mt-10 grid gap-10 lg:grid-cols-[16rem_minmax(0,65ch)] lg:items-start lg:gap-x-16">
+            disappears at any breakpoint (Rule 8).
+
+            `grid-cols-[minmax(0,1fr)]` at the base breakpoint is load-bearing,
+            not decoration. Declaring columns only at lg leaves one implicit
+            `auto` track below it, whose minimum is the grid item's min-content,
+            and Prose gives every table `width: max-content` — so an article with
+            a table resolves that minimum to the table's natural width and the
+            track blows out to the 65ch cap inside a phone viewport. All four
+            articles have a table and all four scrolled sideways. Measured on
+            /insights/moldova-it-park-single-tax-explained/: gridTemplateColumns
+            688.688px, documentElement scrollWidth 704 vs clientWidth 492; after,
+            460px and 492 vs 492. Same expression as LegalPageTemplate's wrapper
+            — change both together. */}
+        <div className="mt-10 grid grid-cols-[minmax(0,1fr)] gap-10 lg:grid-cols-[16rem_minmax(0,65ch)] lg:items-start lg:gap-x-16">
           <TableOfContents items={tocOf(a)} title={`Contents: ${a.label}`} />
           <Prose as="article">
             <Blocks blocks={a.body} />
