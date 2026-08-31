@@ -34,14 +34,17 @@ import type { LegalDoc } from './types'
  *    therefore NOT here. Only its internal-consistency point is fixed (D23.3 is
  *    now expressly subject to the escalation and interim-relief carve-outs). The
  *    substantive objection belongs in docs/plans/BLOCKERS.md.
- *  · D2 — A12.2's "no cookies, no analytics, no tracking of any kind" is rewritten
- *    for consent-gated GA4 rather than left as a false statement in a legal notice.
+ *  · D2's consent-gated GA4 rewrite of A12.2 is REVERSED (wave 2, 2026-08-31).
+ *    No GA4 property exists, analytics ships off, nothing is stored on a
+ *    visitor's device, so A12.2 states that instead of describing a banner.
  *  · The critic's src/data/content.ts edits are another package's file.
  *
- * D8 token rule: where the draft stated a recommended default inline it has been
- * taken and the token deleted. What survives is a business fact no agent may
- * invent — entity identity, fee percentages, insurance limits, the placement
- * licence question that is blocked on Moldovan counsel.
+ * D8 token rule: every token here is now resolved from the client's own answers.
+ * Where the answer was "not available", the clause states the ABSENCE rather than
+ * implying a fact: no VAT registration (provider block), no insurance policy in
+ * force (C17), no Article 27 representative appointed (B18.5). B8.1 no longer
+ * carries a standing fee percentage or minimum — both come from the Fee
+ * Confirmation, which is how they are actually agreed on each role.
  */
 export const terms: LegalDoc = {
   slug: 'terms',
@@ -86,7 +89,7 @@ export const terms: LegalDoc = {
     { k: 'h', level: 2, id: 'provider', t: 'Provider and contact' },
     {
       k: 'p',
-      t: 'These terms are issued by **S.R.L. “UNQENERGY”** (IDNO 1020600034949), trading as **“TalentSync”**, a societate cu răspundere limitată (SRL) incorporated in the Republic of Moldova, registered office {{REGISTERED_ADDRESS}}, Chișinău, Republic of Moldova. VAT / fiscal status: {{VAT_STATUS}}. Employment-placement licence status: {{PLACEMENT_LICENCE_STATUS}}. TalentSync is a trading name only; the contracting party is the registered company named here.',
+      t: 'These terms are issued by **S.R.L. “UNQENERGY”** (IDNO 1020600034949), trading as **“TalentSync”**, a societate cu răspundere limitată (SRL) incorporated in the Republic of Moldova, registered office at MD-2005, Chișinău Rîșcani, mun. Chișinău, Colina Pușkin 18, ap. (of.) 1, Republic of Moldova. **We are not registered for VAT in the Republic of Moldova**, so our invoices carry no VAT and show no VAT identification number; clause [B11](#B11) governs VAT, withholding and gross-up. Employment-placement licence: no recruitment licence is required in the Republic of Moldova. TalentSync is a trading name only; the contracting party is the registered company named here.',
     },
     {
       k: 'p',
@@ -227,7 +230,7 @@ export const terms: LegalDoc = {
     {
       k: 'c',
       id: 'A5-2',
-      t: 'We publish a client name or logo only where we hold that client’s permission to do so. Testimonials are genuine statements provided by the named person, published with that person’s written consent, and published unedited as to substance; where a testimonial has been shortened, the substance and meaning are unchanged.',
+      t: 'We publish a client name or logo only where we hold that client’s permission to do so. Testimonials are genuine statements provided by the named person, published with that person’s agreement, and published unedited as to substance; where a testimonial has been shortened, the substance and meaning are unchanged.',
     },
     {
       k: 'c',
@@ -385,7 +388,7 @@ export const terms: LegalDoc = {
     {
       k: 'c',
       id: 'A12-2',
-      t: '**The Site sets no cookie and loads no analytics until you have accepted them on the consent banner.** Google Consent Mode v2 defaults every signal to denied, and dismissing the banner without choosing counts as a refusal. Where you accept, we use Google Analytics 4 and nothing else — no advertising technology, no cross-site tracking, no marketing pixel. Every font, style, script and image other than that analytics tag is served from talentsync.eu, so before you consent, loading the Site causes no request to any third-party host. Web-server logs record IP addresses for security and operational purposes and are described in the privacy policy. Every cookie is listed by name, purpose, provider, type and lifetime in our **[cookie policy](/cookies/)**.',
+      t: '**The Site sets no cookie of its own and loads no analytics.** There is no analytics tag, no advertising technology, no cross-site tracking, no marketing pixel, no chat widget and no social embed, and there is no consent banner because nothing is stored on your device for us to ask you about. Every font, style, script and image is served from talentsync.eu, so loading the Site causes no request to any third-party host. Web-server logs record IP addresses for security and operational purposes and are described in the privacy policy. If we ever add analytics, we will update our **[cookie policy](/cookies/)** first and ask for your consent before anything is stored.',
     },
 
     { k: 'h', level: 3, id: 'A13', t: 'A13. Changes to these Website Terms' },
@@ -429,7 +432,7 @@ export const terms: LegalDoc = {
       k: 'note',
       t: 'Plain English (non-binding summary — the clauses below are what actually applies)',
       body: [
-        'We find and validate an engineer; you interview, decide, and employ or contract them directly. You pay us a percentage of their first-year package when they accept your offer. If you hire someone we introduced within **9 months** of the introduction — into any role, or into a group company — the fee is due, and within the first 6 months we do not have to prove we caused the hire. If you already knew the person, tell us within **5 business days** with evidence and no fee is payable. If the hire doesn’t work out in the first **12 weeks** for a reason we cover, **you choose**: a free replacement search, or a rebate of 100% / 75% / 50% depending on when it ended. Do not pass candidate CVs outside your own company. You make the hiring decision and you run the right-to-work and background checks. We will not come back for an engineer we placed with you. Our liability is capped by clause D6. Moldovan law, Chișinău courts.',
+        'We find and validate an engineer; you interview, decide, and employ or contract them directly. You pay us a percentage of their first-year package when they accept your offer; the percentage and the minimum fee are the ones on the Fee Confirmation we send you for that role, and if we never put them to you in writing, no fee is payable. If you hire someone we introduced within **9 months** of the introduction — into any role, or into a group company — the fee is due, and within the first 6 months we do not have to prove we caused the hire. If you already knew the person, tell us within **5 business days** with evidence and no fee is payable. If the hire doesn’t work out in the first **12 weeks** for a reason we cover, **you choose**: a free replacement search, or a rebate of 100% / 75% / 50% depending on when it ended. Do not pass candidate CVs outside your own company. You make the hiring decision and you run the right-to-work and background checks. We will not come back for an engineer we placed with you. Our liability is capped by clause D6. Moldovan law, Chișinău courts.',
       ],
     },
 
@@ -467,7 +470,7 @@ export const terms: LegalDoc = {
     {
       k: 'c',
       id: 'B1-4',
-      t: '**Fee Confirmation.** Before or promptly after the first Introduction on any role, we will issue a one-page **Fee Confirmation** stating the Fee percentage, the Minimum Fee, the Validity Period and the payment period for that role. Where a Fee Confirmation is signed or confirmed in writing (email is sufficient), the four terms it states prevail over any inconsistent provision in Part B. Where no Fee Confirmation is signed, the corresponding provisions of Part B apply.',
+      t: '**Fee Confirmation.** Before or promptly after the first Introduction on any role, we will issue a one-page **Fee Confirmation** stating the Fee percentage, the Minimum Fee, the Validity Period and the payment period for that role. Where a Fee Confirmation is signed or confirmed in writing (email is sufficient), the four terms it states prevail over any inconsistent provision in Part B. Where no Fee Confirmation is signed, the corresponding provisions of Part B apply, and the Fee percentage and Minimum Fee are determined under clause [B8.1](#B8-1).',
     },
     {
       k: 'c',
@@ -622,7 +625,7 @@ export const terms: LegalDoc = {
     {
       k: 'c',
       id: 'B8-1',
-      t: 'The Fee is **{{PLACEMENT_FEE_PERCENT}}** of the Candidate’s first-year gross Remuneration, subject to a minimum fee of **{{MINIMUM_FEE}}**. The applicable figure for a role is stated in the Fee Confirmation for that role.',
+      t: 'The Fee is a percentage of the Candidate’s first-year gross Remuneration, subject to a minimum (the **Minimum Fee**). **The percentage and the Minimum Fee applicable to a role are those stated in the Fee Confirmation for that role**, issued under clause [B1.4](#B1-4), or otherwise notified to the Client in writing. Where neither has been stated to the Client in writing, no Fee is payable under this Part B in respect of a Candidate introduced for that role.',
     },
     {
       k: 'c',
@@ -950,7 +953,7 @@ export const terms: LegalDoc = {
     {
       k: 'c',
       id: 'B18-5',
-      t: 'Our representative appointed under Article 27 of Regulation (EU) 2016/679 is: {{EU_REP_NAME}}, {{EU_REP_ADDRESS}}, {{EU_REP_EMAIL}}.',
+      t: '**We have not appointed a representative in the European Union under Article 27 of Regulation (EU) 2016/679.** We are assessing whether one is required and, once a representative is appointed, the name, address and email will be published in our [privacy policy](/privacy/) and [legal notice](/imprint/) and this clause will be updated. Until then, data-protection enquiries and data-subject requests reach us directly at [victor@talentsync.eu](mailto:victor@talentsync.eu), and nothing in this clause affects any data subject’s right to complain to the supervisory authority in their own country.',
     },
     {
       k: 'c',
@@ -1477,7 +1480,7 @@ export const terms: LegalDoc = {
     {
       k: 'c',
       id: 'C15-1',
-      t: 'We are responsible for each Engineer’s remuneration, income tax, social-security contributions, statutory entitlements, insurance and working-time compliance under the law of the Republic of Moldova.',
+      t: 'Where we engage the Engineer under an employment contract, we are responsible for that Engineer’s remuneration, income tax, social-security contributions, statutory entitlements, insurance and working-time compliance under the law of the Republic of Moldova. Where we engage the Engineer under a business-to-business services contract, those obligations rest with the Engineer’s own company, and we are responsible for ensuring that contract requires them. Clause [C1.1](#C1-1) states which basis applies to an Assignment.',
     },
     {
       k: 'c',
@@ -1547,12 +1550,12 @@ export const terms: LegalDoc = {
     {
       k: 'c',
       id: 'C17-1',
-      t: 'We maintain, with reputable insurers, professional indemnity insurance of **{{PI_INSURANCE_LIMIT}}**, commercial general liability insurance of **{{GL_INSURANCE_LIMIT}}**, and cyber liability insurance of **{{CYBER_INSURANCE_LIMIT}}**. We will provide a certificate of insurance on written request.',
+      t: '**We do not currently hold professional indemnity, commercial general liability or cyber liability insurance, and we warrant no level of cover.** Where the Client requires any of those covers for an Assignment, it shall say so in writing before the Assignment starts; we shall put the required cover in place with reputable insurers as a condition of that Assignment and provide a certificate of insurance before the Assignment begins. The covers and limits so agreed shall be recorded in the Assignment Schedule, and references in these terms to the insurance required by this clause are references to what that Assignment Schedule records. On written request we will confirm in writing what cover, if any, is in force at that date.',
     },
     {
       k: 'c',
       id: 'C17-2',
-      t: 'Clause [D6.5](#D6-5) governs how long that insurance must be maintained, and how the cover interacts with the liability caps. The insurance does **not** limit any liability that clause D6 leaves uncapped.',
+      t: 'Clause [D6.5](#D6-5) governs how long any insurance put in place under C17.1 must be maintained, and how the cover interacts with the liability caps. Insurance does **not** limit any liability that clause D6 leaves uncapped, and **the absence of insurance does not reduce any liability we have under the Agreement** — our obligations under clause [D6](#D6) stand whether or not any policy responds.',
     },
 
     { k: 'h', level: 3, id: 'C18', t: 'C18. Audit and records' },
@@ -1794,7 +1797,7 @@ export const terms: LegalDoc = {
           lit: true,
           items: [
             '(a) **uncapped** — our indemnities under [C16.3](#C16-3) (licensing and worker status) and [C12.8](#C12-8) (title in the Work Product);',
-            '(b) **capped in aggregate at the greater of EUR 2,000,000 and the limits of the insurance required by [C17.1](#C17-1)** — our indemnity under [D7.1](#D7-1) (IP infringement), our liability for breach of clause [D3](#D3), and our liability for breach of Applicable Data Protection Law, including any administrative fine imposed on the Client to the extent attributable to our breach.',
+            '(b) **capped in aggregate at the greater of EUR 2,000,000 and the limits of any insurance in force under [C17.1](#C17-1)** — our indemnity under [D7.1](#D7-1) (IP infringement), our liability for breach of clause [D3](#D3), and our liability for breach of Applicable Data Protection Law, including any administrative fine imposed on the Client to the extent attributable to our breach.',
           ],
         },
       ],
@@ -1802,7 +1805,7 @@ export const terms: LegalDoc = {
     {
       k: 'c',
       id: 'D6-5',
-      t: 'We shall maintain the insurance in [C17.1](#C17-1) throughout the term and for **3 years** afterwards, shall note the Client’s interest on request, and shall not settle any claim in a manner that reduces the cover available to the Client.',
+      t: 'Where insurance is put in place under [C17.1](#C17-1), we shall maintain it throughout the term and for **3 years** afterwards, shall note the Client’s interest on request, and shall not settle any claim in a manner that reduces the cover available to the Client.',
     },
     {
       k: 'c',

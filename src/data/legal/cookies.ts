@@ -5,18 +5,18 @@ import type { LegalDoc } from './types'
  * Part 2 of that document is an implementation plan for the consent-banner package
  * and is deliberately not on this page.
  *
- * Rewritten for GA4 per DECISIONS.md D2. The draft was written around a Plausible
- * recommendation and concluded "no banner is required"; D2 rejects that on the
- * basis of the user's explicit brief. So:
+ * Wave 2, 2026-08-31: ANALYTICS SHIPS OFF. No GA4 property exists, so there is no
+ * measurement ID, nothing loads (layout.tsx does not mount <Analytics />), the site
+ * stores nothing on a visitor's device, and ConsentBanner therefore does not render.
+ * D2's consent-gated GA4 rewrite is reversed: describing a banner and four Google
+ * cookies that do not exist would document processing the company does not perform.
+ * So §3 states the no-storage position, §5 Table A is empty by fact, the GA4 rows
+ * are gone from the live inventory, and §7 says there is no consent to withdraw.
  *
- *  · §3 no longer claims the site sets no cookies. It states the consent gate.
- *  · The GA4 rows move out of the "conditional, not present" table into a live
- *    "set only if you accept" table, with the durations the draft already verified.
- *  · The "privacy-preserving analytics, no consent needed" paragraph is deleted —
- *    it was the single sentence that would have contradicted the privacy policy
- *    on the day both published (08-critique-completeness, first CRITICAL finding).
- *  · The Google Fonts row moves to its target state: layout.tsx already loads
- *    Montserrat through next/font, which self-hosts the file at build time.
+ * WHEN THE G-XXXXXXXXXX ID ARRIVES: re-enabling is one edit in src/app/layout.tsx
+ * (uncomment the <Analytics /> mount and its import). This page must be updated in
+ * the same change — §3, §4, §5 (Table A gains `ts_consent`, a live analytics table
+ * returns), §7 and §8 all describe a site with no banner and must not ship stale.
  *
  * Every duration, provider and browser instruction below is the draft's own,
  * unchanged.
@@ -25,10 +25,10 @@ export const cookies: LegalDoc = {
   slug: 'cookies',
   path: '/cookies/',
   label: 'Cookie Policy',
-  h1: 'Cookie policy: every cookie talentsync.eu can set, and when',
+  h1: 'Cookie policy: talentsync.eu sets no cookies of its own',
   metaTitle: 'Cookie Policy',
   metaDescription:
-    'Every cookie and storage item on talentsync.eu by name, provider, purpose and lifetime — what is strictly necessary, what needs consent, and how to change it.',
+    'talentsync.eu stores nothing on your device: no cookies, no analytics, no consent banner. What still leaves your browser, and what would change that.',
   version: '1.0',
   updated: '2026-08-30',
   lede: 'This policy is only about what happens in *your browser* when you visit talentsync.eu. Everything else we do with personal data — candidate data, client data — is in the [privacy policy](/privacy/).',
@@ -43,7 +43,7 @@ export const cookies: LegalDoc = {
     { k: 'h', level: 2, id: 'c1', t: '1. Who we are' },
     {
       k: 'p',
-      t: 'This policy explains how **S.R.L. “UNQENERGY”** (IDNO 1020600034949), trading as “TalentSync” (“we”, “us”), registered in the Republic of Moldova, registered office {{REGISTERED_ADDRESS}}, Chișinău, Republic of Moldova, uses cookies and similar technologies on **https://talentsync.eu** (the “Site”).',
+      t: 'This policy explains how **S.R.L. “UNQENERGY”** (IDNO 1020600034949), trading as “TalentSync” (“we”, “us”), registered in the Republic of Moldova, registered office at MD-2005, Chișinău Rîșcani, mun. Chișinău, Colina Pușkin 18, ap. (of.) 1, Republic of Moldova, uses cookies and similar technologies on **https://talentsync.eu** (the “Site”).',
     },
     {
       k: 'p',
@@ -51,7 +51,7 @@ export const cookies: LegalDoc = {
     },
     {
       k: 'p',
-      t: 'Questions: **{{PRIVACY_EMAIL}}**, or [victor@talentsync.eu](mailto:victor@talentsync.eu). Our representative in the European Union under Article 27 GDPR is **{{EU_REP_NAME}}**, {{EU_REP_ADDRESS}}, {{EU_REP_EMAIL}}.',
+      t: 'Questions go to Victor Uncuta at **[victor@talentsync.eu](mailto:victor@talentsync.eu)**. **We have not appointed a representative in the European Union under Article 27 GDPR.** We are assessing whether one is required and will publish the name, address and email here once appointed; until then, contact us directly, and see [§10](#c10) for the authorities you can complain to.',
     },
 
     /* ------------------------------------------------------------------ 2 */
@@ -96,18 +96,18 @@ export const cookies: LegalDoc = {
     },
 
     /* ------------------------------------------------------------------ 3 */
-    { k: 'h', level: 2, id: 'c3', t: '3. Current status — nothing runs until you choose' },
+    { k: 'h', level: 2, id: 'c3', t: '3. Current status — this Site stores nothing on your device' },
     {
       k: 'p',
-      t: '**On your first visit, the only thing this Site stores on your device is the record of the choice you make on the consent banner.** Analytics does not load, and no analytics cookie is set, unless and until you accept it.',
+      t: '**This Site sets no cookie of its own, and stores nothing else on your device either** — no local-storage key, no session-storage key, no pixel, no fingerprint. That is true on your first visit, on every visit after it, and whatever you click while you are here.',
     },
     {
       k: 'p',
-      t: 'We use **Google Analytics 4** and nothing else. There is no advertising technology on this Site, no cross-site tracking, no data broker, no marketing pixel, no chat widget, no heatmap, no session recording, no A/B testing tool and no social embed. We have not enabled Google Signals, ads personalisation, or data sharing with Google’s advertising products in our GA4 property.',
+      t: 'We run **no analytics at all**: no Google Analytics, no Plausible, no self-hosted alternative. There is no advertising technology on this Site, no cross-site tracking, no data broker, no marketing pixel, no chat widget, no heatmap, no session recording, no A/B testing tool and no social embed.',
     },
     {
       k: 'p',
-      t: 'If any of that changes, this policy is updated *before* the change goes live, and if the change requires your consent you will be asked for it.',
+      t: '**There is no consent banner, because there is nothing to consent to.** Consent is required before something is stored on or read from your device; we do neither, so asking would be theatre. **If we ever add analytics, we will update this policy first and ask for your consent before anything is stored** — and refusing will keep the Site working exactly as it does now.',
     },
 
     /* ------------------------------------------------------------------ 4 */
@@ -121,81 +121,27 @@ export const cookies: LegalDoc = {
     },
     {
       k: 'p',
-      t: 'Google Consent Mode v2 is configured with **every signal defaulting to denied**. Closing the banner without choosing counts as a refusal.',
+      t: 'Nothing on this Site currently falls into the second category, so nothing here is waiting on a decision from you. If that ever changes, refusing will be exactly as easy as accepting — the same screen, one click, no pre-ticked boxes — and closing the banner without choosing will count as a refusal.',
     },
 
     /* ------------------------------------------------------------------ 5 */
     { k: 'h', level: 2, id: 'c5', t: '5. Inventory — what is on this Site' },
 
-    { k: 'h', level: 3, id: 'c5-a', t: 'Table A — Strictly necessary, set without consent' },
+    { k: 'h', level: 3, id: 'c5-a', t: 'A — Stored on your device: nothing' },
     {
-      k: 'table',
-      head: ['Name', 'Provider', 'Purpose', 'Type', 'Duration'],
-      rows: [
-        [
-          '`ts_consent`',
-          'TalentSync (first party)',
-          'Records your cookie choice — including a refusal — so we do not ask again on every page. Created **only after** you make a choice.',
-          'Local storage, strictly necessary',
-          'Until you clear it, or 6 months, whichever comes first',
-        ],
-      ],
+      k: 'p',
+      t: '**This table is empty, and that is the whole point of it.** There is no cookie, no local-storage key and no session-storage item set by talentsync.eu — not a strictly necessary one, not an optional one. Nothing to list, nothing to switch off, and nothing that survives after you close the tab.',
+    },
+    {
+      k: 'p',
+      t: 'Two consequences worth stating plainly. There is **no consent record**, because there is no consent to record. And there is **no analytics cookie**: no `_ga`, no `_gid`, no `_gat_*`, because no analytics runs here. If analytics is ever added, [Table C](#c5-c) is where it appears first, and this policy changes before it ships.',
     },
 
     {
       k: 'h',
       level: 3,
       id: 'c5-b',
-      t: 'Table B — Analytics, set only if you accept',
-    },
-    {
-      k: 'p',
-      t: 'None of the following exists in your browser unless you press **Accept** on the banner. Withdraw consent and we stop setting them; see [§7](#c7) for deleting the ones already there.',
-    },
-    {
-      k: 'table',
-      head: ['Name', 'Provider', 'Purpose', 'Type', 'Duration'],
-      rows: [
-        [
-          '`_ga`',
-          'Google',
-          'Distinguishes one browser from another; the core Google Analytics identifier.',
-          'Third-party cookie, analytics',
-          '**2 years**',
-        ],
-        [
-          '`_ga_{{GA4_MEASUREMENT_ID}}`',
-          'Google',
-          'Persists session state for our specific GA4 data stream.',
-          'Third-party cookie, analytics',
-          '**2 years**',
-        ],
-        [
-          '`_gid`',
-          'Google',
-          'Distinguishes browsers; a legacy Universal Analytics cookie that some `gtag.js` configurations still set.',
-          'Third-party cookie, analytics',
-          '**24 hours**',
-        ],
-        [
-          '`_gat_gtag_{{GA4_MEASUREMENT_ID}}`',
-          'Google',
-          'Throttles the request rate to Google’s servers.',
-          'Third-party cookie, analytics',
-          '**1 minute**',
-        ],
-      ],
-    },
-    {
-      k: 'p',
-      t: 'What GA4 receives: a cookie identifier, your IP address (used by Google to derive an approximate location and then discarded), the pages you viewed, the referring page, your device and browser type, and events such as an outbound click on our Calendly or `mailto:` links. GA4 event-data retention is set to **2 months**, the shortest period Google offers. Google acts as our processor for this, under its data processing terms, with the EU–US Data Privacy Framework and the EU Standard Contractual Clauses covering the transfer.',
-    },
-
-    {
-      k: 'h',
-      level: 3,
-      id: 'c5-c',
-      t: 'Table C — Not cookies, but data still leaves your browser',
+      t: 'Table B — Not cookies, but data still leaves your browser',
     },
     {
       k: 'p',
@@ -239,17 +185,25 @@ export const cookies: LegalDoc = {
     {
       k: 'h',
       level: 3,
-      id: 'c5-d',
-      t: 'Table D — Conditional: not present, would require consent',
+      id: 'c5-c',
+      t: 'Table C — Conditional: not present, would require consent',
     },
     {
       k: 'p',
-      t: 'Nothing below is on the Site. Each row names the exact decision that would create it. If any of them ships, this policy is updated first and the banner is extended to cover it.',
+      t: 'Nothing below is on the Site. Each row names the exact decision that would create it. If any of them ships, this policy is updated first, a consent banner appears, and nothing is stored until you accept it.',
     },
     {
       k: 'table',
       head: ['Name', 'Provider', 'Purpose', 'Type', 'Duration', 'Trigger'],
       rows: [
+        [
+          '`_ga`, `_gid`, `_gat_*`',
+          'Google',
+          'Google Analytics 4 — distinguishes browsers, holds session state, throttles requests.',
+          'Third-party cookies, analytics',
+          '**Up to 2 years**',
+          'Only if we add analytics — none runs today',
+        ],
         [
           '`_gcl_au`',
           'Google',
@@ -334,7 +288,7 @@ export const cookies: LegalDoc = {
     },
     {
       k: 'p',
-      t: '**Google Search Console** and **Bing Webmaster Tools** are search-engine reporting tools. We verify ownership of the domain using a **DNS TXT record** — a change to our domain’s DNS settings, not to your browser. Neither tool sets any cookie on this Site and neither observes your visit. *(Google Search Console can also be verified by piggy-backing on a Google Analytics tag. We deliberately do not use that method, so that Search Console stays independent of your consent choice.)*',
+      t: '**Google Search Console** and **Bing Webmaster Tools** are search-engine reporting tools. We verify ownership of the domain using a **DNS TXT record** — a change to our domain’s DNS settings, not to your browser. Neither tool sets any cookie on this Site and neither observes your visit. *(Google Search Console can also be verified by piggy-backing on a Google Analytics tag. There is no analytics tag here to piggy-back on, and we would not use that method if there were: it would tie Search Console to a consent choice.)*',
     },
 
     /* ------------------------------------------------------------------ 6 */
@@ -356,15 +310,17 @@ export const cookies: LegalDoc = {
     },
 
     /* ------------------------------------------------------------------ 7 */
-    { k: 'h', level: 2, id: 'c7', t: '7. Changing or withdrawing your consent' },
-    { k: 'p', t: 'Consent must be as easy to withdraw as it was to give.' },
+    { k: 'h', level: 2, id: 'c7', t: '7. Consent: what there is to give or withdraw' },
+    {
+      k: 'p',
+      t: '**Nothing.** We never asked for consent to store anything, because we store nothing, so there is no choice of yours to change, no record of it to delete, and no banner to reopen.',
+    },
     {
       k: 'ul',
       items: [
-        'A **“Cookie settings”** link sits in the footer of every page. Click it, and the banner reopens with your current choice; change it and it takes effect immediately.',
-        '**Clearing your browser’s storage for `talentsync.eu`** erases the `ts_consent` record, and you will be asked again on your next visit.',
-        '**Refusal is permanent until you change it.** We do not re-prompt visitors who have refused, other than once your recorded choice is more than 6 months old.',
-        '**Cookies already set by a third party** before you withdrew consent are not deleted by withdrawing — withdrawal stops the collection. Use the browser instructions in [§8](#c8) to delete what is already there.',
+        '**Clearing your browser’s storage for `talentsync.eu`** removes nothing of ours. There is nothing there.',
+        '**Cookies set by a third party on its own site** — Calendly’s, if you book a call there — are not ours and are not deleted by anything we do. Use the browser instructions in [§8](#c8) to remove them.',
+        '**If we ever add something that needs consent**, this section will say how to give and withdraw it, a **“Cookie settings”** control will appear on every page, and withdrawal will be exactly as easy as consent. Consent will be asked for before anything is stored, never after.',
       ],
     },
 
@@ -389,28 +345,28 @@ export const cookies: LegalDoc = {
     },
     {
       k: 'p',
-      t: '**Global Privacy Control and Do Not Track.** We do not track you across websites, so there is little for these signals to switch off here. We honour a GPC signal as a valid objection: where your browser sends one, we treat analytics consent as refused and do not show you the banner as an invitation to change that.',
+      t: '**Global Privacy Control and Do Not Track.** We do not track you across websites and we run no analytics, so there is nothing here for these signals to switch off. If we ever add analytics, a GPC signal will be honoured as a valid objection: we will treat consent as refused and will not show you a banner inviting you to change that.',
     },
 
     /* ------------------------------------------------------------------ 9 */
     { k: 'h', level: 2, id: 'c9', t: '9. What we do not do' },
     {
       k: 'p',
-      t: 'We do not sell your personal data. We do not share it with advertising networks or data brokers. We do not track you across other websites, and we have not enabled Google Signals or ads personalisation in our analytics property. We do not fingerprint your device. We do not use a cookie wall or make access conditional on consent. We do not use analytics data to make automated decisions about you.',
+      t: 'We do not sell your personal data. We do not share it with advertising networks or data brokers. We do not track you across other websites, and we run no analytics — so there is no analytics data about you to profile, share or make decisions from. We do not fingerprint your device. We do not use a cookie wall or make access conditional on consent.',
     },
 
     /* ----------------------------------------------------------------- 10 */
     { k: 'h', level: 2, id: 'c10', t: '10. Your rights' },
     {
       k: 'p',
-      t: 'Under the GDPR, the UK GDPR and Moldova’s Law No. 195/2024 you have the rights of access, rectification, erasure, restriction, portability, and objection to processing based on legitimate interests, plus the right to withdraw consent at any time. Exercise them at **{{PRIVACY_EMAIL}}**; see the [privacy policy](/privacy/#s12) for the detail.',
+      t: 'Under the GDPR, the UK GDPR and Moldova’s Law No. 195/2024 you have the rights of access, rectification, erasure, restriction, portability, and objection to processing based on legitimate interests, plus the right to withdraw consent at any time. Exercise them at **[victor@talentsync.eu](mailto:victor@talentsync.eu)**; see the [privacy policy](/privacy/#s12) for the detail.',
     },
     { k: 'p', t: 'You can also complain to a supervisory authority:' },
     {
       k: 'ul',
       items: [
         '**Moldova** — Centrul Național pentru Protecția Datelor cu Caracter Personal (CNPDCP), 48 Serghei Lazo Street, MD-2004 Chișinău · [+373 22 820 801](tel:+37322820801) · [centru@datepersonale.md](mailto:centru@datepersonale.md) · [datepersonale.md](https://datepersonale.md)',
-        '**EU/EEA** — your national data protection authority, or the authority where our EU representative is established. The list is at [edpb.europa.eu](https://edpb.europa.eu/about-edpb/about-edpb/members_en).',
+        '**EU/EEA** — the data protection authority of the country you live or work in. The list is at [edpb.europa.eu](https://edpb.europa.eu/about-edpb/about-edpb/members_en). You do not have to contact us first.',
         '**United Kingdom** — the Information Commissioner’s Office, [ico.org.uk](https://ico.org.uk)',
       ],
     },

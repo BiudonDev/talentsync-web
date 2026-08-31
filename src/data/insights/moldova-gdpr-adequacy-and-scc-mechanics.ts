@@ -163,7 +163,7 @@ export const moldovaGdpr: Insight = {
     },
     {
       k: 'p',
-      t: 'One more item belongs in the vendor file rather than the assessment: whether your Moldovan supplier has appointed an **Article 27 EU representative**. A recruiter processing EU candidate data regularly cannot use the "occasional processing" exemption, and the Dutch supervisory authority has fined a controller **EUR 525,000** for that omission alone. Its absence tells you what else may be missing.',
+      t: 'One more item belongs in the vendor file rather than the assessment: whether your Moldovan supplier has appointed an **Article 27 EU representative**. A recruiter processing EU candidate data regularly cannot use the "occasional processing" exemption, and the Dutch supervisory authority has fined a controller **EUR 525,000** for that omission alone. Ask us the same question, and here is the answer before you have to ask it: **TalentSync has not appointed one.** We are working out whether Article 27 applies to us, and the name and address will be published in [our privacy policy](/privacy/) the moment there is one to publish. Until then, write to [victor@talentsync.eu](mailto:victor@talentsync.eu) — and a data subject can always complain to their own supervisory authority instead.',
     },
 
     { k: 'h', level: 2, id: 'uk', t: 'If you are a UK client' },
@@ -178,7 +178,7 @@ export const moldovaGdpr: Insight = {
       items: [
         'Executed SCCs, correct module, dated, with the annexes actually filled in.',
         'The supplier’s privacy notice — does it describe them as controller or processor, and does that match the module you just signed?',
-        'Their Article 27 EU representative, named and published.',
+        'Their Article 27 EU representative, named and published — or, where none is appointed, their written position on it. Ours is in the section above.',
         'Their retention schedule for candidate data, with a mechanism behind it and not just a sentence.',
         'Their sub-processor list, and where each one hosts. A US-hosted applicant tracking system is a second transfer with its own analysis.',
         'Your own answer on system access: which accounts the engineer gets, what data those accounts reach, and who revokes them.',

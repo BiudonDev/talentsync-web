@@ -80,12 +80,26 @@ export default function Footer() {
           </div>
 
           <div className="flex flex-col gap-1 text-sm text-text-secondary sm:items-end">
-            {/* Plain anchor, intercepted by ConsentBanner's delegated listener,
-                so the withdrawal route cookies.ts §7 promises exists on every
-                route without making this a client component. */}
-            <a href="#cookie-settings" className={LINK}>
+            {/* DORMANT with ConsentBanner, for the same reason and by the same
+                switch — see the comment on the commented-out <Analytics /> mount
+                in src/app/layout.tsx.
+
+                This is a plain anchor intercepted by ConsentBanner's delegated
+                listener, which is what let the footer stay a server component.
+                While the banner is unmounted nothing listens for it and no
+                element carries id="cookie-settings", so rendering it puts a dead
+                control on all 32 routes — and cookies.ts §7 says in the shipped
+                policy that there is "no banner to reopen" and that a "Cookie
+                settings" control "will appear on every page" only IF we ever add
+                something that needs consent. Shipping the control today
+                contradicts the document.
+
+                TO BRING IT BACK: uncomment the anchor below. Do it in the SAME
+                release as step 2 of the layout.tsx switch — the banner and this
+                link are one feature, and either one alone is a broken promise. */}
+            {/* <a href="#cookie-settings" className={LINK}>
               Cookie settings
-            </a>
+            </a> */}
             <a href="#main" className={LINK}>
               Back to top
             </a>

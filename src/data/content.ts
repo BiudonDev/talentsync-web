@@ -270,7 +270,7 @@ export const testimonials = [
     avatar: '/images/testimonial-adrian-barca.jpeg',
   },
   {
-    // 06-claims row 19 replacement, `{{QUALIWISE_DAYS}}` resolved to the ledger
+    // 06-claims row 19 replacement, the QUALIWISE_DAYS token resolved to the ledger
     // figure. Was: 'They found us a senior Python developer in two days.'
     quote: 'They shortlisted a senior Python developer for us within days and he was signed inside one week. Exactly what we needed to scale.',
     author: 'Ulrich',

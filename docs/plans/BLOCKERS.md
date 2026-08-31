@@ -1,10 +1,14 @@
 # BLOCKERS — the 96 placeholders, triaged
 
 Every `{{TOKEN}}` in the legal drafts, in one table, with the draft's own recommended
-default already filled in. **You are not being asked 96 questions.** You are being asked
-**fourteen**. The rest have a defensible default that ships today and can be changed
-later in a one-line edit.
+default already filled in. **You are not being asked 96 questions.** As of
+30 August 2026 you are being asked **seven** — [§2](#2-answer-these-seven). The rest either
+have a defensible default that ships today, or have now been answered.
 
+> **Superseded by §2, 30 August 2026.** Victor answered the entity, founder, privacy and
+> operations questions; §2 now carries the seven that are left and the full RESOLVED list.
+> The history below is kept because the trading-name rule in §1.1 is still binding.
+>
 > **Updated after wave D.** Three of the thirteen are **answered** — the Moldovan state
 > registry gave us the registered name, the legal form and the IDNO (§1.1). That resolves
 > `{{LEGAL_ENTITY_NAME}}`, `{{LEGAL_FORM}}` and `{{IDNO}}` on six pages. It also surfaced
@@ -21,8 +25,7 @@ later in a one-line edit.
 
 **How to use this file**
 
-1. Answer the fourteen in [§2](#2-answer-these-14-to-unblock-80-of-the-work). That is the
-   whole ask for launch.
+1. Answer the seven in [§2](#2-answer-these-seven). That is the whole ask for launch.
 2. Everything in [§3](#3-before-the-first-client-contract) is deferred to a named
    milestone. Do not read it this week.
 3. Anything in the table with a recommended default is **already taken** unless you say
@@ -38,6 +41,14 @@ recommendation is taken automatically, Victor only needs to override it.
 ---
 
 ## 1. The table
+
+> **§2 SUPERSEDES THIS SECTION where the two disagree.** The tables below are the original
+> triage of all 96 tokens and still record what each one is and which page it lands on, but
+> their "recommended default" columns pre-date Victor's answers. In particular: `{{VAT_STATUS}}`
+> is answered (no registration), `{{PLACEMENT_LICENCE_STATUS}}` is answered (none required),
+> the `{{EU_REP_*}}` rows describe an appointment that was never made, and the
+> `{{ANALYTICS_*}}` / `{{GA4_*}}` rows assume GA4 is live in the launch release — **it is not;
+> analytics ships off.** Read §2 first.
 
 ### 1.1 Entity identity — shared by /terms/, /privacy/, /cookies/ and /imprint/
 
@@ -227,44 +238,47 @@ not just the legal ones. The first four are one answer, already asked as §2 row
 
 ---
 
-## 2. Answer these 14 to unblock ~80% of the work
+## 2. Answer these seven
 
-Fourteen answers. Most are a lookup, not a decision. Nothing else on this page needs your
-attention before launch. Rows 1–4 are the entity block: the registry answered three of the
-old thirteen and opened four more, and they are the ones an EU client's procurement team
-checks first.
+**Victor answered on 30 August 2026.** Fourteen became seven. Everything in the RESOLVED
+block below is written into the pages and its token is deleted — do not re-ask it. What is
+left is short on purpose: a long list is why these things never get answered.
 
-| # | Question | Why it is blocking | What happens with no answer |
+| # | Question | Why it blocks | Owner |
 |---|---|---|---|
-| **1** | **Registered street address** — as printed on the state registration extract, not the working office if they differ. One photo of one document. | Art 13/14 GDPR controller identification and Moldovan Law 284/2004 on e-commerce both require it. It must also match the footer NAP and the `Organization` JSON-LD character for character (D5). | Six pages carry `{{REGISTERED_ADDRESS}}` and `npm run verify` fails the deploy while it survives (D8). **Nothing ships.** Schema that contradicts visible content is ignored, so the entity signal the whole SEO plan rests on stays unproven. |
-| **2** | **VAT status** — VAT-registered in Moldova or not, and the code if yes. | /terms/ A1 and /imprint/ state it as fact. An EU B2B client reads it to decide whether reverse charge applies to your invoice, which is the first thing their finance team asks. | `{{VAT_STATUS}}` blocks /terms/, /imprint/ and /about/. A wrong guess is worse than a gap: it misprices the engagement on both sides. |
-| **3** | **The director's full legal name** — the administrator on the registry extract, i.e. the person with authority to sign a client contract. | The imprint must name a responsible natural person, and clause A1 identifies who binds the company. **Say whether that is the same person as row 7** — if the founder and the administrator differ, the site currently implies they do not. | /imprint/ ships without an accountable human. A contract signed by someone the counterparty cannot verify as an authorised signatory is the second thing procurement checks. |
-| **4** | **Confirm `S.R.L. "UNQENERGY"` is the entity that will sign client contracts and issue invoices.** | The registry proves a company with that name and IDNO exists. It does **not** prove it is the contracting party, and no agent may assume it. **TalentSync is a trading name** (§1.1), so every legal page has to read `S.R.L. "UNQENERGY" (IDNO 1020600034949), trading as "TalentSync"`. | If a different entity actually contracts, every legal page names the wrong party and has to be rewritten. If UNQENERGY is right, this costs you one word — and the mismatch between the proposal, the invoice and the contract stops being a supplier-onboarding hold. |
-| **5** | **EU Art 27 representative — yes/no, plus budget approval.** Romania recommended. | Not optional for a recruiter; the "occasional processing" exemption does not apply. Typically low four figures a year. | /privacy/ and /cookies/ ship with the omission documented in writing, which is worse than not publishing. |
-| **6** | **Analytics = GA4 — confirm, and create the property.** Needed: the `G-XXXXXXXXXX` ID. 15 minutes in the GA4 admin. | D2 already froze this. The consent banner, Consent Mode v2 defaults, /cookies/ tables and the privacy policy's §4/§13 all hang off it. | **A hard deploy gate, not a copy gap.** The analytics code has landed, so `{{GA4_MEASUREMENT_ID}}` is live in the JS bundle as well as /cookies/ §5, and `npm run verify` exits non-zero while it survives into `out/` (D8). |
-| **7** | **Victor's full name, job title, LinkedIn URL, and a photo.** | Every `Article` needs a real named author; the E-E-A-T this plan buys is attribution, and a bare first name provides none. | Four tokens block on this one answer — `{{FOUNDER_FULL_NAME}}`, `{{FOUNDER_TITLE}}`, `{{FOUNDER_LINKEDIN_URL}}` (§1.9) and `{{VICTOR_FULL_NAME}}`, the second spelling of the same fact that reached **four `Article` author bylines inside structured data**. Google ingests a brace string there as the author's name, which is far harder to walk back than the same text in prose. |
-| **8** | **AI screening = no — confirm.** Includes no ad-hoc use of ChatGPT to rank, score or filter candidates. | D3 assumes no. If any AI ranking is used the surrounding text must be rewritten, a human reviewer with real override authority named, overrides logged, and a DPIA completed first. | Publishing "we do not" while doing it is the single cheapest way to lose an enforcement argument. |
-| **9** | **Engineer engagement status under the hourly model** — employee, contractor, or contracted direct by the client? | Decides whether TalentSync is their employer-controller, whether timesheet and billing flow is joint controllership, and whether Part C's IP chain actually holds. | /privacy/ §6 and /terms/ Part C both make claims that must match the contracts in force. |
-| **10** | **Median working days from brief to first shortlist.** | The site says "1–2 weeks". D7 requires it qualified, never bare, and 06-claims-measurement.md needs a real number behind it. | The process claim on four pages has no substantiation file. |
-| **11** | **Founded year.** | `foundingDate` in the `Organization` JSON-LD and the /about/ copy. Not on the public registry listing — it is on the extract, alongside rows 1 and 3. | /about/ ships without a company history and the entity node is thinner than it needs to be. |
-| **12** | **Placement fee percentage and minimum fee.** | The two numbers a client actually negotiates. They also set the Fee Confirmation template. | /terms/ Part B cannot publish, and there is no proposal template. |
-| **13** | **Orange and Barça — may the site name them and show their marks?** Three parts, one email: **(a)** was Orange a direct client or was NEVG the counterparty; **(b)** is there written permission to display the Orange and FC Barcelona / Barça Mobile **names and logos**; **(c)** is there a written source for "1.5M downloads in first 3 months"? | (a) decides whether the site may name Orange at all. (b) is separate and stricter: both are aggressively enforced marks, FC Barcelona licenses its brand commercially, and most enterprise MSAs carry a no-publicity clause. Permission to *have worked* with someone is not permission to *use their mark*. Clause A5.2 warrants that this consent is held. | Without (a) the Orange case study cannot ship at all. Without (b) both case studies ship **text-only** — named in prose, no logo, no wordmark styling, no favicon-scraped tile — which is the safe default and what the pages are built to today. Without (c) the figure stays cut (D7) and the Barça case study keeps no quantified outcome. A takedown after launch costs more than the email. |
-| **14** | **Schedule 3 — the Data Processing Agreement — does not exist.** Decide: write it, or amend the two clauses that point at it. | Clause **C14.2 incorporates Schedule 3 by reference**, so the terms already say it is part of the agreement, and clause **C1.3 gates Engineer access to client systems on it being in place.** Nothing was ever drafted. As written the first hourly assignment cannot lawfully start under its own contract. | The first client either signs a self-contradicting contract or notices before signing. This is a drafting defect, not a business fact — it is fixed by writing Schedule 3 (Module 1 + Module 2 SCCs and a transfer impact assessment summary) **or** by amending C1.3 and C14.2 in the same pass. The **Assignment Schedule**, the **Onsite Addendum** and the C13.5 **security schedule** are missing for the same reason. Detail in §3.2. |
+| **1** | **EU Art 27 representative — appoint one, or take a written opinion that none is required.** Deferred: *"decide later"*. | **A live compliance question, not a cosmetic one.** The policies used to name a representative and give the date the mandate took effect. Nobody had been appointed, so that was a false statement and it is gone. /privacy/ §1 and §17, /cookies/ §1 and §10 and /terms/ B18.5 now say TalentSync is **assessing** whether an Art 27 representative is required, will publish the details here once one is appointed, and that in the meantime data subjects can contact the company directly at victor@talentsync.eu and complain to their own supervisory authority. They deliberately do **not** say one is not required — nobody has determined that. The clock on this runs whether or not the site says anything. | **V+EU** |
+| **2** | **GA4 measurement ID — the `G-XXXXXXXXXX` string.** 15 minutes in the GA4 admin. | **Analytics ships OFF until it arrives**, and that is a deliberate, truthful decision, not a gap: no GA4 script, no gtag, no cookies of our own, and therefore no consent banner (nothing is stored, so nothing needs consenting to). Documenting analytics that does not run would describe processing the company does not perform. **The one edit that re-enables it:** put the real ID in `GA_MEASUREMENT_ID` in `src/lib/analytics.ts`, then uncomment the `<Analytics />` mount and its import in `src/app/layout.tsx` — the comment there spells it out. `Analytics.tsx` and `ConsentBanner.tsx` are untouched and working. **In the same release, not later:** /privacy/ §4 and /cookies/ both state in the present tense that no analytics runs and no cookies are set. | **V** (15 min) |
+| **3** | **Engineer engagement status under the hourly model** — contractor of UNQENERGY, contracted direct by the client, or employee? | Still unanswered, so **no page asserts it**: both places that depended on it were rewritten to describe only what is true whichever the answer is. It has to be answered before the first Part C client, because two live documents hang off it. **/terms/ Part C's IP chain** only holds if the engineer's own contract assigns the IP to the entity that warrants it at C12.1. **/privacy/ §6's independent-controller analysis** turns on whether TalentSync is the engineer's employer-controller and whether the timesheet and billing flow is joint controllership. | **V** |
+| **4** | **Confirm `S.R.L. "UNQENERGY"` is the entity that signs client contracts and issues invoices.** | The registry proves a company with that name and IDNO exists (§1.1). It does **not** prove it is the contracting party, and no agent may assume it. If a different entity actually contracts, every legal page names the wrong party. If UNQENERGY is right this costs one word — and the proposal / invoice / contract mismatch stops being a supplier-onboarding hold. | **V** |
+| **5** | **Orange and Barça — may the site name them and show their marks?** One email, three parts: **(a)** was Orange a direct client or was NEVG the counterparty; **(b)** is there **written** permission to use the Orange and FC Barcelona / Barça Mobile **names and logos**; **(c)** is there a written source for *"1.5M downloads in first 3 months"*? Same email: **the Moldova ICT headcount figure** — Moldova IT Park's published number with its year, or the sentence goes. | Permission to have *worked with* someone is not permission to *use their mark*, and clause A5.2 warrants that this consent is held. Both are aggressively enforced marks and FC Barcelona licenses its brand commercially. Without (a) the Orange case study cannot ship at all; without (b) both ship **text-only**, which is what the pages are built to today; without (c) the figure stays cut (D7). An unsourced headcount is exactly the claim A4.3 promises to substantiate on request. | **V** |
+| **6** | **Schedule 3 — the Data Processing Agreement — does not exist.** Write it, or amend the two clauses that point at it. | **C14.2 incorporates Schedule 3 by reference** and **C1.3 gates Engineer access to client systems on it being in place.** Nothing was ever drafted, so as written the first hourly assignment cannot lawfully start under its own contract. A drafting defect with a deadline, not a business fact: fix by writing Schedule 3 (Module 1 + Module 2 SCCs and a transfer impact assessment summary) **or** by amending C1.3 and C14.2 in one pass. The Assignment Schedule, the Onsite Addendum and the C13.5 security schedule are missing for the same reason — §3.2. | **DEV + legal** |
+| **7** | **Placement fee percentage and minimum fee.** | The two numbers a client actually negotiates, and they set the Fee Confirmation template. /terms/ B8.1 carries the drafted band; it cannot be a real offer until Victor picks the figures. Needed before the first client contract, not before launch. | **V** |
 
-**Answered since the last revision — no action needed, recorded so they are not re-asked:**
+**Also still unanswered, not blocking any page from publishing:** confirm **no AI screening** (D3
+publishes "we do not use automated decision-making or AI screening" in /privacy/ and /terms/ — a
+sentence that must be true, including no ad-hoc ChatGPT ranking); the **median working days from
+brief to first shortlist**, behind the "1–2 weeks" claim; **Innovatec — one engineer or two**, and
+**Qualiwise's founder's sign-off** on the corrected time-to-signature (§4); and whether **Victor
+Uncuta is also the registered administrator** on the state registration extract, since /imprint/
+names him as the responsible person.
 
-- **Registered name, legal form and IDNO** — `S.R.L. "UNQENERGY"`, SRL, `1020600034949`, from
-  the state registry. See §1.1, including the trading-name rule that comes with them.
-- **The homepage `<title>`.** You specified
-  `IT Recruitment & Engineering Talent in Eastern Europe | TalentSync` (66 chars) and an
-  explicit client instruction outranks a guard default, so `scripts/validate-pages.mjs` now
-  allows 70 on `/` and keeps 15–60 everywhere else. The trade-off is unchanged and still
-  yours to revisit: Google renders ~60 characters, so it truncates to
-  `…in Eastern Europe | Tale…` — **the brand is the half that gets cut**, on the one page
-  whose whole job is the brand. `IT Recruitment & Engineers, Eastern Europe | TalentSync`
-  (55) keeps every element and keeps the brand visible. One line in `src/app/page.tsx` if
-  you want it.
+### Resolved on 30 August 2026 — written into the pages, tokens deleted, do not re-ask
 
+| Was asked | What the pages now say |
+|---|---|
+| **Registered address** | `MD-2005, Chișinău Rîșcani, mun. Chișinău, Colina Pușkin 18, ap. (of.) 1` — the same string character for character in /terms/, /privacy/, /cookies/, /imprint/, /about/, the footer NAP and the `Organization` JSON-LD (D5) |
+| **VAT status** | **No VAT registration.** Where the fact is load-bearing — /terms/ Part A and Part B, /imprint/ — the pages read *"not registered for VAT in the Republic of Moldova"*, because an EU B2B buyer reads it to decide whether reverse charge applies. Where it was only an empty registry row, the row is **deleted**, not left blank |
+| **Founder** | **Victor Uncuta**, **CEO**, `https://www.linkedin.com/in/victoruncuta/` — /about/, /imprint/, the `Person` node and all four `Article` bylines. Both spellings of the token resolve to the one answer |
+| **Founded** | **2020** — founded 8 October 2020; `foundingDate` is `2020-10-08` |
+| **Privacy contact** | **Victor Uncuta**, `victor@talentsync.eu` — titled *privacy contact*, never "DPO" |
+| **Email provider** | **Google Workspace** |
+| **Candidate records** | **Email and Google Drive**, stored in **the European Union** |
+| **Payments** | **Bank transfer.** No card payment processor, so that row is gone from /privacy/ §8 |
+| **Hosting region** | **Railway, Amsterdam — the European Union.** No Chapter V transfer for the container or its access logs |
+| **Recruitment licence** | **None required in the Republic of Moldova.** Closes `{{PLACEMENT_LICENCE_STATUS}}` and the §3.1 opinion that gated it |
+| **Insurance** | **No policy is currently held.** Clause C17 no longer warrants a limit — it says a client may request evidence of cover before an assignment starts and that cover will be put in place if required. **Buy the cover before the first Part C client**, or C17 is renegotiated under time pressure |
+| **Registered name / form / IDNO** | `S.R.L. "UNQENERGY"`, SRL, `1020600034949` — always in the shape `trading as "TalentSync"` (§1.1) |
+| **Homepage `<title>`** | Victor's 66-character version stands; `scripts/validate-pages.mjs` allows 70 on `/` and 15–60 everywhere else. The truncation trade-off is unchanged and still his to revisit — one line in `src/app/page.tsx` |
 ---
 
 ## 3. Before the first client contract
@@ -274,10 +288,11 @@ not block a page from publishing. Grouped by the milestone that forces the answe
 
 ### 3.1 Milestone: before signing the first Part B (permanent) client
 
-- **Moldovan legal opinion — is a private employment agency licence required** under Law
-  105/2018 / Law 180/2008 to introduce Moldovan engineers to foreign employers? Needs a
-  Moldovan employment lawyer, not a web search. Gates `{{PLACEMENT_LICENCE_STATUS}}` and
-  possibly the whole Part B model. *Highest-priority item on this page after the fourteen.*
+- ~~**Moldovan legal opinion — is a private employment agency licence required?**~~
+  **ANSWERED 30 Aug 2026: no recruitment licence is required in the Republic of Moldova.**
+  `{{PLACEMENT_LICENCE_STATUS}}` is written into /terms/ A1 and /imprint/ and the token is
+  gone. Nothing gates the Part B model. Worth one line of written confirmation from a
+  Moldovan employment lawyer next time counsel is instructed, but it no longer blocks.
 - **`{{MD_LIMITATION_PERIOD}}`** — confirm the Moldovan contract limitation period with the
   same counsel while you have them. Commonly 3 years.
 - **`{{MD_ACCOUNTING_RETENTION}}`** — ask the accountant. A statutory obligation, not a choice.
@@ -289,9 +304,12 @@ not block a page from publishing. Grouped by the milestone that forces the answe
 
 ### 3.2 Milestone: before signing the first Part C (hourly) client
 
-- **Insurance in force?** `{{PI_INSURANCE_LIMIT}}`, `{{GL_INSURANCE_LIMIT}}`,
-  `{{CYBER_INSURANCE_LIMIT}}` are drafted as a **present-tense warranty**. Either buy the
-  cover or reword clause C17 before it publishes.
+- **Insurance — no policy is currently held (answered 30 Aug 2026), and clause C17 was
+  reworded rather than left as a false present-tense warranty.** It now says a client may
+  request evidence of cover before an assignment starts and that cover will be put in place
+  if required, so it promises nothing that does not exist. **Buy PI, GL and cyber cover
+  before the first Part C client** — most enterprise MSAs make it a condition of signature,
+  and being asked for a certificate mid-negotiation is the expensive way to find out.
 - **Does the engineer contract actually contain** the present IP assignment, rolling
   assignment, further-assurance covenant, moral-rights undertaking and fallback licence
   that C12.1 warrants? If not, C12.2 promises the client something TalentSync does not own.
@@ -322,14 +340,16 @@ not block a page from publishing. Grouped by the milestone that forces the answe
 
 ### 3.3 Milestone: in the launch release (developer-owned, no decision needed)
 
-- **Self-host Montserrat** — replace the `fonts.googleapis.com` `@import` in `globals.css`
-  with `next/font`. Until then every EU visitor's IP reaches Google without consent
-  (LG München I, 20.01.2022, 3 O 17493/20), and /privacy/ §4.3 cannot say the site makes
-  no third-party calls. Sets `{{FONTS_SELF_HOSTED_DATE}}`.
+- ~~**Self-host Montserrat**~~ **DONE** — `src/app/layout.tsx` loads it through `next/font`
+  and the `fonts.googleapis.com` `@import` is gone, so no EU visitor's IP reaches Google
+  (LG München I, 20.01.2022, 3 O 17493/20). `{{FONTS_SELF_HOSTED_DATE}}` is the deploy date.
+  With analytics off as well, /privacy/ §4.3's "no third-party calls" is now literally true.
 - **`{{LOG_RETENTION_DAYS}}`** — read the real Railway log retention, or set
   `access_log off;` in nginx.conf and delete the policy row. The number in the policy has
   to be the number in the config.
-- **`{{RAILWAY_REGION}}`** — read it off the dashboard; sign the Railway DPA either way.
+- ~~**`{{RAILWAY_REGION}}`**~~ **ANSWERED: Railway, Amsterdam — the European Union.** No
+  Chapter V transfer for the container or its logs. Still sign the Railway DPA: the access
+  logs hold EU visitors' IPs and Art 28 needs the contract regardless of region.
 - **`{{CALENDLY_DPF_VERIFIED}}`** — 10 minutes on dataprivacyframework.gov on publishing day.
   Also confirm Calendly stays an outbound link and is never embedded: embedding imports
   third-party cookies and is the second-biggest banner lever after GA4.
@@ -471,6 +491,27 @@ because both defects had already been reported once, left open, and reported aga
   `logo.src` alone, so repointing the data fixes the render with no component change.
   Add the three missing rows to the guard once the images land, or the row goes on
   being decorative.
+
+- **`scripts/check-legal-fidelity.mjs` check 5 now fails on the correct copy, and the guard
+  is what is wrong.** Its `BANNED` list was written to enforce D2 (GA4 behind a banner) by
+  rejecting every trace of the drafts' old no-cookie position: `/no cookies of our own/`,
+  `/no cookies, no analytics/`, `/(?:displays?|shows?) no (?:cookie )?banner/`. Analytics now
+  ships **off**, so those exact sentences are the true ones and /privacy/ and /cookies/ have to
+  say them. **Owner: whoever owns `scripts/`** — gate those four patterns on the GA4 ID being
+  present, so they come back automatically the day analytics is re-enabled rather than being
+  deleted and forgotten. `npm run verify` (`validate-pages.mjs`) is unaffected.
+
+- **`{{GA4_MEASUREMENT_ID}}` still renders into /cookies/** from `src/data/legal/cookies.ts`
+  (the `_ga_…` and `_gat_gtag_…` rows in the cookie table). Those rows describe cookies that
+  are now never set; they are deleted with the rest of the analytics copy, not filled in.
+  **Owner: whoever owns `src/data/legal/`.** Until then `npm run verify` exits non-zero.
+
+- **The footer's "Cookie settings" link is dead while the banner is unmounted.**
+  `src/components/layout/Footer.tsx:86` renders `<a href="#cookie-settings">`, which
+  `ConsentBanner`'s delegated listener used to intercept. With no banner there is no
+  `#cookie-settings` target and the link does nothing. **Owner: whoever owns
+  `src/components/layout/`** — remove the link while analytics is off; restore it in the same
+  edit that re-enables `<Analytics />` in `src/app/layout.tsx`.
 
 - **No Content-Security-Policy is shipped.** `nginx.conf` carries `X-Frame-Options`,
   `X-Content-Type-Options`, `Referrer-Policy` and `Permissions-Policy`. A CSP is

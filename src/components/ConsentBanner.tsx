@@ -6,6 +6,15 @@ import { GA_SRC, setAnalyticsConsent, track } from '@/lib/analytics'
 import { readConsent, writeConsent, type ConsentState } from '@/lib/consent'
 
 /**
+ * DORMANT with Analytics.tsx, its only parent — see the switch documented there
+ * and in src/app/layout.tsx. Nothing is stored while analytics is off, and a
+ * banner asking consent for storage that never happens is noise, so it does not
+ * render. NOTE for whoever re-enables it: the footer's "Cookie settings" anchor
+ * (src/components/layout/Footer.tsx) is the delegated re-open link below. It is
+ * commented out there for the same reason — with this unmounted nothing listens
+ * for it and no element carries id="cookie-settings", so it would be a dead
+ * control on every route. Uncomment it in the same release as this one.
+ *
  * The only client component in the analytics package. No framer-motion, no
  * animation at all — a banner that fades in is a banner that arrives after the
  * decision it is asking about.

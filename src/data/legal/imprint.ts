@@ -6,13 +6,14 @@ import type { LegalDoc } from './types'
  *
  * TalentSync is Moldova-established, so German DDG §5 and Austrian ECG §5 do not
  * strictly bind. This page exists because DE/NL/AT/CH procurement teams look for
- * it as a matter of course and its absence reads as a shell company — and because
- * appointing an Art 27 EU representative creates an EU touchpoint that makes the
- * omission look deliberate rather than merely foreign.
+ * it as a matter of course and its absence reads as a shell company.
  *
  * The provider block is the one drafted at the head of 04-terms.md, verbatim.
- * Almost every field is a {{TOKEN}}: this page is entity identification, and an
- * agent inventing a registration number would be the worst possible outcome.
+ * Every field is now the client's own answer (wave 2, 2026-08-31). Two of them are
+ * deliberately statements of an ABSENCE, not claims: no Article 27 EU
+ * representative has been appointed, so the section says so instead of naming one;
+ * and the VAT row records that there is no registration, because that is the row
+ * an EU B2B buyer reads to work out its own reverse-charge position.
  */
 export const imprint: LegalDoc = {
   slug: 'imprint',
@@ -41,11 +42,14 @@ export const imprint: LegalDoc = {
         ['**Legal form**', 'societate cu răspundere limitată (SRL)'],
         ['**Country of incorporation**', 'Republic of Moldova'],
         ['**State registration number (IDNO)**', '1020600034949'],
-        ['**Registered office**', '{{REGISTERED_ADDRESS}}, Chișinău, Republic of Moldova'],
-        ['**VAT / fiscal status**', '{{VAT_STATUS}}'],
+        ['**Registered office**', 'MD-2005, Chișinău Rîșcani, mun. Chișinău, Colina Pușkin 18, ap. (of.) 1, Republic of Moldova'],
+        [
+          '**VAT / fiscal status**',
+          'Not registered for VAT in the Republic of Moldova. Our invoices carry no VAT and show no VAT identification number.',
+        ],
         [
           '**Employment-placement licence**',
-          '{{PLACEMENT_LICENCE_STATUS}}',
+          'None held. No recruitment licence is required in the Republic of Moldova.',
         ],
         ['**Register**', 'Agenția Servicii Publice — State Register of Legal Entities, Republic of Moldova'],
       ],
@@ -55,7 +59,7 @@ export const imprint: LegalDoc = {
     { k: 'h', level: 2, id: 'representation', t: 'Authorised representative' },
     {
       k: 'p',
-      t: '**{{FOUNDER_FULL_NAME}}**, {{FOUNDER_TITLE}}, is authorised to represent the company and is the person responsible for the content of this website within the meaning of § 18(2) of the German *Medienstaatsvertrag* and equivalent provisions elsewhere. Postal address as the registered office above.',
+      t: '**Victor Uncuta**, CEO, is authorised to represent the company and is the person responsible for the content of this website within the meaning of § 18(2) of the German *Medienstaatsvertrag* and equivalent provisions elsewhere. Postal address as the registered office above.',
     },
 
     /* ----------------------------------------------------------- contact */
@@ -70,7 +74,7 @@ export const imprint: LegalDoc = {
           '**Legal, contractual and takedown notices**',
           '[legal@talentsync.eu](mailto:legal@talentsync.eu)',
         ],
-        ['**Privacy and data protection**', '{{PRIVACY_EMAIL}}'],
+        ['**Privacy and data protection**', 'Victor Uncuta — [victor@talentsync.eu](mailto:victor@talentsync.eu)'],
         ['**LinkedIn**', '[linkedin.com/company/talentsync](https://linkedin.com/company/talentsync)'],
       ],
     },
@@ -83,11 +87,15 @@ export const imprint: LegalDoc = {
     { k: 'h', level: 2, id: 'eu-representative', t: 'Representative in the European Union' },
     {
       k: 'p',
-      t: 'Under Article 27 of Regulation (EU) 2016/679 we have appointed **{{EU_REP_NAME}}**, {{EU_REP_ADDRESS}}, **{{EU_REP_EMAIL}}**, as our representative in the European Union for data protection matters. You may contact them instead of, or as well as, contacting us.',
+      t: '**We have not appointed a representative in the European Union under Article 27 of Regulation (EU) 2016/679.** We are assessing whether one is required. Once a representative is appointed, their name, address and email will be published here and in our [privacy policy](/privacy/).',
     },
     {
       k: 'p',
-      t: 'Appointing a representative does not give us an establishment in the European Union. We have no EU branch, subsidiary or permanent establishment, and we do not hold ourselves out as having one.',
+      t: 'In the meantime, write to us directly — [victor@talentsync.eu](mailto:victor@talentsync.eu) reaches Victor Uncuta, who handles data protection — and you remain free to complain to the data protection authority in your own country, whether or not you contact us first.',
+    },
+    {
+      k: 'p',
+      t: 'We have no EU branch, subsidiary or permanent establishment, and we do not hold ourselves out as having one. Appointing a representative, if we do, would not change that: a representative is a contact point, not an establishment.',
     },
 
     /* ----------------------------------------------------------- content */
@@ -138,7 +146,7 @@ export const imprint: LegalDoc = {
         '[Terms and conditions](/terms/) — website terms, client terms of business for direct recruitment and for hourly collaboration, and candidate terms.',
         '[Privacy policy](/privacy/) — how we handle personal data.',
         '[Candidate privacy notice](/candidate-privacy/) — the Article 14 notice for engineers we source from public profiles.',
-        '[Cookie policy](/cookies/) — every cookie this site can set, and when.',
+        '[Cookie policy](/cookies/) — why this site sets no cookies, and what would change that.',
       ],
     },
   ],

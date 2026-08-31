@@ -5,9 +5,15 @@ import type { LegalDoc } from './types'
  *
  * Changes to the draft, every one of them traceable:
  *
- *  · DECISIONS.md D2 — analytics is GA4 behind a consent banner. Every
- *    "we set no cookies of our own" / "there is no banner" claim is gone; §4.3
- *    and §13 are written for GA4 as live.
+ *  · DECISIONS.md D2 (GA4 behind a consent banner) is SUPERSEDED by the client's
+ *    answer of 31 August 2026: no GA4 property exists, so analytics ships OFF,
+ *    the site sets no cookies, and no banner renders. §4.3, §13 and the short
+ *    version say so; the GA4 rows in §8, §9.2 and §10 are deleted. Re-enabling
+ *    analytics is a policy change before it is a code change — this file and
+ *    /cookies/ are updated BEFORE the tag ships.
+ *    NOTE: scripts/check-legal-fidelity.mjs check 5 still enforces the old D2 and
+ *    will now fail on the true statements in §13. That check must be inverted;
+ *    the script is outside this file's scope.
  *  · DECISIONS.md D3 — {{AI_SCREENING_POSITION}} resolves to the settled
  *    sentence. The token is deleted from §6.8 and §14.
  *  · 08-critique-privacy [CRITICAL] Google Fonts — already fixed in the repo
@@ -28,8 +34,11 @@ import type { LegalDoc } from './types'
  *    /candidate-privacy/ and is kept there — this annex says the opposite in as
  *    many words. See the comment at the annex block before changing that.
  *
- * Surviving {{TOKEN}}s are business facts no agent may invent (D8). The A4 guard
- * fails `npm run verify` while any remain, so none can reach production.
+ * No placeholder tokens survive in this file. Every value was answered by the
+ * client on 31 August 2026; the two that were not — the Article 27 EU
+ * representative (§1.3, §17.2) and the engineer engagement status (§6.10) — are
+ * written as what is true today instead of guessed, and stay in BLOCKERS.md.
+ * The A4 guard fails `npm run verify` while any token remains.
  */
 export const privacy: LegalDoc = {
   slug: 'privacy',
@@ -54,7 +63,7 @@ export const privacy: LegalDoc = {
       items: [
         'We keep **candidate profiles no longer than 24 months** from our last contact with you, and keep placement, invoicing and tax records for the longer periods the law requires — [§10](#s10) lists every period we hold.',
         '**We do not use automated decision-making or AI screening to evaluate candidates.** Every shortlist is assembled by a person who has read your profile.',
-        '**We set no cookie and load no analytics until you say yes.** Google Analytics 4 runs on this site only after you accept it on the consent banner; rejecting is one click on the same screen and costs you nothing.',
+        '**This site sets no cookies at all, and we run no analytics.** Nothing is stored on your device and nothing is read from it, so there is nothing to consent to and you will not be asked to answer a cookie banner. If that ever changes, we update this policy first and ask for your consent before anything is set.',
         'We never charge a candidate anything, for any reason.',
       ],
     },
@@ -73,10 +82,13 @@ export const privacy: LegalDoc = {
       rows: [
         ['**Legal name**', 'S.R.L. “UNQENERGY”, trading as “TalentSync”'],
         ['**Company number (IDNO)**', '1020600034949'],
-        ['**Registered address**', '{{REGISTERED_ADDRESS}}, Chișinău, Republic of Moldova'],
+        [
+          '**Registered address**',
+          'MD-2005, Chișinău Rîșcani, mun. Chișinău, Colina Pușkin 18, ap. (of.) 1, Republic of Moldova',
+        ],
         ['**Website**', 'https://talentsync.eu'],
         ['**Email**', '[victor@talentsync.eu](mailto:victor@talentsync.eu)'],
-        ['**Privacy enquiries**', '{{PRIVACY_EMAIL}}'],
+        ['**Privacy enquiries**', '[victor@talentsync.eu](mailto:victor@talentsync.eu)'],
         ['**Phone**', '[+373 68 300 700](tel:+37368300700)'],
         ['**LinkedIn**', '[linkedin.com/company/talentsync](https://linkedin.com/company/talentsync)'],
       ],
@@ -89,21 +101,21 @@ export const privacy: LegalDoc = {
     { k: 'h', level: 3, id: 's1-2', t: '1.2 Our privacy contact' },
     {
       k: 'p',
-      t: 'Day-to-day privacy questions, rights requests and complaints go to **{{PRIVACY_CONTACT_NAME}}** at **{{PRIVACY_EMAIL}}**.',
+      t: 'Day-to-day privacy questions, rights requests and complaints go to **Victor Uncuta**, our CEO, at **[victor@talentsync.eu](mailto:victor@talentsync.eu)**.',
     },
     {
       k: 'p',
       t: 'We are **not** required to appoint a Data Protection Officer. Our core activities do not involve large-scale systematic monitoring, and we do not process special-category or criminal-conviction data at scale. We have deliberately appointed a named privacy contact instead of designating a formal DPO. If that ever changes we will publish the DPO’s details here and notify the Moldovan supervisory authority, as Article 37(7) of Law No. 195/2024 requires.',
     },
 
-    { k: 'h', level: 3, id: 's1-3', t: '1.3 Our representative in the European Union' },
+    { k: 'h', level: 3, id: 's1-3', t: '1.3 Representation in the European Union' },
     {
       k: 'p',
-      t: 'Because we offer services to people in the EU without being established there, Article 27 GDPR requires us to appoint a representative. Article 27(2)(a) does not exempt us: sourcing EU-resident engineers is our regular business, not occasional processing.',
+      t: '**We have not appointed a representative in the European Union under Article 27 GDPR.** We are assessing whether our processing requires one. If it does, we will appoint a representative and publish their name, address and contact details in this section.',
     },
     {
       k: 'p',
-      t: 'Under Article 27 GDPR we have appointed **{{EU_REP_NAME}}**, {{EU_REP_ADDRESS}}, **{{EU_REP_EMAIL}}**, as our representative in the European Union. Our written mandate under Article 27(1) is dated {{EU_REP_MANDATE_DATE}}. You may contact them about anything in this policy, instead of or as well as contacting us. Appointing a representative does not give us an establishment in the EU.',
+      t: 'That assessment changes nothing about what you can do. Write to us directly at **[victor@talentsync.eu](mailto:victor@talentsync.eu)** about anything in this policy — we answer within one month, free of charge, as [§12](#s12) sets out — and you may complain to the data protection authority in your own country at any time, whether or not you have contacted us first ([§17](#s17)).',
     },
 
     { k: 'h', level: 3, id: 's1-4', t: '1.4 Our representative in the United Kingdom' },
@@ -126,7 +138,7 @@ export const privacy: LegalDoc = {
         [
           'Someone browsing talentsync.eu',
           '[§4](#s4)',
-          'We hold almost nothing about you: web-server access logs, deleted after 30 days, and Google Analytics only if you consent',
+          'We hold almost nothing about you: web-server access logs, deleted after 30 days. No analytics, and no cookies',
         ],
         [
           'A contact at a client or prospective client',
@@ -195,7 +207,7 @@ export const privacy: LegalDoc = {
     },
     {
       k: 'p',
-      t: '**Before you answer the consent banner, your browser contacts no server other than talentsync.eu.** No font CDN — the Montserrat typeface is served from our own domain — no chat widget, no heatmap, no A/B testing, no session recording, no advertising pixel, no social embed, no map. If you accept analytics, your browser then loads Google Analytics from Google’s servers, and nothing else changes.',
+      t: '**While you are on talentsync.eu, your browser contacts no server other than talentsync.eu.** No analytics, no font CDN — the Montserrat typeface is served from our own domain — no chat widget, no heatmap, no A/B testing, no session recording, no advertising pixel, no social embed, no map.',
     },
 
     { k: 'h', level: 3, id: 's4-2', t: '4.2 What we process about every visitor' },
@@ -217,27 +229,23 @@ export const privacy: LegalDoc = {
       t: 'We do not build visitor profiles from server logs. We do not know who you are. We cannot link a log entry to a person, and we do not try.',
     },
 
-    { k: 'h', level: 3, id: 's4-3', t: '4.3 Analytics' },
+    { k: 'h', level: 3, id: 's4-3', t: '4.3 Analytics: we do not run any' },
     {
       k: 'p',
-      t: 'We use **Google Analytics 4** to understand which pages are useful. It runs **only if you accept it** on the consent banner.',
+      t: '**There is no analytics on this website.** No Google Analytics, no self-hosted analytics, no page-view script of any kind. Nothing counts you, nothing profiles you, and nothing is stored on or read from your device — which is why you will not be asked to answer a cookie banner.',
+    },
+    {
+      k: 'p',
+      t: 'We use the two search-console tools below. They run on the search engines’ own servers rather than on ours, and they place nothing on your device.',
     },
     {
       k: 'table',
       head: ['Tool', 'What it does', 'Data', 'Lawful basis', 'Retention', 'Where'],
       rows: [
         [
-          '**Google Analytics 4**',
-          'Counts visits, pages, sources and outbound clicks (Calendly, mailto) so we know what content works',
-          'Cookie identifier, IP address (used by Google to derive an approximate location, then discarded), pages viewed, referrer, device and browser type, events',
-          '**Consent**, Art 6(1)(a) GDPR **and** Art 5(3) ePrivacy Directive. No analytics cookie is set and no data is sent until you actively accept.',
-          'GA4 event-data retention is set to **2 months**, the shortest period Google offers. Withdrawing consent stops collection immediately',
-          'Google (EU/US)',
-        ],
-        [
           '**Google Search Console**',
           'Shows which Google searches lead to our site',
-          'Aggregated, anonymised query and click counts supplied by Google. No identifiers, no per-visitor data, nothing that identifies you. Ownership is verified by a DNS record, never by piggy-backing on the analytics tag',
+          'Aggregated, anonymised query and click counts supplied by Google. No identifiers, no per-visitor data, nothing that identifies you. Ownership is verified by a DNS record, not by any tag or script on the site',
           'Not personal data in our hands; we list it for completeness',
           'Held by Google under its own terms',
           'Google',
@@ -254,11 +262,11 @@ export const privacy: LegalDoc = {
     },
     {
       k: 'p',
-      t: '**How the banner behaves.** Google Consent Mode v2 defaults every signal to **denied**. Nothing but strictly necessary technology runs before you choose. Rejecting is exactly as easy as accepting — same screen, same prominence, one click, no pre-ticked boxes, no “legitimate interests” tab hiding switches you have to turn off individually. Dismissing the banner without choosing counts as a refusal. There is **no cookie wall**: the site is identical either way. You can change your mind at any time from the **Cookie settings** link in the footer, and withdrawal takes effect immediately.',
+      t: 'We count page requests in our own server logs instead. That needs no consent, because it involves nothing stored on or read from your device, and those logs are deleted after 30 days ([§4.2](#s4-2)).',
     },
     {
       k: 'p',
-      t: 'If you refuse, we fall back to counting page requests in our own server logs, which needs no consent because it involves nothing stored on or read from your device. Every cookie by name, purpose, provider, type and lifetime is listed in our [cookie policy](/cookies/).',
+      t: '**If we ever add analytics, this policy and the [cookie policy](/cookies/) are updated before the tool ships — not after — and we ask for your consent before anything is set on your device.** We would name the tool, what it collects, who receives it and how long it is kept, here, first. Refusing would be exactly as easy as accepting and would change nothing about the site.',
     },
 
     { k: 'h', level: 3, id: 's4-4', t: '4.4 Calendly' },
@@ -299,7 +307,7 @@ export const privacy: LegalDoc = {
           'Name, work email, job title, employer, public company information, notes on the conversation, our own record of when we last spoke',
           '**Legitimate interests**, Art 6(1)(f). *Balancing: B2B outreach to a named professional about their own job function is expected in this market, the data is business-context only, and one reply saying “stop” ends it permanently.*',
           '**12 months** from last meaningful contact if no relationship forms; then deleted',
-          'Our email provider; {{CANDIDATE_SYSTEM}}, where we keep client records',
+          'Google Workspace, our email provider; Google Drive, where we keep client records',
         ],
         [
           'Negotiating, signing and performing a recruitment or engagement agreement',
@@ -326,14 +334,14 @@ export const privacy: LegalDoc = {
           'Publishing a testimonial or case study — the individual’s first name, job title, employer and **photograph**',
           'First name, job title, employer, quote, photograph; company name and logo',
           '**Consent**, Art 6(1)(a), obtained in writing before publication, for any personal quote, attribution or photograph; **legitimate interests** for the company name alone',
-          'Until you withdraw agreement. Withdraw at any time by emailing {{PRIVACY_EMAIL}}; we remove the testimonial at the next deployment and in any event within **10 working days**',
+          'Until you withdraw agreement. Withdraw at any time by emailing [victor@talentsync.eu](mailto:victor@talentsync.eu); we remove the testimonial at the next deployment and in any event within **10 working days**',
           'Public — anyone visiting our website',
         ],
       ],
     },
     {
       k: 'p',
-      t: 'Currently published: three testimonials with photographs, on our homepage. We hold written consent for each.',
+      t: 'Currently published: three testimonials with photographs, on our homepage. Each is published with the named person’s agreement, and we remove any testimonial on request.',
     },
 
     { k: 'h', level: 3, id: 's5-2', t: '5.2 Interview feedback and information about your employees' },
@@ -627,11 +635,14 @@ export const privacy: LegalDoc = {
       k: 'p',
       t: 'If you work with a client through our flexible hourly model, the picture is a little different, so here it is separately.',
     },
-    { k: 'p', t: '**Your status with us is: {{ENGINEER_ENGAGEMENT_STATUS}}.**' },
+    {
+      k: 'p',
+      t: '**Who you contract with — us, the client, or an employer — is settled in the engagement contract, and we tell you in writing who your counterparty is before you commit to anything.** Whichever it turns out to be, the data responsibilities fall as follows.',
+    },
     {
       k: 'ul',
       items: [
-        '**We are the controller** for your contract, identity and tax documents, bank details, timesheets, invoices, insurance and the record of your engagement — on the basis of **contract** (Art 6(1)(b)) and **legal obligation** (Art 6(1)(c)) for tax and employment filings.',
+        '**We are the controller** for the engagement records we hold — the contract we are party to, the identity and tax documents we are required to collect, your bank details where we pay you, the timesheets and invoices we handle, and the record of your engagement — on the basis of **contract** (Art 6(1)(b)) and **legal obligation** (Art 6(1)(c)) for tax and accounting filings.',
         '**The client is the controller** for everything its systems generate about your work: commits, tickets, code review, access logs, calendar, internal chat, performance conversations. The client retains full technical and operational control of the engagement, which is the whole point of the model — and that control comes with the client’s own data protection responsibilities and its own privacy notice, which the client must give you.',
         '**For timesheets and billing we and the client are likely joint controllers**, because we jointly decide what gets recorded and why. The allocation in [§6.9](#s6-9) applies, adapted in the engagement contract.',
       ],
@@ -720,22 +731,22 @@ export const privacy: LegalDoc = {
           '**Railway Corp.**',
           'Hosting the website container and web server',
           '**Visitors:** access logs including IP address',
-          '{{RAILWAY_REGION}}',
-          'Processor. Art 28 data processing agreement; SCCs or an adequacy mechanism where the region is outside the EEA',
+          'European Union (Amsterdam)',
+          'Processor. Art 28 data processing agreement. The container runs inside the EU, so the logs need no transfer safeguard',
         ],
         [
-          '**{{EMAIL_PROVIDER}}**',
+          '**Google Workspace**',
           'Our business email and calendar',
           '**Everyone:** all correspondence',
           'EU/US',
           'Processor. Art 28 DPA; SCCs and/or EU–US Data Privacy Framework certification',
         ],
         [
-          '**{{CANDIDATE_SYSTEM}}**',
-          'Where candidate and client records are stored and organised',
+          '**Google Drive**, part of the same Google Workspace',
+          'Where candidate and client records are stored and organised. We run no separate applicant-tracking system: the records live in email and in Drive',
           '**Candidates and client contacts:** profiles, notes, status',
-          '{{CANDIDATE_SYSTEM_LOCATION}}',
-          'Processor. Art 28 DPA; SCCs where hosted outside the EEA',
+          'European Union',
+          'Processor. Art 28 DPA under the Google Workspace data processing terms',
         ],
         [
           '**Calendly LLC**',
@@ -752,13 +763,6 @@ export const privacy: LegalDoc = {
           'Separate controller for its own platform processing, under its own privacy policy',
         ],
         [
-          '**Google**',
-          'Google Analytics 4, where you consent',
-          '**Visitors:** analytics identifiers, IP address, events',
-          'EU/US',
-          'Processor for GA4 under Google’s data processing terms. Consent, Art 6(1)(a); EU–US Data Privacy Framework and SCCs',
-        ],
-        [
           '**Google (Search Console) and Microsoft (Bing Webmaster Tools)**',
           'Reporting which searches lead to our site',
           'Aggregated search statistics. No individual visitor data, nothing placed on your device',
@@ -773,8 +777,8 @@ export const privacy: LegalDoc = {
           'Professional obligation of confidentiality; legal obligation',
         ],
         [
-          '**Our bank and payment provider ({{PAYMENT_PROVIDER}})**',
-          'Paying and being paid',
+          '**Our bank**',
+          'Paying and being paid. Invoices are settled by **bank transfer**; we use no card payment processor, and this website takes no payments',
           '**Engaged engineers and client contacts:** payment details',
           'EU / Moldova',
           'Necessary to perform the contract',
@@ -845,8 +849,8 @@ export const privacy: LegalDoc = {
           'EU Standard Contractual Clauses, Module One, in the client agreement, plus our direct GDPR obligations',
         ],
         [
-          '**We use a US-hosted tool** — Calendly, our email provider, our records system, Google Analytics',
-          'Yes',
+          '**We use a US-based provider** — Calendly, and Google Workspace for our email and calendar',
+          'Yes, to the extent the provider processes outside the EEA',
           'TalentSync',
           'EU–US Data Privacy Framework certification where the provider holds one, otherwise EU SCCs, plus an Art 28 DPA in every case',
         ],
@@ -855,7 +859,7 @@ export const privacy: LegalDoc = {
     { k: 'h', level: 3, id: 's9-3', t: '9.3 What you can ask for' },
     {
       k: 'p',
-      t: 'A copy of the safeguards for any transfer that concerns you. Write to {{PRIVACY_EMAIL}}. Clients should see [Annex B](#annex-b), which sets out the instruments we sign and why.',
+      t: 'A copy of the safeguards for any transfer that concerns you. Write to [victor@talentsync.eu](mailto:victor@talentsync.eu). Clients should see [Annex B](#annex-b), which sets out the instruments we sign and why.',
     },
     { k: 'hr' },
 
@@ -870,11 +874,6 @@ export const privacy: LegalDoc = {
       head: ['Record', 'Period', 'Why that period'],
       rows: [
         ['Web-server access logs', '**30 days**', 'Security and debugging only; no longer use exists'],
-        [
-          'Analytics data, where you consented',
-          '**2 months**',
-          'The shortest event-data retention GA4 offers; withdrawing consent ends collection at once',
-        ],
         [
           'Profile recorded during a search, never approached',
           '**30 days**',
@@ -966,7 +965,7 @@ export const privacy: LegalDoc = {
     },
     {
       k: 'p',
-      t: 'No system is perfectly secure and anyone who tells you otherwise is selling something. If you believe you have found a vulnerability in our site or our handling, please write to {{PRIVACY_EMAIL}}. We will respond, we will fix it, and we will not threaten you.',
+      t: 'No system is perfectly secure and anyone who tells you otherwise is selling something. If you believe you have found a vulnerability in our site or our handling, please write to [victor@talentsync.eu](mailto:victor@talentsync.eu). We will respond, we will fix it, and we will not threaten you.',
     },
     { k: 'hr' },
 
@@ -976,7 +975,7 @@ export const privacy: LegalDoc = {
       k: 'note',
       t: 'Your right to object — read this one first',
       body: [
-        'Everything we do with candidate data rests on **legitimate interests**. That means **you can object at any time, and you do not need a reason**. Reply “remove me” to any message from us, or write to {{PRIVACY_EMAIL}}.',
+        'Everything we do with candidate data rests on **legitimate interests**. That means **you can object at any time, and you do not need a reason**. Reply “remove me” to any message from us, or write to [victor@talentsync.eu](mailto:victor@talentsync.eu).',
         'For sourcing, outreach and the talent pool we will not argue the point — we stop, and we add a one-way hash of your details to a suppression list so that we never approach you again. Article 21 GDPR and Article 21 of Law No. 195/2024.',
       ],
     },
@@ -1014,7 +1013,7 @@ export const privacy: LegalDoc = {
         ],
         [
           '**Withdraw consent**',
-          'Where we rely on consent — analytics, a German talent-pool entry, a published testimonial — withdraw it at any time. It is as easy to withdraw as it was to give, and withdrawal does not affect what we did lawfully beforehand',
+          'Where we rely on consent — a German talent-pool entry, a published testimonial, an interview accommodation — withdraw it at any time. It is as easy to withdraw as it was to give, and withdrawal does not affect what we did lawfully beforehand',
         ],
         [
           '**Human decision-making**',
@@ -1026,7 +1025,7 @@ export const privacy: LegalDoc = {
     { k: 'h', level: 3, id: 's12-1', t: '12.1 How to exercise them' },
     {
       k: 'p',
-      t: 'Email **{{PRIVACY_EMAIL}}**, or write to our EU representative at **{{EU_REP_EMAIL}}**. Either works; you do not need to use both.',
+      t: 'Email **[victor@talentsync.eu](mailto:victor@talentsync.eu)**. That one address reaches the person who answers, and it is the only one you need.',
     },
     {
       k: 'p',
@@ -1054,33 +1053,45 @@ export const privacy: LegalDoc = {
     { k: 'h', level: 3, id: 's13-1', t: '13.1 Where we stand' },
     {
       k: 'p',
-      t: '**Nothing non-essential is stored on your device, or read from it, until you say yes.** There is no advertising technology on this site, no cross-site tracking, no data broker, no marketing pixel, no fingerprinting and no session recording.',
+      t: '**talentsync.eu sets no cookies at all.** No analytics, no advertising technology, no cross-site tracking, no data broker, no marketing pixel, no fingerprinting, no session recording, no local storage and no session identifier. Nothing is stored on your device and nothing is read from it.',
     },
     {
       k: 'p',
-      t: 'The only item we store without asking is the record of the choice you made on the consent banner, so that we do not ask again on every page. That is strictly necessary in the ePrivacy sense: it exists only to remember your answer, including when your answer was “no”.',
+      t: 'That is why you will not be asked to answer a cookie banner: there is nothing to consent to, and a banner asking you to accept technology that does not run would be noise rather than a choice. This is the design, not an oversight, and we intend to keep it for as long as we can.',
     },
-    { k: 'h', level: 3, id: 's13-2', t: '13.2 What the banner does' },
+    {
+      k: 'p',
+      t: 'The Montserrat typeface is served from our own domain, so reading this page does not hand your IP address to a font CDN either. The one record our server keeps is the access log described in [§4.2](#s4-2) — not a cookie, and deleted after 30 days.',
+    },
+    { k: 'h', level: 3, id: 's13-2', t: '13.2 Search consoles, and what would change if we added anything' },
+    {
+      k: 'p',
+      t: 'Google Search Console and Bing Webmaster Tools set no cookies on our site. They report aggregated statistics that Google and Microsoft already hold from their own search results. Nothing is placed on your device and no consent is needed.',
+    },
+    {
+      k: 'p',
+      t: 'If we ever add analytics, or any other non-essential technology, these are commitments and not intentions:',
+    },
     {
       k: 'ul',
       items: [
-        'Google Consent Mode v2 defaults **every** signal to denied. **No analytics cookie or identifier is set before you choose.**',
-        '**Rejecting is exactly as easy as accepting** — same screen, same prominence, one click, no pre-ticked boxes, no dark patterns, no “legitimate interests” tab hiding switches you have to turn off individually.',
-        '**Closing the banner without choosing counts as a refusal.**',
-        '**You can change your mind at any time** from the **Cookie settings** link in the footer, and withdrawal takes effect immediately.',
-        '**Refusing costs you nothing.** The site is identical either way. There is no cookie wall.',
-        'Google Search Console and Bing Webmaster Tools set no cookies on our site. They report aggregated statistics that Google and Microsoft already hold from their own search results. Nothing is placed on your device and no consent is needed.',
+        '**This policy and the [cookie policy](/cookies/) are updated first** — naming the tool, what it collects, who receives it and how long it is kept — before the tool ships, not after.',
+        '**A consent banner appears before any cookie or identifier is set**, with every signal defaulting to denied until you choose.',
+        '**Rejecting will be exactly as easy as accepting** — same screen, same prominence, one click, no pre-ticked boxes, no dark patterns, no “legitimate interests” tab hiding switches you have to turn off individually.',
+        '**Closing the banner without choosing will count as a refusal.**',
+        '**You will be able to change your mind at any time**, and withdrawal will take effect immediately.',
+        '**Refusing will cost you nothing.** The site will be identical either way. There will be no cookie wall.',
       ],
     },
     { k: 'h', level: 3, id: 's13-3', t: '13.3 The full cookie policy' },
     {
       k: 'p',
-      t: 'A dedicated [cookie policy](/cookies/) lists every cookie by name, purpose, provider, type and lifetime. Where this section and that page differ, that page is more detailed and more current.',
+      t: 'A dedicated [cookie policy](/cookies/) sets out in full what this site does and does not store in your browser, and lists every cookie by name, purpose, provider, type and lifetime the moment there is one to list. Where this section and that page differ, that page is more detailed and more current.',
     },
     { k: 'h', level: 3, id: 's13-4', t: '13.4 A standing commitment' },
     {
       k: 'p',
-      t: 'Adding a chat widget, an embedded booking widget, a LinkedIn Insight tag, a YouTube embed, a heatmap tool or a hosted form would each add a third party to the list above. We treat that as a decision with consequences, not a quick task: this policy and the cookie page are updated **before** any such thing ships — not after. The engineering rule is simple: if a new third-party domain appears in the network tab, the cookie page is out of date and must be updated before release.',
+      t: 'Adding a chat widget, an embedded booking widget, a LinkedIn Insight tag, a YouTube embed, a heatmap tool or a hosted form would each add a third party to [§8](#s8), and most of them would store something on your device. We treat that as a decision with consequences, not a quick task: this policy and the cookie page are updated **before** any such thing ships — not after. The engineering rule is simple: if a new third-party domain appears in the network tab, the cookie page is out of date and must be updated before release.',
     },
     { k: 'hr' },
 
@@ -1120,7 +1131,7 @@ export const privacy: LegalDoc = {
     },
     {
       k: 'p',
-      t: 'If you believe a child’s data has reached us, write to {{PRIVACY_EMAIL}} and we will delete it promptly.',
+      t: 'If you believe a child’s data has reached us, write to [victor@talentsync.eu](mailto:victor@talentsync.eu) and we will delete it promptly.',
     },
     { k: 'hr' },
 
@@ -1149,7 +1160,7 @@ export const privacy: LegalDoc = {
     { k: 'h', level: 2, id: 's17', t: '17. Complaints' },
     {
       k: 'p',
-      t: 'Please come to us first — {{PRIVACY_EMAIL}}. Most things are a misunderstanding we can fix in a day, and we would rather fix it than read about it from a regulator.',
+      t: 'Please come to us first — [victor@talentsync.eu](mailto:victor@talentsync.eu). Most things are a misunderstanding we can fix in a day, and we would rather fix it than read about it from a regulator.',
     },
     {
       k: 'p',
@@ -1171,7 +1182,7 @@ export const privacy: LegalDoc = {
     },
     {
       k: 'p',
-      t: 'You can also contact our EU representative, {{EU_REP_NAME}}, at {{EU_REP_EMAIL}}.',
+      t: 'We have not appointed an Article 27 representative in the EU — see [§1.3](#s1-3). Until we publish one, write to us directly at [victor@talentsync.eu](mailto:victor@talentsync.eu). That does not limit your right to complain to your own authority, and you never have to go through us to use it.',
     },
     { k: 'h', level: 3, id: 's17-3', t: '17.3 United Kingdom' },
     {
@@ -1220,7 +1231,7 @@ export const privacy: LegalDoc = {
     { k: 'h', level: 2, id: 'annex-b', t: 'Annex B — What a client can ask us for' },
     {
       k: 'p',
-      t: 'We will supply all of the following without argument or an NDA fight. Ask {{PRIVACY_EMAIL}}.',
+      t: 'We will supply all of the following without argument or an NDA fight. Ask [victor@talentsync.eu](mailto:victor@talentsync.eu).',
     },
     {
       k: 'table',
@@ -1284,7 +1295,7 @@ export const privacy: LegalDoc = {
         [
           '1.0',
           '30 August 2026',
-          'First publication. Covers Moldovan Law No. 195/2024 (in force 23 August 2026), EU GDPR via Article 3(2), and UK GDPR. Records the consent-gated Google Analytics 4 deployment and the self-hosted typeface',
+          'First publication. Covers Moldovan Law No. 195/2024 (in force 23 August 2026), EU GDPR via Article 3(2), and UK GDPR. Records the no-analytics, no-cookie position and the self-hosted typeface',
         ],
       ],
     },

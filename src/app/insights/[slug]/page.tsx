@@ -245,10 +245,11 @@ export default async function InsightPage({ params }: Params) {
             datePublished: a.datePublished,
             dateModified: a.dateModified,
           }),
-          // Overrides articleLd's default author reference: the name is a real
-          // named Person with a url that resolves to a bio, which is what
-          // Google's Article guidance asks for. Nothing else goes in `name`.
-          author: { '@type': 'Person', name: AUTHOR.name, url: `${SITE_URL}${AUTHOR.url}` },
+          // Reference the founder Person by @id rather than restating it. A second
+          // standalone Person node with the same name does not merge with the one in
+          // the Organization graph, so the article would lose the jobTitle and the
+          // LinkedIn sameAs that make the attribution worth anything.
+          author: { '@id': `${SITE_URL}${AUTHOR.url}` },
           isPartOf: { '@id': `${SITE_URL}/insights/#blog` },
           about: a.about.map((name) => ({ '@type': 'Thing', name })),
           keywords: a.tags.join(', '),

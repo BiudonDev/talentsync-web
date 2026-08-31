@@ -6,23 +6,28 @@
  * data: the facts block (07-schema-aeo §4.3), the registry details, the open
  * roles and the FAQ.
  *
- * Tokens: `{{FOUNDER_FULL_NAME}}`, `{{FOUNDER_TITLE}}`, `{{FOUNDER_LINKEDIN_URL}}`
- * and `{{FOUNDED_YEAR}}` are business facts no agent may invent (DECISIONS D8,
- * BLOCKERS §2 item 9). `npm run verify` fails while any of them survives into
- * `out/`, which is the point — the page cannot ship half-known. The first two
- * spellings match `src/data/legal/imprint.ts`, so one answer resolves both.
+ * The founder, founding-year and registered-address values were tokens until the
+ * client supplied them on 31 August 2026; they are written in literally, because
+ * `npm run verify` fails on any token that survives into `out/`. The same
+ * spellings are used in `src/data/legal/imprint.ts` and `src/lib/schema.ts` —
+ * one answer, one spelling, everywhere (D5).
  */
 
 import { ANTI_POSITIONING, siteConfig } from '@/data/content'
 
-export const FOUNDED_YEAR = '{{FOUNDED_YEAR}}'
+/**
+ * The year, not the date: prose reads better as "since 2020". The full founding
+ * date — 8 October 2020 — is `foundingDate` on the Organization node in
+ * `src/lib/schema.ts`, which is where a machine reads it.
+ */
+export const FOUNDED_YEAR = '2020'
 
 export const founder = {
-  name: '{{FOUNDER_FULL_NAME}}',
-  /** First name only — the one part of the identity that is already public. */
+  name: 'Victor Uncuta',
+  /** The prose, the FAQ and the byline all say "Victor"; the Person node needs both. */
   givenName: 'Victor',
-  jobTitle: '{{FOUNDER_TITLE}}',
-  linkedin: '{{FOUNDER_LINKEDIN_URL}}',
+  jobTitle: 'CEO',
+  linkedin: 'https://www.linkedin.com/in/victoruncuta/',
   email: siteConfig.email,
   phone: siteConfig.phone,
 }
@@ -66,8 +71,15 @@ export const companyDetails: Fact[] = [
   { term: 'Trading name', value: 'TalentSync' },
   { term: 'Legal form', value: 'societate cu răspundere limitată (SRL)' },
   { term: 'Registration number (IDNO)', value: '1020600034949' },
-  { term: 'VAT status', value: '{{VAT_STATUS}}' },
-  { term: 'Registered address', value: '{{REGISTERED_ADDRESS}}, Chișinău, Republic of Moldova' },
+  // No VAT row. The company is not registered for VAT in the Republic of Moldova,
+  // and a registry row reading "none" is noise: /imprint/ and /terms/ state the
+  // fact in prose, which is where an EU buyer reads it to decide whether the
+  // reverse charge applies. Omitting the row contradicts neither.
+  {
+    term: 'Registered address',
+    value:
+      'MD-2005, Chișinău Rîșcani, mun. Chișinău, Colina Pușkin 18, ap. (of.) 1, Republic of Moldova',
+  },
   { term: 'Email', value: siteConfig.email },
   { term: 'Telephone', value: siteConfig.phone },
   { term: 'Website', value: 'talentsync.eu' },

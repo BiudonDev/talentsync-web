@@ -24,12 +24,27 @@ const LOCALITY = 'Chișinău'
 // how every legal page renders it; one spelling everywhere is the same D5 rule.
 const LEGAL_NAME = 'S.R.L. “UNQENERGY”'
 const IDNO = '1020600034949'
+// Registered 8 October 2020. `FOUNDED_YEAR` in src/data/about.ts renders the year
+// alone in prose; the full date belongs here, where a machine reads it.
+const FOUNDING_DATE = '2020-10-08'
+// The registered office, split out of the one string /about/ and /imprint/ render
+// verbatim. `addressRegion` is deliberately absent: "Chișinău Rîșcani" is the
+// register's sector designation, not a region, and a guessed mapping is worse
+// than an omitted optional property.
+const STREET_ADDRESS = 'Colina Pușkin 18, ap. (of.) 1'
+const POSTAL_CODE = 'MD-2005'
 const EMAIL = 'victor@talentsync.eu'
 // Spaced, not E.164. D5 requires the visible footer NAP and this block to match
 // exactly, and siteConfig.phone (what the footer renders) is the spaced form —
 // which 07-schema-aeo.md §7.2 also mandates verbatim for every directory listing.
 const TELEPHONE = '+373 68 300 700'
 const LINKEDIN = 'https://linkedin.com/company/talentsync'
+// The founder, spelled as /about/ renders him — src/data/about.ts `founder` is the
+// visible half of the same pair, and the two Person nodes share `FOUNDER_ID`, so
+// a difference here would put two people under one @id.
+const FOUNDER_NAME = 'Victor Uncuta'
+const FOUNDER_TITLE = 'CEO'
+const FOUNDER_LINKEDIN = 'https://www.linkedin.com/in/victoruncuta/'
 const CALENDLY = 'https://calendly.com/talentsync-meeting/30min'
 
 const AREA_SERVED = [
@@ -46,9 +61,9 @@ export const graphLd = (...nodes: object[]) => ({
 
 /**
  * `additionalType: EmploymentAgency` rather than `@type: EmploymentAgency`.
- * The latter inherits `Place` and needs a published street address TalentSync
- * does not have, so it would be ineligible for the Local Business rich result
- * anyway — Place semantics paid for nothing.
+ * The latter inherits `Place`. The address below is a registered office, not a
+ * branch a client walks into: no opening hours, no counter, nothing a Local
+ * Business rich result is for. Place semantics would be paid for and unused.
  *
  * `name` is the TRADING name; `legalName` is the registered person. They differ,
  * and that is the point: the state register lists no company called TalentSync,
@@ -58,11 +73,15 @@ export const graphLd = (...nodes: object[]) => ({
  * it. The two strings are written EXACTLY as the prose renders them, curly quotes
  * included — same D5 rule that keeps one spelling of Chișinău everywhere.
  *
- * Still OMITTED, because these remain business facts nobody may invent: street
- * address, postal code, founding year, and `vatID`/`taxID` — VAT status is still
- * an open row in BLOCKERS.md. A wrong value is worse than a missing one,
- * Organization has no required properties, and a surviving placeholder token
- * fails `npm run verify`.
+ * The street address, postal code and founding date were business facts nobody
+ * could invent; the client supplied them, so they are here, matching the visible
+ * registry block on /about/ and the imprint character for character.
+ *
+ * `vatID` and `taxID` stay OMITTED, and now by decision rather than by default:
+ * the company is not registered for VAT in the Republic of Moldova, so there is
+ * no number to publish. Organization has no required properties, a wrong value is
+ * worse than a missing one, and /imprint/ and /terms/ state the fact in prose
+ * where a buyer deciding on the reverse charge will actually read it.
  */
 export const organizationLd = () => ({
   '@type': 'Organization',
@@ -75,6 +94,7 @@ export const organizationLd = () => ({
     propertyID: 'IDNO',
     value: IDNO,
   },
+  foundingDate: FOUNDING_DATE,
   url: `${SITE_URL}/`,
   logo: {
     '@type': 'ImageObject',
@@ -94,6 +114,8 @@ export const organizationLd = () => ({
   telephone: TELEPHONE,
   address: {
     '@type': 'PostalAddress',
+    streetAddress: STREET_ADDRESS,
+    postalCode: POSTAL_CODE,
     addressLocality: LOCALITY,
     addressCountry: 'MD',
   },
@@ -125,9 +147,11 @@ export const organizationLd = () => ({
   founder: {
     '@type': 'Person',
     '@id': FOUNDER_ID,
-    name: 'Victor',
+    name: FOUNDER_NAME,
+    jobTitle: FOUNDER_TITLE,
     worksFor: ORG_REF,
     url: `${SITE_URL}/about/#victor`,
+    sameAs: [FOUNDER_LINKEDIN],
   },
   makesOffer: [
     { '@type': 'Offer', itemOffered: { '@id': `${absUrl('/b2b-engineer-recruitment/')}#service` } },

@@ -6,7 +6,7 @@ import type { LegalDoc } from './types'
  *
  * This is the Article 14 notice that goes into the FIRST outreach message to any
  * engineer we sourced from a public profile. It therefore has to stand completely
- * alone: controller identity, EU representative, source, categories, purpose,
+ * alone: controller identity, how to reach us, source, categories, purpose,
  * basis, recipients, retention, rights and complaint routes are all here, with no
  * dependency on /privacy/ beyond a "there is more detail there" link. It is also
  * the canonical text — /privacy/ links here rather than carrying a second copy,
@@ -46,8 +46,8 @@ export const candidatePrivacy: LegalDoc = {
       k: 'note',
       t: 'About this message and your data',
       body: [
-        '**Who we are.** S.R.L. “UNQENERGY” (IDNO 1020600034949), trading as “TalentSync” — a technical recruitment company registered in the Republic of Moldova, at {{REGISTERED_ADDRESS}}, Chișinău. **We are the controller of your personal data.**',
-        '**Our representative in the EU.** {{EU_REP_NAME}}, {{EU_REP_ADDRESS}}, {{EU_REP_EMAIL}}. You can contact them instead of us about anything below.',
+        '**Who we are.** S.R.L. “UNQENERGY” (IDNO 1020600034949), trading as “TalentSync” — a technical recruitment company registered in the Republic of Moldova, at MD-2005, Chișinău Rîșcani, mun. Chișinău, Colina Pușkin 18, ap. (of.) 1. **We are the controller of your personal data.**',
+        '**How to reach us in the EU.** We have not appointed a representative in the European Union under Article 27 GDPR; we are assessing whether one is required, and we will publish the details here as soon as any is appointed. Until then, write to us directly at [victor@talentsync.eu](mailto:victor@talentsync.eu) — and you can complain to the authority in your own country at any time, as set out below.',
         '**Where we got your details.** From your public professional profile on **[platform]** — [profile URL]. We found you there while searching for engineers for a specific, live role. We did not buy your details, scrape them, or get them from a data broker, and we have not looked at any personal social media.',
         '**What we recorded.** Your name, your public profile URL, your current job title and employer, the skills and technologies listed on your profile, your seniority, your location, and the contact route you have made available. Nothing else.',
         '**Why.** To assess whether your experience matches a role we are currently recruiting for, and to contact you about it.',
@@ -56,7 +56,7 @@ export const candidatePrivacy: LegalDoc = {
         '**How long we keep it.** If you do not reply, we delete everything we hold about you **six months** from the date of this message. If we speak and it does not lead anywhere, we keep your profile for a maximum of **24 months from our last contact**, and we will email you at 22 months to ask whether to keep it.',
         '**What we do not do.** We do not use automated decision-making or AI screening to evaluate candidates — a person reads every profile. We do not collect your photograph, date of birth, health information, or anything about your race, religion, politics, union membership or criminal record, and if any of that appears on a CV you send us, we remove it.',
         '**Your rights.** You can ask us for a copy of what we hold, correct it, delete it, restrict what we do with it, or object to it. **You can object to this processing at any time** — just reply “remove me” and you will hear from us again only to confirm it is done. We keep a one-way (SHA-256) hash of your email address and a one-way hash of your profile URL, and nothing else, so that we do not accidentally contact you again in future. You have these rights whether or not you reply to this message.',
-        '**How.** Reply to this email, or write to {{PRIVACY_EMAIL}}. We answer within one month, free of charge.',
+        '**How.** Reply to this email, or write to [victor@talentsync.eu](mailto:victor@talentsync.eu). We answer within one month, free of charge.',
         '**Complaints.** To the Moldovan National Centre for Personal Data Protection ([centru@datepersonale.md](mailto:centru@datepersonale.md), [datepersonale.md](https://datepersonale.md/en/)) or, if you are in the EU or EEA, to the data protection authority in your own country — the list is at [edpb.europa.eu](https://edpb.europa.eu/about-edpb/about-edpb/members_en). In the UK, the ICO at [ico.org.uk/make-a-complaint](https://ico.org.uk/make-a-complaint/).',
         '**Full privacy policy:** [talentsync.eu/privacy/](/privacy/)',
       ],
@@ -77,7 +77,7 @@ export const candidatePrivacy: LegalDoc = {
     {
       k: 'note',
       body: [
-        '**Privacy:** I found your public [platform] profile while searching for a live role and recorded your name, title, employer, skills and profile URL. Controller: S.R.L. “UNQENERGY” (IDNO 1020600034949), trading as TalentSync, Chișinău, Moldova. EU representative: {{EU_REP_NAME}}, {{EU_REP_EMAIL}}. Legal basis: legitimate interests, Art 6(1)(f) GDPR. Nothing is shared with any client unless you agree first. Deleted in 6 months if you do not reply. Reply “remove me” and I will stop and never source you again. Your rights and how to complain: talentsync.eu/candidate-privacy/',
+        '**Privacy:** I found your public [platform] profile while searching for a live role and recorded your name, title, employer, skills and profile URL. Controller: S.R.L. “UNQENERGY” (IDNO 1020600034949), trading as TalentSync, Chișinău, Moldova; victor@talentsync.eu. Legal basis: legitimate interests, Art 6(1)(f) GDPR. Nothing is shared with any client unless you agree first. Deleted in 6 months if you do not reply. Reply “remove me” and I will stop and never source you again. Your rights and how to complain: talentsync.eu/candidate-privacy/',
       ],
     },
     { k: 'hr' },
@@ -114,7 +114,7 @@ export const candidatePrivacy: LegalDoc = {
     },
     {
       k: 'p',
-      t: 'Questions about any of it: {{PRIVACY_EMAIL}}, or our EU representative at {{EU_REP_EMAIL}}. Either works.',
+      t: 'Questions about any of it: [victor@talentsync.eu](mailto:victor@talentsync.eu). That address reaches the person who answers.',
     },
   ],
 }
