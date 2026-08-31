@@ -1,0 +1,105 @@
+import type { Metadata } from 'next'
+import Link from 'next/link'
+import JsonLd from '@/components/JsonLd'
+import PageShell from '@/components/layout/PageShell'
+import { Card, CtaBand, SectionWrapper } from '@/components/ui'
+import { servicesNav } from '@/data/routes'
+import { getServicePage } from '@/data/services'
+import { graphLd, itemListLd } from '@/lib/schema'
+import { absUrl, href, pageMeta } from '@/lib/seo'
+
+/**
+ * The service-cluster hub.
+ *
+ * Built from `servicesNav`, which is `routes.ts` filtered to `group: 'service'`
+ * and `!draft` — so the three D1.1 draft routes can never be linked from here by
+ * forgetting to filter them. Card copy is each page's own `metaDescription`
+ * rather than new prose: one string per service, already written, already
+ * length-checked, and it cannot drift from the page it points at.
+ *
+ * The cards are the CTA. The band at the bottom is the fallback for anyone who
+ * read all seven and still wants a person.
+ */
+
+const PATH = '/services/'
+
+const services = servicesNav.map((route) => ({
+  path: route.path,
+  label: route.label,
+  description: getServicePage(route.path.replace(/\//g, ''))?.metaDescription,
+}))
+
+export const metadata: Metadata = pageMeta({
+  path: PATH,
+  title: 'Engineering Recruitment Services',
+  description:
+    'Every TalentSync recruitment service in one place: senior engineers sourced across Eastern Europe and Moldova, engaged on a direct B2B contract or hourly.',
+})
+
+export default function ServicesPage() {
+  return (
+    <PageShell crumbs={[{ label: 'Home', href: '/' }, { label: 'Services' }]}>
+      <JsonLd
+        data={graphLd(
+          itemListLd({
+            id: `${absUrl(PATH)}#services`,
+            name: 'TalentSync engineering recruitment services',
+            items: services.map((s) => ({ name: s.label, path: s.path, description: s.description })),
+          }),
+        )}
+      />
+
+      {/* Interior hero — §4.3, never `min-h-screen`. Same values as
+          ServicePageTemplate so the hub and its children share one skyline. */}
+      <header className="hero-glow bg-background-alt pt-28 pb-14 sm:pt-32 sm:pb-16 lg:pt-40 lg:pb-24">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-balance">
+            Engineering Recruitment Services from Eastern Europe
+          </h1>
+          <p className="mt-6 max-w-2xl text-lg sm:text-xl leading-relaxed text-text-secondary text-pretty">
+            TalentSync recruits senior software engineers across Eastern Europe and places them with product
+            teams in Western Europe. Every service below is one route into the same network: pick by role, by
+            market, or by how you want to engage the engineer — a direct B2B contract or hourly collaboration.
+          </p>
+        </div>
+      </header>
+
+      <SectionWrapper id="services">
+        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-balance">
+          Where to start
+        </h2>
+        <ul className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-8 lg:grid-cols-3">
+          {services.map((service) => (
+            <li key={service.path}>
+              <Card className="h-full">
+                {/* The heading IS the link: one interactive element per card, and
+                    the anchor text is the service name rather than "read more".
+                    py-2 + min-h-11 grow the hit box to 44px (Rule 3) without
+                    touching the §2.3 h3 type size, which stays on the <h3>. */}
+                <h3 className="text-xl sm:text-2xl font-bold">
+                  <Link
+                    href={href(service.path)}
+                    className="inline-flex min-h-11 items-center rounded-lg py-2 text-primary hover:text-primary-light focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+                  >
+                    {service.label}
+                  </Link>
+                </h3>
+                {service.description && (
+                  <p className="mt-2 text-base sm:text-lg leading-relaxed text-text-secondary text-pretty">
+                    {service.description}
+                  </p>
+                )}
+              </Card>
+            </li>
+          ))}
+        </ul>
+      </SectionWrapper>
+
+      <CtaBand
+        title="Not sure which one you need?"
+        body="Describe the role and the constraints. We will tell you which of these fits, and say so if none of them does."
+        secondary={{ label: 'Contact us', href: href('/contact') }}
+      />
+    </PageShell>
+  )
+}

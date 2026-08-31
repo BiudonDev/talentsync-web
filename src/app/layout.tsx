@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { Montserrat } from 'next/font/google'
+import Analytics from '@/components/Analytics'
 import JsonLd from '@/components/JsonLd'
 import { graphLd, organizationLd, websiteLd } from '@/lib/schema'
 import { SITE_NAME, SITE_URL } from '@/lib/seo'
@@ -55,6 +56,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     // during navigation unless the document opts in.
     <html lang="en" className={montserrat.variable} data-scroll-behavior="smooth">
       <body>
+        {/* First in <body>: the Consent Mode v2 defaults must execute before
+            anything else on the page, and the banner's DOM position is what
+            puts Reject on the first Tab stop. */}
+        <Analytics />
         <JsonLd data={graphLd(organizationLd(), websiteLd())} />
         {children}
       </body>

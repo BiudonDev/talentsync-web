@@ -28,7 +28,7 @@ export const cookies: LegalDoc = {
   h1: 'Cookie policy: every cookie talentsync.eu can set, and when',
   metaTitle: 'Cookie Policy',
   metaDescription:
-    'Every cookie and storage item on talentsync.eu by name, provider, purpose and lifetime — what is strictly necessary, what needs your consent, and how to change your mind.',
+    'Every cookie and storage item on talentsync.eu by name, provider, purpose and lifetime — what is strictly necessary, what needs consent, and how to change it.',
   version: '1.0',
   updated: '2026-08-30',
   lede: 'This policy is only about what happens in *your browser* when you visit talentsync.eu. Everything else we do with personal data — candidate data, client data — is in the [privacy policy](/privacy/).',

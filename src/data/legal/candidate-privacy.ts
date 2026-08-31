@@ -24,7 +24,7 @@ export const candidatePrivacy: LegalDoc = {
   h1: 'Candidate privacy notice: what we recorded about you, and how to make us stop',
   metaTitle: 'Candidate Privacy Notice',
   metaDescription:
-    'The Article 14 notice TalentSync sends to every engineer it sources from a public profile: where we found you, what we recorded, why, how long we keep it, and how to object.',
+    'TalentSync’s Article 14 notice for engineers sourced from a public profile: where we found you, what we recorded, why, how long we keep it, and how to object.',
   version: '1.0',
   updated: '2026-08-30',
   lede: 'If we found you on a public professional profile and wrote to you, this is the notice that came with that message — published here word for word so you can check it. It stands on its own; the [full privacy policy](/privacy/) has the rest of the detail.',

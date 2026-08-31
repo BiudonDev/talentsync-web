@@ -72,6 +72,12 @@ export default function Footer() {
           </div>
 
           <div className="flex flex-col gap-1 text-sm text-text-secondary sm:items-end">
+            {/* Plain anchor, intercepted by ConsentBanner's delegated listener,
+                so the withdrawal route cookies.ts §7 promises exists on every
+                route without making this a client component. */}
+            <a href="#cookie-settings" className={LINK}>
+              Cookie settings
+            </a>
             <a href="#main" className={LINK}>
               Back to top
             </a>

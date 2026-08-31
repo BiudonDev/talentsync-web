@@ -1,10 +1,33 @@
+# Build context = the builder stage's `COPY . .`. Everything here is either
+# regenerated inside the image, useless to `next build`, or too big to ship.
 node_modules
 .next
 out
 .git
 .gitignore
+.github
+.claude
+
+# 1.1 MB of specification. It is not read at build time and must not sit in a
+# production image.
+docs
+
+# The source brief. 1.4 MB, the single largest file in the repo, unused by the build.
+TalentSync.pdf
+
+# Docker's own inputs — changing them must not invalidate the `COPY . .` layer.
+Dockerfile
+.dockerignore
+docker-compose.yml
 README.md
+
+# Agent/temp working files. None are committed today; the patterns exist so a
+# stray one cannot leak into an image.
+scratchpad
+.scratchpad
+*.tsbuildinfo
+
 .env*
 *.log
 .DS_Store
-docs
+*.pem

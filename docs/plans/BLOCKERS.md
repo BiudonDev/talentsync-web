@@ -2,12 +2,18 @@
 
 Every `{{TOKEN}}` in the legal drafts, in one table, with the draft's own recommended
 default already filled in. **You are not being asked 96 questions.** You are being asked
-**twelve**. The other 84 have a defensible default that ships today and can be changed
+**thirteen**. The rest have a defensible default that ships today and can be changed
 later in a one-line edit.
+
+> **Updated after waves B and C.** Wave B landed the legal pages, wave C landed the
+> analytics, the founder block and the service copy. Three things changed: a handful of
+> new tokens now exist in `src/` that were not in the original 96 (§1.9), one token that
+> was a *nice to have* is now a **hard deploy blocker** (§2 row 4), and the
+> `npm run smoke` path has been run against a real image for the first time (§4).
 
 **How to use this file**
 
-1. Answer the twelve in [§2](#2-answer-these-12-to-unblock-80-of-the-work). That is the
+1. Answer the thirteen in [§2](#2-answer-these-13-to-unblock-80-of-the-work). That is the
    whole ask for launch.
 2. Everything in [§3](#3-before-the-first-client-contract) is deferred to a named
    milestone. Do not read it this week.
@@ -27,7 +33,7 @@ recommendation is taken automatically, Victor only needs to override it.
 
 ### 1.1 Entity identity — shared by /terms/, /privacy/, /cookies/ and /imprint/
 
-These seven are why the twelve-question list exists. One registry extract answers the
+These seven are why the thirteen-question list exists. One registry extract answers the
 first four, and they unblock five pages at once.
 
 | Token | What it is | Recommended default | Blocks | Owner |
@@ -49,6 +55,7 @@ first four, and they unblock five pages at once.
 | `{{EU_REP_NAME}}` | The GDPR Art 27 representative's name. Not optional for a recruiter — the "occasional processing" exemption does not apply. | Appoint a provider in Romania (largest candidate concentration, shared language, cheapest) | /privacy/ §1, §17, Annex A | **V** |
 | `{{EU_REP_ADDRESS}}` | Their postal address in the EU. | as above | /privacy/, Annex A | **V** |
 | `{{EU_REP_EMAIL}}` | Their contact email. | as above | /privacy/ (6 places), Annex A | **V** |
+| `{{EU_REP_MANDATE_DATE}}` | The date the Art 27 mandate was signed. New in wave B (`src/data/legal/privacy.ts`) — the policy states when the appointment took effect. | The date the mandate is signed; falls out of the §2 row 3 answer | /privacy/ §17 | **V** |
 | `{{UK_REPRESENTATIVE_BLOCK}}` | One of two paragraphs: either a UK representative's details, or a statement that none is needed. | The "no UK representative" paragraph drafted at 03 Open Q7 — valid while UK contacts are corporate clients only | /privacy/ §1 | **DEFAULT** |
 | `{{FONTS_SELF_HOSTED_DATE}}` | The date Montserrat stopped being loaded from Google's CDN. Until then every EU visitor's IP goes to Google without consent. | Ship `next/font` in the launch release, then use that date | /privacy/ §4.3 | **DEV** |
 | `{{ANALYTICS_STATUS}}` | A marker saying whether GA4 is live yet. | `live` — GA4 ships in the launch release (D2) | /privacy/ §4 | **DEFAULT (D2)** |
@@ -166,11 +173,27 @@ what a client actually negotiates, and they leak straight into every proposal.
 | `{{CANDIDATE_RETENTION_MONTHS}}` | How long candidate data is kept from last meaningful contact. | `24` months, `6` for rejected German-facing candidates. **Needs a real mechanism, not a policy sentence** — see §3.2 | /terms/ B18.7; /privacy/ §10 | **DEFAULT + DEV** |
 | `{{ESCALATION_DAYS}}` | How long senior representatives have to meet before either side starts proceedings. | `15` business days | /terms/ D-clause | **DEFAULT** |
 
+### 1.9 Founder, entity history and market data — /about/, /imprint/, /technical-recruitment-moldova/
+
+**New in waves B and C.** These six tokens are not part of the original 96 — they entered
+`src/` when the founder block, the entity history and the Moldova market page were written.
+They are listed here so `npm run verify` (D8) has a triage row for every token it can find,
+not just the legal ones. The first four are one answer, already asked as §2 rows 8 and 9.
+
+| Token | What it is | Recommended default | Blocks | Owner |
+|---|---|---|---|---|
+| `{{FOUNDER_FULL_NAME}}` | Victor's full legal name. | — (no default possible) | `src/data/about.ts`, `src/data/legal/imprint.ts`, the `Person` node, every `Article` author | **V** |
+| `{{FOUNDER_TITLE}}` | His job title, in the words he actually uses. | `Founder` if nothing better — but pick one and use it in both files | `src/data/about.ts`, `src/data/legal/imprint.ts` | **V** |
+| `{{FOUNDER_LINKEDIN_URL}}` | His personal LinkedIn profile URL — the company page is already in `siteConfig` and is not a substitute. | — the `sameAs` edge that makes the `Person` node resolvable | `src/data/about.ts` | **V** (2 min) |
+| `{{FOUNDED_YEAR}}` | Year the company started trading. | — same registry extract as §1.1 | `src/data/about.ts`, `foundingDate` in `Organization` JSON-LD | **V** |
+| `{{MOLDOVA_ICT_HEADCOUNT}}` | Number of ICT professionals in Moldova, with the source and the year. | Cite Moldova IT Park's own published figure with its year, or delete the sentence. An unsourced number is exactly the kind of claim clause A4.3 promises to substantiate on request | /technical-recruitment-moldova/ | **V** |
+| `{{MOLDOVA_SENIOR_RATE_BAND}}` | The senior rate band quoted on the Moldova page. | — **read D7 first.** "EUR 15–35/hour" is CUT and must not come back here under a new token. Either a sourced market-wide band with the source named, or delete the sentence | /technical-recruitment-moldova/ | **V** |
+
 ---
 
-## 2. Answer these 12 to unblock ~80% of the work
+## 2. Answer these 13 to unblock ~80% of the work
 
-Twelve answers. Most are a lookup, not a decision. Nothing else on this page needs your
+Thirteen answers. Most are a lookup, not a decision. Nothing else on this page needs your
 attention before launch.
 
 | # | Question | Why it is blocking | What happens with no answer |
@@ -178,15 +201,16 @@ attention before launch.
 | **1** | **Registered name and legal form** — exactly as on the state registration extract. | Art 13/14 GDPR controller identification, Moldovan Law 284/2004 on e-commerce, and every EU procurement checklist. | /terms/, /privacy/, /cookies/, /imprint/ cannot publish. The `Organization` JSON-LD — the entity signal the whole SEO plan rests on — ships with a trading name only. |
 | **2** | **IDNO and registered address** — same extract, one photo of one document. | Same as above. The address must also match the footer NAP and the JSON-LD exactly (D5). | Four pages blocked. Schema that contradicts visible content gets ignored. |
 | **3** | **EU Art 27 representative — yes/no, plus budget approval.** Romania recommended. | Not optional for a recruiter; the "occasional processing" exemption does not apply. Typically low four figures a year. | /privacy/ and /cookies/ ship with the omission documented in writing, which is worse than not publishing. |
-| **4** | **Analytics = GA4 — confirm, and create the property.** Needed: the `G-XXXXXXXXXX` ID. | D2 already froze this. The consent banner, Consent Mode v2 defaults, /cookies/ tables and the privacy policy's §4/§13 all hang off it. | The banner, the cookie tables and two policy sections cannot be written. |
+| **4** | **Analytics = GA4 — confirm, and create the property.** Needed: the `G-XXXXXXXXXX` ID. | D2 already froze this. The consent banner, Consent Mode v2 defaults, /cookies/ tables and the privacy policy's §4/§13 all hang off it. | **Escalated in wave C — this now blocks the deploy, not just the copy.** The analytics code has landed, so `{{GA4_MEASUREMENT_ID}}` is a live token in `src/lib/analytics.ts` as well as /cookies/ §5. `npm run verify` exits non-zero while it survives into `out/` (D8), so **nothing ships until the property exists**. 15 minutes in the GA4 admin. |
 | **5** | **AI screening = no — confirm.** Includes no ad-hoc use of ChatGPT to rank, score or filter candidates. | D3 assumes no. If any AI ranking is used the surrounding text must be rewritten, a human reviewer with real override authority named, overrides logged, and a DPIA completed first. | Publishing "we do not" while doing it is the single cheapest way to lose an enforcement argument. |
 | **6** | **Engineer engagement status under the hourly model** — employee, contractor, or contracted direct by the client? | Decides whether TalentSync is their employer-controller, whether timesheet and billing flow is joint controllership, and whether Part C's IP chain actually holds. | /privacy/ §6 and /terms/ Part C both make claims that must match the contracts in force. |
 | **7** | **Median working days from brief to first shortlist.** | The site says "1–2 weeks". D7 requires it qualified, never bare, and 06-claims-measurement.md needs a real number behind it. | The process claim on four pages has no substantiation file. |
 | **8** | **Founded year.** | `foundingDate` in the `Organization` JSON-LD and the /about/ copy. | /about/ ships without a company history and the entity node is thinner than it needs to be. |
-| **9** | **Victor's full name, job title, LinkedIn URL, and a photo.** | Every `Article` needs a real named author; the E-E-A-T the plan is buying is attribution, and a bare first name provides none. | /about/, the `Person` node, four insights articles and the founder block all degrade to "Victor". |
-| **10** | **Barça Mobile "1.5M downloads in first 3 months" — written source, or cut.** | D7 has already cut it for want of a public linkable source. One email from the client reinstates it. | Stays cut. The Barça case study loses its only quantified outcome. |
-| **11** | **Orange — direct client, or was NEVG the counterparty?** | Decides whether the site may name Orange at all. Orange enforces its marks, and most enterprise MSAs carry a no-publicity clause. | The Orange case study cannot ship, and clause A5.2 warrants a consent that may not exist. |
+| **9** | **Victor's full name, job title, LinkedIn URL, and a photo.** | Every `Article` needs a real named author; the E-E-A-T the plan is buying is attribution, and a bare first name provides none. | Wave C wrote the founder block against four tokens — `{{FOUNDER_FULL_NAME}}`, `{{FOUNDER_TITLE}}`, `{{FOUNDER_LINKEDIN_URL}}`, `{{FOUNDED_YEAR}}` (§1.9) — in `src/data/about.ts` and `src/data/legal/imprint.ts`. They are D8 deploy-gate tokens now, so /about/, /imprint/, the `Person` node and four insights bylines all block on this one answer. |
+| **10** | **Barça Mobile "1.5M downloads in first 3 months" — written source, or cut.** | D7 has already cut it for want of a public linkable source. One email from the client reinstates it. | Stays cut. The Barça case study loses its only quantified outcome. Ask it in the same email as row 11 and §3.4 — one email per client, not three. |
+| **11** | **Orange and Barça — may the site name them and show their marks?** Two parts: (a) was Orange a direct client or was NEVG the counterparty, and (b) is there written permission to display the Orange and FC Barcelona / Barça Mobile **names and logos** in a case study? | (a) decides whether the site may name Orange at all. (b) is separate and stricter: both are aggressively enforced marks, FC Barcelona licenses its brand commercially, and most enterprise MSAs carry a no-publicity clause. Permission to *have worked* with someone is not permission to *use their mark*. Clause A5.2 warrants that this consent is held. | Without (a) the Orange case study cannot ship at all. Without (b) both case studies ship **text-only** — named in prose, no logo, no wordmark styling, no favicon-scraped tile — which is the safe default and is what the pages must be built to today. A takedown after launch costs more than the email. |
 | **12** | **Placement fee percentage and minimum fee.** | The two numbers a client negotiates. They also set the Fee Confirmation template. | /terms/ Part B cannot publish, and there is no proposal template. |
+| **13** | **Homepage `<title>` — keep the 66-character version, or trim it?** You specified `IT Recruitment & Engineering Talent in Eastern Europe \| TalentSync` (66 chars). The guard ceiling is 60. | Google renders ~60 chars, so it truncates to `…in Eastern Europe \| Tale…` — **the brand is the half that gets cut**, on the one page whose whole job is the brand. `scripts/validate-pages.mjs` fails the build at >60 (`15-60` chars), so this is not a soft warning. | **Recommended: trim.** `IT Recruitment & Engineers, Eastern Europe \| TalentSync` (55) keeps every element and the brand survives. Say the word and it is a one-line edit in `src/app/page.tsx`. If you want the 66-char version regardless, that is a legitimate call — but then the 60-char ceiling in the guard has to be raised deliberately, in the same commit, with this decision cited, rather than the guard being edited around by whoever hits it next. |
 
 ---
 
@@ -226,8 +250,18 @@ not block a page from publishing. Grouped by the milestone that forces the answe
   advice inside that window.
 - **Belgium** — confirm the C16.4 exclusion is commercially acceptable, or take Belgian
   advice. Art 31 of the Law of 24 July 1987 can make the supplier's invoices unenforceable.
-- **Assignment Schedule, Onsite Addendum, DPA** (Module 1 and Module 2 SCCs plus a transfer
-  impact assessment summary) and the **security schedule** referenced at C13.5.
+- **Schedule 3 — the Data Processing Agreement — does not exist, and the contract
+  self-blocks without it.** Clause **C14.2 incorporates Schedule 3 by reference**, so the
+  terms already say it is part of the agreement. Clause **C1.3 then gates Engineer access to
+  client systems on that schedule being in place.** Nothing was ever drafted. As written, the
+  first hourly assignment cannot lawfully start under its own contract: the engineer may not
+  be given a client login until a document that does not exist has been signed. This is a
+  drafting defect, not a question for Victor — it is fixed by writing Schedule 3 (Module 1
+  and Module 2 SCCs plus a transfer impact assessment summary) **or** by amending C1.3 and
+  C14.2 in the same pass so they stop pointing at a missing annex. Doing neither means the
+  first client either signs a self-contradicting contract or notices before signing. Ships
+  with the **Assignment Schedule**, the **Onsite Addendum** and the **security schedule**
+  referenced at C13.5, which are missing for the same reason.
 - **Has any client already signed a processor DPA or Module 2 SCCs?** If so it contradicts
   the independent-controller position throughout /privacy/ §6 and needs renegotiating to
   Module 1.
@@ -307,3 +341,21 @@ Owned by the developer, recorded here so they are not lost.
   local review works throughout. Nothing deploys until this file is answered.
 - **`npm run smoke` needs Docker** and skips cleanly with exit 0 when the daemon is not
   running — so it never blocks a laptop build, and never silently passes in CI either.
+- **The nginx layer is now verified against a real `nginx:alpine`, not just reasoned about.**
+  Wave C ran it. `/privacy` → **301** with a **relative** `Location: /privacy/` — no scheme,
+  no host, no `:3000`. A nested path behaves the same: `/case-studies/barca-mobile` → 301 →
+  `/case-studies/barca-mobile/`, path intact. `/nonexistent` → **404** serving the branded
+  `404.html` body, not the homepage. `/sitemap.xml` and `/robots.txt` → 200. The
+  `absolute_redirect off; port_in_redirect off;` pair in `nginx.conf` is doing real work and
+  must not be removed — without it every slashless inbound link would bounce a visitor to
+  `http://host:3000/…` behind Railway's TLS termination.
+- **`src/app/not-found.tsx` now exists**, so `out/404.html` is a branded page rather than
+  Next's stock white one. Next injects `noindex` on it automatically. The Dockerfile also
+  clears `/usr/share/nginx/html` before copying, so nginx's stock `index.html` and
+  `50x.html` can no longer be reached at a real URL (`/50x.html` → 404, verified).
+- **`npm run smoke` cannot complete end-to-end yet** — not an nginx problem. The image build
+  fails at `next build` because `src/data/services/index.ts` still exports an empty
+  `servicePages` registry while `src/data/services/pages/*.ts` holds eight written pages that
+  nothing imports, so `/hire-ai-engineers` throws `Cannot read properties of undefined
+  (reading 'draft')` during page-data collection. One wiring change in that registry file
+  clears it. Re-run `npm run smoke` after it lands — that run is what proves the deploy.

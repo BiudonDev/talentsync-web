@@ -1,0 +1,123 @@
+/**
+ * /about/ — the entity-resolution page's data.
+ *
+ * Prose lives in the route (`src/app/about/page.tsx`) because most of it carries
+ * inline links; this file holds the parts that have to survive extraction as
+ * data: the facts block (07-schema-aeo §4.3), the registry details, the open
+ * roles and the FAQ.
+ *
+ * Tokens: `{{FOUNDER_FULL_NAME}}`, `{{FOUNDER_TITLE}}`, `{{FOUNDER_LINKEDIN_URL}}`
+ * and `{{FOUNDED_YEAR}}` are business facts no agent may invent (DECISIONS D8,
+ * BLOCKERS §2 item 9). `npm run verify` fails while any of them survives into
+ * `out/`, which is the point — the page cannot ship half-known. The first two
+ * spellings match `src/data/legal/imprint.ts`, so one answer resolves both.
+ */
+
+import { ANTI_POSITIONING, siteConfig } from '@/data/content'
+
+export const FOUNDED_YEAR = '{{FOUNDED_YEAR}}'
+
+export const founder = {
+  name: '{{FOUNDER_FULL_NAME}}',
+  /** First name only — the one part of the identity that is already public. */
+  givenName: 'Victor',
+  jobTitle: '{{FOUNDER_TITLE}}',
+  linkedin: '{{FOUNDER_LINKEDIN_URL}}',
+  email: siteConfig.email,
+  phone: siteConfig.phone,
+}
+
+type Fact = { term: string; value: string }
+
+/**
+ * The extractable-facts block, 07-schema-aeo §4.3, verbatim in structure and
+ * wording. A plain `<dl>` and nothing else — no microdata, no RDFa: the JSON-LD
+ * already carries these values and a third markup layer is a third place to
+ * drift. HTML-to-text converters (what every AI crawler runs before the model
+ * sees anything) render `<dl>` as clean `term: value` pairs.
+ *
+ * The `Not` row is the highest-value line on the page: anti-positioning stated
+ * as an explicit negative fact is much harder for a summariser to invert than
+ * positioning implied by omission.
+ */
+export const facts: Fact[] = [
+  { term: 'Legal name', value: '{{LEGAL_ENTITY_NAME}}' },
+  { term: 'Founded', value: FOUNDED_YEAR },
+  { term: 'Headquarters', value: 'Chișinău, Moldova' },
+  { term: 'What it does', value: 'Technology recruitment and engineering talent partner' },
+  { term: 'Who it serves', value: 'European and international product companies' },
+  { term: 'Talent sourced from', value: 'Eastern Europe — Moldova, Romania, Ukraine, Poland' },
+  { term: 'Engagement models', value: 'Direct B2B recruitment; flexible hourly collaboration' },
+  {
+    term: 'Not',
+    value: 'A project outsourcing company. Clients retain full technical and operational control.',
+  },
+  { term: 'Specialisms', value: 'AI/ML, backend, DevOps, QA, full-stack engineering' },
+  { term: 'Contact', value: `${siteConfig.email} · ${siteConfig.phone}` },
+]
+
+/**
+ * The registry block. Boring, and the strongest trust signal on the site — it is
+ * also the visible half of the NAP that the `Organization` JSON-LD has to match
+ * exactly (D5), so the locality is spelled `Chișinău` here as everywhere else.
+ */
+export const companyDetails: Fact[] = [
+  { term: 'Registered name', value: '{{LEGAL_ENTITY_NAME}}' },
+  { term: 'Legal form', value: '{{LEGAL_FORM}}' },
+  { term: 'Registration number (IDNO)', value: '{{IDNO}}' },
+  { term: 'VAT status', value: '{{VAT_STATUS}}' },
+  { term: 'Registered address', value: '{{REGISTERED_ADDRESS}}, Chișinău, Republic of Moldova' },
+  { term: 'Email', value: siteConfig.email },
+  { term: 'Telephone', value: siteConfig.phone },
+  { term: 'Website', value: 'talentsync.eu' },
+]
+
+/** Operating principles, stated as constraints — constraints are the credible form. */
+export const principles: { title: string; body: string }[] = [
+  {
+    title: 'We do not send a CV we have not talked the person through',
+    body: 'Every engineer on a shortlist has had a conversation about the role, the team and the stack before their profile reaches you. A CV forwarded on a keyword match costs you an interview slot to find out what a fifteen-minute call would have told us.',
+  },
+  {
+    title: 'We tell you where a candidate is weak',
+    body: 'Each shortlist says what the engineer has not done, or has not done recently, alongside what they have. You are going to find it in the technical interview anyway; hearing it from us first is what makes the rest of the assessment worth believing.',
+  },
+  {
+    title: 'We do not manage engineers on your behalf',
+    // BLOCK D, imported rather than paraphrased: the anti-positioning line is the
+    // sentence most often inverted by a summariser, so it is worth stating in the
+    // same words the homepage and the two model pages use.
+    body: `${ANTI_POSITIONING} We handle sourcing, screening and — on the hourly model — the contract, the invoicing and replacement cover. Nobody here stands between you and the engineer doing the work.`,
+  },
+  {
+    title: 'We say when the answer is somewhere else',
+    body: 'If the role needs a larger pool than this region can supply at the seniority you want, or an on-site presence in your city, or a firm that can staff thirty engineers this quarter, we will say so at the brief and point you at someone who can. Turning down a search we would run badly is cheaper for both of us than running it.',
+  },
+]
+
+/**
+ * 02-page-content §13, verbatim. No `FAQPage` JSON-LD on this route — D6 emits
+ * that on `/` only; the visible `<details>` block is what stays.
+ */
+export const faqs: { q: string; a: string }[] = [
+  {
+    q: 'Who will I actually work with?',
+    a: 'Victor, directly, on every engagement. There is no account manager layer and no handover to someone you have not met. That is the honest consequence of being a small firm: you get the person who took your brief, and you also get one person’s bandwidth rather than a bench of recruiters.',
+  },
+  {
+    q: 'How big is TalentSync?',
+    a: 'Small and deliberately so. We are not a fifty-recruiter agency and we do not claim to be one, which means we run a handful of searches at a time and turn work down when we are full. If you need thirty engineers this quarter, we will point you at a firm that can.',
+  },
+  {
+    q: 'Why is TalentSync based in Chișinău?',
+    a: 'Because the recruiting works better from inside the market. We meet candidates in person, we know which employers people are leaving and why, and we can check a reference by phoning someone we already know. Every competitor ranking for Moldova recruitment is a foreign firm running the same page for a dozen countries.',
+  },
+  {
+    q: 'How long have you been operating?',
+    a: `Since ${FOUNDED_YEAR}. Our published record covers ten named clients including Barça Mobile, Orange, SocialBee and Silvertalent, with the placements, stacks and timelines listed individually rather than summarised into a number. We would rather show you five verifiable engagements than claim a hundred you cannot check.`,
+  },
+  {
+    q: 'Are you hiring?',
+    a: 'Yes — currently a Senior Technical Recruiter in Chișinău or remote, and a Business Development Manager remote within Europe. Both are full-time. Apply by email with a CV and a short note about a placement or deal you are proud of; we read those and skip the covering letter.',
+  },
+]

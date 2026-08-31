@@ -21,7 +21,7 @@ export const imprint: LegalDoc = {
   h1: 'Legal notice and company details for TalentSync',
   metaTitle: 'Legal Notice / Impressum',
   metaDescription:
-    'Entity identification for TalentSync: registered name, legal form, IDNO, registered office in Chișinău, VAT status, EU representative and who is responsible for the content of this site.',
+    'Entity identification for TalentSync: registered name, legal form, IDNO, registered office in Chișinău, VAT status, EU representative and site responsibility.',
   version: '1.0',
   updated: '2026-08-30',
   lede: 'Provider identification for https://talentsync.eu — the *Impressum* / legal notice that German, Austrian, Dutch and Swiss procurement teams look for. Everything here matches the provider block at the head of our [terms and conditions](/terms/).',

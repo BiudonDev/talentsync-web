@@ -30,8 +30,12 @@ const PROSE = [
   '[&>*+*]:mt-[1.25em] [&>:first-child]:mt-0',
 
   // headings — em-based margins so they scale with their own size
-  '[&_h2]:mt-[2.5em] [&_h2]:mb-[0.75em] [&_h2]:text-2xl [&_h2]:font-bold [&_h2]:leading-[1.25] [&_h2]:tracking-[-0.01em] [&_h2]:text-balance [&_h2]:text-text-primary sm:[&_h2]:text-3xl',
-  '[&_h3]:mt-[2em] [&_h3]:mb-[0.5em] [&_h3]:text-xl [&_h3]:font-semibold [&_h3]:text-balance [&_h3]:text-text-primary',
+  // §2.3 rows verbatim. Prose ran its own smaller scale (h2 text-2xl/3xl,
+  // tracking-[-0.01em], a font-semibold h3), which made a legal or article h2
+  // read a step below every other h2 on the site and put an arbitrary tracking
+  // value in a token-only codebase. Margins and colour stay local.
+  '[&_h2]:mt-[2.5em] [&_h2]:mb-[0.75em] [&_h2]:text-3xl [&_h2]:font-bold [&_h2]:leading-[1.25] [&_h2]:tracking-tight [&_h2]:text-balance [&_h2]:text-text-primary sm:[&_h2]:text-4xl lg:[&_h2]:text-5xl',
+  '[&_h3]:mt-[2em] [&_h3]:mb-[0.5em] [&_h3]:text-xl [&_h3]:font-bold [&_h3]:text-text-primary sm:[&_h3]:text-2xl',
   '[&_h4]:mt-[1.75em] [&_h4]:mb-[0.5em] [&_h4]:text-base [&_h4]:font-semibold [&_h4]:text-text-primary sm:[&_h4]:text-lg',
 
   // inline

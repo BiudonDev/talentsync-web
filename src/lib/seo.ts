@@ -29,12 +29,32 @@ type PageMetaInput = {
   /** Page title. ' | TalentSync' is appended when the title does not already carry the brand. */
   title: string
   description: string
-  /** Optional per-page OG image. Omit and the root src/app/opengraph-image.png applies. */
+  /** Optional per-page OG image URL. Omit and DEFAULT_OG_IMAGE (the root card) applies. */
   image?: string
   type?: 'website' | 'article'
 }
 
 const NOINDEX = { index: false, follow: true } as const
+
+/**
+ * The root OG card, named explicitly on every page.
+ *
+ * `src/app/opengraph-image.png` is Next's file convention, and the root layout
+ * picks it up for free — but a child segment that declares its own `openGraph`
+ * REPLACES the parent's object, file-generated images included. Verified in the
+ * export: `/` carried `og:image`, all 30 other routes carried none. So the
+ * default has to be written out here, in the one place every page goes through.
+ *
+ * Path, not the hashed build URL: `?opengraph-image.<hash>.png` is a cache-buster
+ * that changes whenever the file does, and hardcoding it would rot silently.
+ * `alt` is the text of `src/app/opengraph-image.alt.txt`.
+ */
+const DEFAULT_OG_IMAGE = {
+  url: `${SITE_URL}/opengraph-image.png`,
+  width: 1200,
+  height: 630,
+  alt: 'TalentSync — technology recruitment and senior engineering talent from Eastern Europe, based in Chișinău, Moldova.',
+}
 
 /**
  * Build a COMPLETE Metadata object.
@@ -61,7 +81,7 @@ export function pageMeta({ path, title, description, image, type = 'website' }: 
   // `title.absolute` bypasses the layout's '%s | TalentSync' template, so a spec
   // title that already ends in the brand cannot come out doubled.
   const full = /talentsync/i.test(title) ? title : `${title} | ${SITE_NAME}`
-  const images = image ? { images: [image] } : {}
+  const images = { images: [image ?? DEFAULT_OG_IMAGE] }
   const og = { siteName: SITE_NAME, locale: 'en_GB', url, title: full, description, ...images }
 
   return {

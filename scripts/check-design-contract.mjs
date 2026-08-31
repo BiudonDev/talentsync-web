@@ -28,13 +28,38 @@ const GLOBALS = files.find(f => f.endsWith('globals.css'))
 const code = files.filter(f => /\.(tsx|ts)$/.test(f))          // authored components
 const appFiles = files.filter(f => f.startsWith(join(SRC, 'app')))
 
+/* src/data/ is CONTENT, not UI, and every class-shaped check drowns in it:
+   a legal clause cross-reference `[C16.3](#C16-3)` is a syntactically valid
+   3-digit hex colour, and prose hyphenates words into things that parse as
+   utilities (`text-and-data-mining`). 74 findings there, ~0 of them real.
+   Checks 1a/1b/2/3/4/12 therefore bind component code only. A class name that
+   really does live in data (`logoPadding: 'p-4'`) is not a colour utility and
+   was never covered by 1b anyway. */
+const DATA = join(SRC, 'data')
+const ui = code.filter(f => !f.startsWith(DATA))
+
 /* Comments are prose: they contain words like `text-overflow` that are not classes.
    Blank them out but keep every newline so line numbers stay true. */
 const blank = m => m.replace(/[^\n]/g, ' ')
 const strip = s => s
   .replace(/\/\*[\s\S]*?\*\//g, blank)
   .replace(/(^|[^:])\/\/[^\n]*/g, (m, p) => p + blank(m.slice(p.length)))
-const read = f => strip(readFileSync(f, 'utf8'))
+/* Raw CSS inside a .tsx — LegalPageTemplate's <style> payload and its print rules —
+   is full of PROPERTY names shaped exactly like colour utilities: `border-left`,
+   `text-align`, `text-indent`, `outline-offset`, `border-left-color`. Nine phantom
+   "silent-drop" findings came from that one string.
+   Blank innermost brace blocks that hold a `:` AND a `;`, which is a CSS declaration
+   block and nothing else in this codebase: `{ once: true }`, `{x ? 'a' : 'b'}` and
+   `style={{ color: c }}` all lack the semicolon. A TS interface body is collateral —
+   harmless, no class name has ever lived in one.
+   Tokenising template literals was tried first and does NOT work: the INLINE regex
+   in LegalPageTemplate contains a literal backtick, which desynchronises every
+   backtick pair after it. Match the CSS shape, not the quoting.
+   .css files are exempt — check 6 asserts on `body { … overflow-x: clip }` itself.
+   check 3 reads AROUND this via readRaw: raw CSS is precisely where a stray hex hides. */
+const stripCss = s => s.replace(/\{[^{}]*:[^{}]*;[^{}]*\}/g, blank)
+const read = f => (/\.css$/.test(f) ? strip(readFileSync(f, 'utf8')) : stripCss(strip(readFileSync(f, 'utf8'))))
+const readRaw = f => strip(readFileSync(f, 'utf8'))
 const lines = f => read(f).split('\n')
 const scan = (list, re, cb) => {
   for (const f of list) lines(f).forEach((ln, i) => { for (const m of ln.matchAll(re)) cb(f, i + 1, m, ln) })
@@ -47,14 +72,19 @@ const scan = (list, re, cb) => {
    in this codebase hides behind a nested arbitrary variant; widen the regex if one appears. */
 const V = '(?:[a-z][a-z0-9-]*(?:\\[[^\\[\\]]*\\])?|\\[[^\\[\\]]*\\]):'
 const val = '(?:\\[[^\\[\\]]*\\]|[a-z0-9][a-z0-9.-]*)(?:\\/[0-9]+)?'
-const clsRe = pre => new RegExp(`(?<![-\\w])((?:${V})*)((?:${pre})-${val})`, 'g')
+/* `[` and `,` in the lookbehind: inside an arbitrary VALUE list like
+   `transition-[background-color,border-color,box-shadow]` the CSS property names
+   are shaped like utilities and were reported as silently dropped classes. A real
+   class is never preceded by `[` or `,` — an arbitrary VARIANT (`[&_code]:text-…`)
+   starts AT the bracket, so it is untouched. */
+const clsRe = pre => new RegExp(`(?<![-\\w[,])((?:${V})*)((?:${pre})-${val})`, 'g')
 const COLOUR = clsRe('bg|text|border|shadow|outline')
 
 /* ---- 1a. orphaned -dark tokens (§2.4) ------------------------------------ */
 /* globals.css is excluded: it DEFINES --color-*-dark, and §2.5 mandates the
    `to-primary-dark` gradient stop. The two-survivor rule binds component code. */
 const SURVIVORS = new Set(['text-secondary-dark', 'bg-primary-dark'])
-scan(code, clsRe('[a-z][a-z0-9-]*'), (f, n, m) => {
+scan(ui, clsRe('[a-z][a-z0-9-]*'), (f, n, m) => {
   if (!m[2].endsWith('-dark') || SURVIVORS.has(m[2])) return
   fail(f, n, '1a orphan-token', `\`${m[1]}${m[2]}\` — only ${[...SURVIVORS].join(' / ')} survive §2.4`)
 })
@@ -71,7 +101,7 @@ if (!cssFiles.length) {
     for (const c of rule[1].matchAll(/\.((?:\\.|[-\w])+)/g)) emitted.add(c[1].replace(/\\/g, ''))
   /* globals.css utilities go through @apply, which inlines them and emits no selector —
      and @apply hard-errors on an unknown utility, so it is already self-checking. */
-  scan(code, COLOUR, (f, n, m) => {
+  scan(ui, COLOUR, (f, n, m) => {
     const cls = m[1] + m[2]
     if (!emitted.has(cls)) fail(f, n, '1b silent-drop', `\`${cls}\` is in no selector in the built CSS — Tailwind dropped it, the element renders unstyled`)
   })
@@ -80,14 +110,21 @@ if (!cssFiles.length) {
 /* ---- 2. banned breakpoints (Rule 1) -------------------------------------- */
 /* `+` not `*`: `{ md: 'px-6 py-3' }` is an object key, not a variant — a variant is glued
    to its utility with no space. */
-scan(code, /(?<![-\w:])((?:md|xl|2xl):(?:[a-z0-9[\]&_-]|:)+)/g, (f, n, m) => {
+scan(ui, /(?<![-\w:])((?:md|xl|2xl):(?:[a-z0-9[\]&_-]|:)+)/g, (f, n, m) => {
   if (/grid-cols-/.test(m[1])) return                                    // the one allowed exception
   fail(f, n, '2 banned-breakpoint', `\`${m[1]}\` — md:/xl:/2xl: are banned outside a grid-cols step; use sm: or lg:`)
 })
 
-/* ---- 3. arbitrary hex outside @theme (Rule 2) ---------------------------- */
+/* ---- 3. arbitrary hex outside @theme (Rule 2) ----------------------------
+   `#[0-9a-fA-F]{3,8}\b` matched `#` + any three alphanumerics, so every
+   `[C16.3](#C16-3)` clause anchor tripped it. A hex colour is exactly 3, 4, 6 or
+   8 digits and is never followed by `-` or a word character; `(?![-\w])` kills
+   the anchors and the `{8|6|4|3}` alternation kills `#12345`. readRaw, not read:
+   the CSS inside a <style> template literal is exactly where a stray hex hides. */
+const HEX = /#(?:[0-9a-fA-F]{8}|[0-9a-fA-F]{6}|[0-9a-fA-F]{4}|[0-9a-fA-F]{3})(?![-\w])/g
 for (const f of files) {
-  const src = read(f)
+  if (f.startsWith(DATA)) continue
+  const src = readRaw(f)
   let theme = [-1, -1]
   const at = src.indexOf('@theme')
   if (f === GLOBALS && at >= 0) {
@@ -95,7 +132,7 @@ for (const f of files) {
     for (; j < src.length; j++) { if (src[j] === '{') depth++; else if (src[j] === '}' && !--depth) break }
     theme = [i, j]
   }
-  for (const m of src.matchAll(/#[0-9a-fA-F]{3,8}\b/g)) {
+  for (const m of src.matchAll(HEX)) {
     if (m.index > theme[0] && m.index < theme[1]) continue
     const n = src.slice(0, m.index).split('\n').length
     fail(f, n, '3 arbitrary-hex', `\`${m[0]}\` outside @theme — use a §2.2 token (var(--color-…) or a bg-/text- class)`)
@@ -104,7 +141,13 @@ for (const f of files) {
 
 /* ---- 4. heading type scale (§2.3, Rule 5) -------------------------------- */
 const SCALE = {
-  display: 'text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight text-balance',
+  /* §2.3's display row is written `text-4xl sm:text-5xl md:text-6xl lg:text-7xl`,
+     but Rule 1 bans `md:` outside a grid-cols step and check 2 above enforces it —
+     the two clauses of the contract cannot both be satisfied. Rule 1 wins: it is one
+     of the Ten Rules and it is the mobile-first premise the whole document rests on,
+     whereas the md: step is one cell of a table. `md:text-6xl` dropped; sm:5xl -> lg:7xl
+     is the same curve with one fewer stop. */
+  display: 'text-4xl sm:text-5xl lg:text-7xl font-extrabold tracking-tight text-balance',
   h1: 'text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-balance',
   h2: 'text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-balance',
   h3: 'text-xl sm:text-2xl font-bold',
@@ -126,12 +169,20 @@ const checkHeading = (f, n, role, cls, what) => {
   const want = allowed.map(k => `${k}: "${SCALE[k]}"`).join('  |  ')
   fail(f, n, '4 type-scale', `${what} type classes {${[...got].join(' ')}} match no §2.3 row — required ${want}`)
 }
-for (const f of code) {
+for (const f of ui) {
   const src = read(f)
   const at = i => src.slice(0, i).split('\n').length
+  /* A bare <hN> inside a <Prose> is styled by Prose's own `[&_hN]:` string, which
+     the second loop below validates against the same table — and a className on
+     the element would LOSE to that descendant selector anyway, so demanding one
+     asks for dead classes. Files that never render Prose must still name a row. */
+  const usesProse = /<Prose\b/.test(src)
   for (const m of src.matchAll(/<(?:motion\.)?h([1-6])\b[^>]*?>/gs)) {
     const cls = (m[0].match(/className\s*=\s*(?:"([^"]*)"|{?\s*'([^']*)')/) || [])[1] ?? (m[0].match(/className\s*=\s*'([^']*)'/) || [])[1]
-    if (cls === undefined) { fail(f, at(m.index), '4 type-scale', `<h${m[1]}> has no static className — the §2.3 row cannot be verified`); continue }
+    if (cls === undefined) {
+      if (!usesProse) fail(f, at(m.index), '4 type-scale', `<h${m[1]}> has no static className — the §2.3 row cannot be verified`)
+      continue
+    }
     checkHeading(f, at(m.index), `h${m[1]}`, cls, `<h${m[1]}>`)
   }
   for (const m of src.matchAll(/(?:^|['"\s])((?:(?:sm:|lg:)?\[&_h([1-6])\]:[^\s'"]+\s*)+)/gm)) {
@@ -141,7 +192,7 @@ for (const f of code) {
 }
 
 /* ---- 5. focus: instead of focus-visible: (Rule 6) ------------------------ */
-scan(code.concat(GLOBALS ? [GLOBALS] : []), /(?<![-\w])(focus:[a-z0-9/[\]-]*)/g, (f, n, m) => {
+scan(ui.concat(GLOBALS ? [GLOBALS] : []), /(?<![-\w])(focus:[a-z0-9/[\]-]*)/g, (f, n, m) => {
   fail(f, n, '5 focus-variant', `\`${m[1]}\` fires on mouse click — use focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary`)
 })
 
@@ -191,7 +242,7 @@ for (const f of appFiles) {
    contract mandates one accordion idiom and the codebase already uses `[&[open]_…]:`
    — but it is a consistency rule, not a silent-drop rule. Delete it if the contract is
    corrected; do NOT cite "emits nothing" as the reason. */
-scan(code, /(?<![-\w[])((?:group-)?open:[a-z0-9[\]-]*)/g, (f, n, m) =>
+scan(ui, /(?<![-\w[])((?:group-)?open:[a-z0-9[\]-]*)/g, (f, n, m) =>
   fail(f, n, '12 dead-variant', `\`${m[1]}\` — the contract mandates one accordion idiom: \`[&[open]_…]:\` or a plain \`details[open] > …\` rule (note: this variant DOES compile in tw 4.1.18)`))
 
 /* ---- self-test: the two normalisers this suite's honesty rests on --------
@@ -204,8 +255,13 @@ if (process.argv.includes('--selftest')) {
   same(grab('has-[summary:focus-visible]:outline-2'), ['has-[summary:focus-visible]:outline-2'])
   same(grab('[&_code]:text-[0.875em] sm:[&_h4]:text-lg'), ['[&_code]:text-[0.875em]', 'sm:[&_h4]:text-lg'])
   same(grab('bg-primary/10 text-white/80'), ['bg-primary/10', 'text-white/80'])
+  same(grab('transition-[background-color,border-color,box-shadow]'), [])   // CSS props, not classes
   same(grab('var(--color-text-primary)'), [])                      // custom property, not a class
   same(grab(strip('/* text-overflow never applies */')), [])       // prose in a comment
+  same(grab(stripCss('const CSS = `.x { border-left: 3px solid red; text-align: left; }`')), [])
+  same(grab(stripCss("<div className={x ? 'bg-primary' : 'text-sm'} />")), ['bg-primary', 'text-sm'])  // no `;`
+  same('[C16.3](#C16-3)'.match(HEX), null)                         // clause anchor, not a colour
+  same('#FFB85A #fff #12345'.match(HEX), ['#FFB85A', '#fff'])      // 6 and 3 digits only
   same([...typeSet('mb-8 text-3xl font-bold text-balance sm:text-4xl lg:text-5xl tracking-tight text-text-primary')].sort(),
     [...typeSet(SCALE.h2)].sort())                                 // order + extras must not matter
   same(eq(typeSet('text-xl font-bold'), typeSet(SCALE.h3)), false) // a missing sm: step must fail

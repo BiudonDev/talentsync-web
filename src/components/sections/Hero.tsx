@@ -5,6 +5,20 @@ import { HiChevronDown } from 'react-icons/hi'
 import { Button } from '@/components/ui'
 import { siteConfig } from '@/data/content'
 
+/**
+ * The h1 is the page's target query — `hire software engineers Eastern Europe`
+ * — spelled out, not the brand name. It rendered the literal string
+ * "TalentSync" until now, which is why `/` ranked for nothing but its own name.
+ * The brand moved into the lede, where it still does entity work.
+ *
+ * Heading string is the display role from 00-design-contract.md 2.3 minus its
+ * `md:text-6xl` step: `md:` is banned (Rule 1), and 5xl -> 7xl at `lg` is the
+ * same curve with one fewer breakpoint.
+ *
+ * `motion` here is safe because `src/app/page.tsx` wraps the page in
+ * `<MotionConfig reducedMotion="user">` — every `initial`/`animate` below is
+ * dropped for a visitor who asked for reduced motion (Rule 7).
+ */
 export default function Hero() {
   return (
     <section className="relative min-h-dvh flex items-center justify-center overflow-hidden animated-bg">
@@ -21,24 +35,16 @@ export default function Hero() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight text-balance mb-6"
+          className="text-4xl sm:text-5xl lg:text-7xl font-extrabold tracking-tight text-balance mb-6"
         >
-          <span className="text-gradient">{siteConfig.name}</span>
+          Hire Senior Software Engineers from{' '}
+          <span className="text-gradient">Eastern Europe</span>
         </motion.h1>
 
         <motion.p
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.1 }}
-          className="text-xl sm:text-2xl font-semibold text-text-primary text-pretty mb-4"
-        >
-          {siteConfig.description}
-        </motion.p>
-
-        <motion.p
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
           className="text-lg sm:text-xl leading-relaxed text-text-secondary text-pretty mb-8 max-w-2xl mx-auto"
         >
           {siteConfig.tagline}
@@ -47,14 +53,14 @@ export default function Hero() {
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.3 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
           className="flex flex-col sm:flex-row gap-4 justify-center"
         >
           <Button href={siteConfig.calendlyUrl} external>
-            Book A Meeting
+            Book a 30-minute call
           </Button>
-          <Button variant="secondary" href="#about">
-            Learn More
+          <Button variant="secondary" href={`mailto:${siteConfig.email}?subject=Role%20brief`}>
+            Email the role to Victor
           </Button>
         </motion.div>
       </div>

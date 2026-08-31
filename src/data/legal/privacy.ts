@@ -35,7 +35,7 @@ export const privacy: LegalDoc = {
   h1: 'TalentSync privacy policy: how we handle candidate, client and visitor data',
   metaTitle: 'Privacy Policy',
   metaDescription:
-    'How TalentSync collects, uses and protects personal data — for engineers we source, client contacts and website visitors. Written to the EU GDPR and Moldovan Law No. 195/2024.',
+    'How TalentSync collects, uses and protects personal data — for engineers we source, client contacts and site visitors. Written to the EU GDPR and Law 195/2024.',
   version: '1.0',
   updated: '2026-08-30',
   lede: 'This policy applies to https://talentsync.eu and to everything we do offline. It is written to the stricter of the two regimes that reach us — the EU GDPR — and applied to everyone, wherever you live.',

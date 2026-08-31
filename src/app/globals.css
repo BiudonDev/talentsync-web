@@ -1,4 +1,8 @@
-@import "tailwindcss";
+/* `source("../")` scopes Tailwind v4's automatic content detection to src/.
+   Without it, detection walks the whole repo and harvests class names out of the
+   1.1MB of markdown in docs/plans/spec/ — `focus:ring-2` and friends were being
+   emitted as real CSS from prose that quotes them. */
+@import "tailwindcss" source("../");
 
 /* TalentSync Design System - Tailwind v4 CSS Theme */
 /* NOTE: `@theme`, NOT `@theme inline` - `inline` keeps --color-* out of :root,
@@ -165,34 +169,54 @@ details[open] > summary svg { rotate: 180deg; }
 .color-ray-1 {
   width: 120%;
   height: 8px;
-  background: linear-gradient(90deg, transparent 0%, #FFB85A 20%, #FF9500 50%, #FFB85A 80%, transparent 100%);
+  background: linear-gradient(90deg, transparent 0%, var(--color-primary) 20%, var(--color-primary-light) 50%, var(--color-primary) 80%, transparent 100%);
   top: 25%;
   left: -10%;
   opacity: 0.6;
   animation: ray-move-1 6s ease-in-out infinite;
-  box-shadow: 0 0 60px 20px rgba(255, 184, 90, 0.4);
+  box-shadow: 0 0 60px 20px color-mix(in srgb, var(--color-primary) 40%, transparent);
 }
 
 .color-ray-2 {
   width: 100%;
   height: 6px;
-  background: linear-gradient(90deg, transparent 0%, #E5A550 30%, #FFB85A 50%, #E5A550 70%, transparent 100%);
+  background: linear-gradient(90deg, transparent 0%, var(--color-primary-dark) 30%, var(--color-primary) 50%, var(--color-primary-dark) 70%, transparent 100%);
   top: 45%;
   left: 0;
   opacity: 0.5;
   animation: ray-move-2 8s ease-in-out infinite;
-  box-shadow: 0 0 50px 15px rgba(229, 165, 80, 0.35);
+  box-shadow: 0 0 50px 15px color-mix(in srgb, var(--color-primary-dark) 35%, transparent);
 }
 
 .color-ray-3 {
   width: 130%;
   height: 10px;
-  background: linear-gradient(90deg, transparent 0%, #CC9245 25%, #FFB85A 50%, #CC9245 75%, transparent 100%);
+  background: linear-gradient(90deg, transparent 0%, var(--color-primary-dark) 25%, var(--color-primary) 50%, var(--color-primary-dark) 75%, transparent 100%);
   bottom: 30%;
   left: -15%;
   opacity: 0.55;
   animation: ray-move-3 7s ease-in-out infinite;
-  box-shadow: 0 0 70px 25px rgba(255, 149, 0, 0.3);
+  box-shadow: 0 0 70px 25px color-mix(in srgb, var(--color-primary) 30%, transparent);
+}
+
+/* Interior-page hero wash (contract 4.3). One static radial gradient instead of
+   the homepage's three infinite keyframe rays. ServicePageTemplate and every
+   interior header depend on this class existing. */
+.hero-glow {
+  position: relative;
+  background-image: radial-gradient(60rem 20rem at 50% -10%, color-mix(in srgb, var(--color-primary) 12%, transparent), transparent 70%);
+}
+
+/* Testimonial crossfade. Replaces framer-motion's AnimatePresence: the quote
+   block is keyed by index, so React remounts it and the animation replays.
+   The prefers-reduced-motion block above collapses it to .01ms. */
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(1rem); }
+  to { opacity: 1; transform: none; }
+}
+
+.animate-fade-up {
+  animation: fade-up 0.4s ease-out both;
 }
 
 /* Scrollbar - Dark theme only */

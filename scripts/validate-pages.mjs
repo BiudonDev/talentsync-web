@@ -27,6 +27,12 @@ const metaOf = (raw, k) => {
 }
 const routeOf = f => ('/' + relative(OUT, f)).replace(/index\.html$/, '').replace(/\.html$/, '/')
 const text = html => html.replace(/<[^>]+>/g, ' ').replace(/&[a-z]+;|&#\d+;/gi, ' ').replace(/\s+/g, ' ').trim()
+// Length budgets are about what a human reads, so measure the DECODED string:
+// `&amp;` is one character on screen and five in the file.
+const decode = s => s
+  .replace(/&#(\d+);/g, (_, d) => String.fromCodePoint(+d))
+  .replace(/&quot;/g, '"').replace(/&#0?39;|&apos;/g, "'")
+  .replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&')
 const ORIGIN = 'https://talentsync.eu'
 const seen = { title: new Map(), desc: new Map(), summary: new Map() }
 const routes = new Set(pages.map(routeOf))
@@ -89,9 +95,14 @@ for (const file of pages) {
   const f = relative(OUT, file)
   const body = raw.replace(/<script[\s\S]*?<\/script>/gi, '')      // drop RSC flight payload
 
-  const title = (raw.match(/<title[^>]*>([\s\S]*?)<\/title>/i) || [])[1]?.trim()
+  const rawTitle = (raw.match(/<title[^>]*>([\s\S]*?)<\/title>/i) || [])[1]?.trim()
+  const title = rawTitle && decode(rawTitle)
+  // 02-page-content.md §1: the homepage title is client-fixed at 66 chars and
+  // shipped over the 60-char budget on the client's explicit instruction, with
+  // a recommendation on file to trim it. That one exemption, and no other.
+  const titleMax = f === 'index.html' ? 66 : 60
   if (!title) fail(f, '<title>', 'missing or empty')
-  else if (title.length < 15 || title.length > 60) fail(f, '<title>', `${title.length} chars, need 15-60 — "${title}"`)
+  else if (title.length < 15 || title.length > titleMax) fail(f, '<title>', `${title.length} chars, need 15-${titleMax} — "${title}"`)
   else if (seen.title.has(title)) fail(f, '<title>', `duplicate of ${seen.title.get(title)}`)
   if (title) seen.title.set(title, f)
 
@@ -123,7 +134,11 @@ for (const file of pages) {
     if (/"@type":"Review"|"aggregateRating":/.test(flat)) fail(f, 'script[ld+json]', 'emits Review/aggregateRating — banned by D6')
   }
 
-  for (const [, inner] of body.matchAll(/<summary[^>]*>([\s\S]*?)<\/summary>/gi)) {
+  // Scoped OUTSIDE <nav>: a <summary> in a nav landmark is the collapsed table
+  // of contents, whose label ("On this page", "Contents") is identical on every
+  // route by design. Only FAQ answers are duplicate content.
+  const faqScope = body.replace(/<nav\b[\s\S]*?<\/nav>/gi, ' ')
+  for (const [, inner] of faqScope.matchAll(/<summary[^>]*>([\s\S]*?)<\/summary>/gi)) {
     const t = text(inner)
     if (!t) continue
     if (seen.summary.has(t) && seen.summary.get(t) !== f) fail(f, '<summary>', `duplicate FAQ question, also on ${seen.summary.get(t)} — "${t.slice(0, 60)}"`)
@@ -209,7 +224,10 @@ if (sentences[a] && sentences[b])
     const p = join(d, e.name)
     if (e.isDirectory()) { motion(p); continue }
     if (!/\.(tsx?|jsx?)$/.test(e.name) || p === join('src/app', 'page.tsx')) continue
-    if (readFileSync(p, 'utf8').includes('framer-motion')) fail(p, 'import', 'imports framer-motion — only / may (rule 10)')
+    // The quoted specifier, not the bare word: every server route carries a
+    // header comment saying it uses no framer-motion, and matching prose made
+    // the guard fail on the files that were obeying it.
+    if (/['"`]framer-motion['"`]/.test(readFileSync(p, 'utf8'))) fail(p, 'import', 'imports framer-motion — only / may (rule 10)')
   }
 })('src/app')
 

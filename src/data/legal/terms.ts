@@ -50,7 +50,7 @@ export const terms: LegalDoc = {
   h1: 'TalentSync terms and conditions for clients, candidates and site visitors',
   metaTitle: 'Terms & Conditions',
   metaDescription:
-    'TalentSync’s website terms, client terms of business for direct B2B recruitment and hourly collaboration, the shared provisions, and the candidate terms. Parts A to E.',
+    'TalentSync’s website terms, the client terms of business for direct B2B recruitment and hourly collaboration, the shared provisions, and the candidate terms.',
   version: '1.0',
   updated: '2026-08-30',
   effective: '2026-08-30',

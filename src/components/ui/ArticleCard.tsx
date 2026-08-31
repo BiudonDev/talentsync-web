@@ -79,7 +79,7 @@ export default function ArticleCard({
             )}
           </div>
         )}
-        <h3 className="mb-2 text-xl font-bold text-balance text-text-primary sm:text-2xl">
+        <h3 className="mb-2 text-xl font-bold text-text-primary sm:text-2xl">
           {title}
         </h3>
         <p className="text-sm leading-relaxed text-text-secondary text-pretty">{excerpt}</p>
