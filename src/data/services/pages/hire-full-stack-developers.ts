@@ -4,9 +4,14 @@
  * The one thing only this page can say: MULTI-ENGINEER TEAM SCALING. Two named
  * clients each took a small squad rather than a single hire, and both squads
  * signed inside two weeks — three React/.NET engineers for Silvertalent and two
- * Java/Angular engineers for SocialBee. Vinlivt took one Full-Stack Developer. That is the strongest evidence on the
+ * Java/Angular engineers for SocialBee. That is the strongest evidence on the
  * site and the only place it belongs, so the page is built around the mechanics
  * of hiring three at once rather than around the word "full-stack".
+ *
+ * A third named client, Vinlivt (one Full-Stack Developer), was added 21
+ * September 2026 and removed 22 September 2026 — Vinlivt did not agree to
+ * being posted as a public case study. Do not re-add without their written
+ * consent on file (case-studies.ts header).
  *
  * `engagementModels: []` — Part 0 keeps BLOCK B and BLOCK C off the role pages.
  * No link points at a `draft: true` route (D1.1).
@@ -20,11 +25,11 @@ export const hireFullStackDevelopers: ServicePage = {
   label: 'Full-Stack Developers',
   metaTitle: 'Hire Full-Stack Developers, Eastern Europe | TalentSync',
   metaDescription:
-    'Hire full-stack developers from Eastern Europe: React/.NET and Java/Angular. Six Full-Stack Developers placed across SocialBee, Silvertalent and Vinlivt.',
+    'Hire full-stack developers from Eastern Europe: React/.NET and Java/Angular. Five Full-Stack Developers placed across SocialBee and Silvertalent.',
   h1: 'Hire Full-Stack Developers from Eastern Europe',
 
   answerParagraph:
-    'TalentSync has placed six Full-Stack Developers from Eastern Europe across three teams: three React and .NET engineers for Silvertalent and two Java and Angular engineers for SocialBee, each team scaled within two weeks of the brief, plus one Full-Stack Developer for Vinlivt. Engineers contract with you on B2B terms or work hourly, inside your codebase and your review standards.',
+    'TalentSync has placed five Full-Stack Developers from Eastern Europe across two teams: three React and .NET engineers for Silvertalent and two Java and Angular engineers for SocialBee, each team scaled within two weeks of the brief. Engineers contract with you on B2B terms or work hourly, inside your codebase and your review standards.',
 
   whoFor: {
     audience: 'Product teams adding a small squad rather than a single engineer',
@@ -268,13 +273,6 @@ export const hireFullStackDevelopers: ServicePage = {
       count: 2,
       outcome:
         'A social media management platform. Both engineers signed and the team was scaled within two weeks of the brief.',
-    },
-    {
-      client: 'Vinlivt',
-      role: 'Full-Stack Developer',
-      count: 1,
-      outcome:
-        'One Full-Stack Developer added to a fintech product team. Time from brief to signature was not recorded.',
     },
   ],
 

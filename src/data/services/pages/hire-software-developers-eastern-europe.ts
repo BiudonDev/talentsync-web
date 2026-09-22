@@ -14,14 +14,14 @@
  *
  * The ledger is the page's reason to exist: the six placements with a recorded
  * brief-to-signature duration — ten engineers — and nothing else. It is NOT
- * the whole engagement record: `/case-studies/` lists ten engagements and the
- * eighteen-engineer total (`PLACED_ENGINEERS`) includes two with no recorded
+ * the whole engagement record: `/case-studies/` lists nine engagements and the
+ * seventeen-engineer total (`PLACED_ENGINEERS`) includes one with no recorded
  * timeline. So scope every timing number on this page to those six. Do not
  * round it up, do not restate it as a total ("the entire record", "to date"),
  * and do not repeat the same engineers in a second table elsewhere on the site.
  */
 
-import { PLACED_ENGINEERS, TIMELINE_RECORD } from '@/data/case-studies'
+import { PLACED_CLIENTS, PLACED_ENGINEERS, TIMELINE_RECORD } from '@/data/case-studies'
 import type { ServicePage } from '../types'
 
 export const hireSoftwareDevelopersEasternEurope: ServicePage = {
@@ -29,7 +29,7 @@ export const hireSoftwareDevelopersEasternEurope: ServicePage = {
   label: 'Hire Engineers',
   metaTitle: 'Hire Software Developers in Eastern Europe | TalentSync',
   metaDescription:
-    'Hire vetted senior developers from Eastern Europe on B2B, hourly or outsourced terms. Eighteen engineers placed; recorded timelines of one to two weeks.',
+    'Hire vetted senior developers from Eastern Europe on B2B, hourly or outsourced terms. Seventeen engineers placed; recorded timelines of one to two weeks.',
   h1: 'Hire Software Developers in Eastern Europe',
 
   answerParagraph: `TalentSync places senior software developers from Eastern Europe into existing engineering teams — on a direct B2B contract you hold with the engineer, on an hourly basis through us, or as a dedicated team that delivers a project for you. ${TIMELINE_RECORD}`,
@@ -86,7 +86,7 @@ export const hireSoftwareDevelopersEasternEurope: ServicePage = {
         {
           kind: 'prose',
           body: [
-            `Across those six placements: ten engineers. The wider record is ${PLACED_ENGINEERS} engineers placed across eight client teams, and the two engagements without a row here — the seven-person team for New Era Visionary Group and the Full-Stack Developer for Vinlivt — are omitted only because we did not record a brief-to-signature duration for them. We publish every row we have rather than a selected fragment, because a partial ledger is how a small firm makes itself look larger, and anyone who checks will notice.`,
+            `Across those six placements: ten engineers. The wider record is ${PLACED_ENGINEERS} engineers placed across ${PLACED_CLIENTS} client teams, and the one engagement without a row here — the seven-person team for New Era Visionary Group — is omitted only because we did not record a brief-to-signature duration for it. We publish every row we have rather than a selected fragment, because a partial ledger is how a small firm makes itself look larger, and anyone who checks will notice.`,
             'Every engagement is listed on the case studies page, including the one advisory engagement where no engineer was placed.',
             'The clock runs from an agreed written brief to a signed offer. Your own interview schedule sits inside that window, which is why a client who can interview at two days’ notice always beats one who cannot, on identical roles.',
           ],

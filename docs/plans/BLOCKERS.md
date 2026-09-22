@@ -367,11 +367,14 @@ not block a page from publishing. Grouped by the milestone that forces the answe
 
 - **Written reference and logo consent from each named client** — New Era Visionary Group
   (covers the Barça Mobile photo and highlight card — see row 5), Entail AI, Pixelette
-  Technologies, Qualiwise, SocialBee, Silvertalent, Foodamigos, Innovatec, and the two
-  clients added 21 September 2026, Vinlivt and OptimEyes. Orange dropped off this list
-  when it was removed from the site entirely (feedback item 12) — it was never a
-  TalentSync client and there is nothing left to seek consent for. Clause A5.2 warrants
-  that this consent is held. Where it is not, de-identify before publishing.
+  Technologies, Qualiwise, SocialBee, Silvertalent, Foodamigos, Innovatec, and OptimEyes
+  (added 21 September 2026). Orange dropped off this list when it was removed from the
+  site entirely (feedback item 12) — it was never a TalentSync client and there is
+  nothing left to seek consent for. Vinlivt was added 21 September 2026 and removed
+  22 September 2026 for exactly the reason this row exists: asked, and did not agree to
+  being posted. Do not re-add Vinlivt to the site without written consent on file.
+  Clause A5.2 warrants that this consent is held. Where it is not, de-identify before
+  publishing.
   **Send this as one batched ask, not six.** The completeness critic found the same ten
   contacts being asked separately for: logo/name consent, testimonial name + title + photo,
   case-study copy, the Barça figure, a savings baseline, and a Clutch review call. Six asks

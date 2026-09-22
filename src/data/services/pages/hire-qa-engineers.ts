@@ -48,7 +48,7 @@
  *    as prose, unlinked.
  */
 
-import { PLACED_ENGINEERS } from '@/data/case-studies'
+import { PLACED_CLIENTS, PLACED_ENGINEERS } from '@/data/case-studies'
 import type { ServicePage } from '../types'
 
 export const hireQaEngineers: ServicePage = {
@@ -123,7 +123,7 @@ export const hireQaEngineers: ServicePage = {
         {
           kind: 'prose',
           body: [
-            `Stated plainly, because you can check it: our published placement record is mostly development roles. ${PLACED_ENGINEERS} engineers across eight client teams — backend, full-stack, front-end, architecture and industrial-control work — and exactly one of them was a QA hire: the QA Engineer inside the seven-person team we assembled for New Era Visionary Group, supporting the development and delivery of Barça Mobile. One is a record, not a specialism.`,
+            `Stated plainly, because you can check it: our published placement record is mostly development roles. ${PLACED_ENGINEERS} engineers across ${PLACED_CLIENTS} client teams — backend, full-stack, front-end, architecture and industrial-control work — and exactly one of them was a QA hire: the QA Engineer inside the seven-person team we assembled for New Era Visionary Group, supporting the development and delivery of Barça Mobile. One is a record, not a specialism.`,
             'We could dress that up. Qualiwise, one of our clients, builds an AI copilot for product quality, and it would be easy to let that sit next to the word QA on this page and let you draw the wrong conclusion. It is a client in the quality space, not a QA placement, and treating it as one would be the kind of small dishonesty that should make you doubt every other figure on this site.',
             'What we do have is one QA Engineer placed inside a delivery team with a fixed launch date, a technical screen run by engineers rather than recruiters, the same sourcing network across the same region, and clients who hire from us again. What we do not yet have is a second QA engagement, or a suite we can describe in detail. When we do, it will be on this page with the framework, the state of the suite the engineer inherited, and what changed afterwards.',
             'If you would rather wait for that, we understand. If you want a shortlist now, we will run the same screen we run for developers, adapted to the role, and you can judge the candidates rather than our record.',

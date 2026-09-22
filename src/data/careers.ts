@@ -61,7 +61,7 @@ export const careerRoles: CareerRole[] = [
     metaDescription:
       'Senior Technical Recruiter at TalentSync — Chișinău or remote in Moldova. Source and technically screen Eastern European engineers for European product teams.',
     intro:
-      'You own the sourcing and screening end of a placement: you read the client brief, find the engineers who genuinely match it, and get them to a shortlist a CTO is willing to interview. Eighteen engineers placed with European product teams came through that work.',
+      'You own the sourcing and screening end of a placement: you read the client brief, find the engineers who genuinely match it, and get them to a shortlist a CTO is willing to interview. Seventeen engineers placed with European product teams came through that work.',
     sections: [
       {
         heading: 'What you would do',

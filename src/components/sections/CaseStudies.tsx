@@ -31,7 +31,9 @@ const TIMING_QUALIFIER =
   'Your timeline depends on role scarcity and your interview schedule.'
 
 /* A client with no supplied mark gets a text tile rather than a placeholder
-   image. Vinlivt is the case today (case-studies.ts header). */
+   image. No client is in that state today; kept for the next one added
+   before its logo file lands (Vinlivt was this case until 22 September 2026,
+   when the client was removed entirely — see case-studies.ts header). */
 function Mark({ study, sizes }: { study: CaseStudy; sizes: string }) {
   const { logo } = study
   if (!logo) {

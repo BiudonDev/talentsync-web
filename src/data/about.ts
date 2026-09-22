@@ -124,7 +124,7 @@ export const faqs: { q: string; a: string }[] = [
   },
   {
     q: 'How long have you been operating?',
-    a: `Since ${FOUNDED_YEAR}. Our published record covers ten named engagements — New Era Visionary Group, SocialBee and Silvertalent among them — with the placements, stacks and timelines listed individually rather than summarised into a number. One of the ten is flagged on that page as not a placement at all. We would rather show you a record you can check than a headline figure you cannot.`,
+    a: `Since ${FOUNDED_YEAR}. Our published record covers nine named engagements — New Era Visionary Group, SocialBee and Silvertalent among them — with the placements, stacks and timelines listed individually rather than summarised into a number. One of the nine is flagged on that page as not a placement at all. We would rather show you a record you can check than a headline figure you cannot.`,
   },
   {
     q: 'Are you hiring?',

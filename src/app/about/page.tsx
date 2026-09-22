@@ -338,7 +338,7 @@ export default function AboutPage() {
         <div className="mt-6 max-w-3xl space-y-4">
           <p className={BODY}>
             TalentSync has placed {PLACED_ENGINEERS} engineers with European product teams across
-            ten named engagements, from a Senior Python Developer at Qualiwise to a dedicated
+            nine named engagements, from a Senior Python Developer at Qualiwise to a dedicated
             seven-person team for New Era Visionary Group. {TIMELINE_RECORD} {SPEED_CAVEAT}
           </p>
           <p className={BODY}>

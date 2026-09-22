@@ -19,7 +19,7 @@ import { cn } from '@/lib/utils'
  *
  * Three structural decisions worth knowing before editing:
  *
- * 1. THE LEDGER IS THE PAGE. One `<table>` in one DOM tree, six columns, ten
+ * 1. THE LEDGER IS THE PAGE. One `<table>` in one DOM tree, six columns, nine
  *    rows, restacked into labelled cards under `sm` by `ComparisonTable`. Not a
  *    mobile list plus a desktop table — that ships the body twice for Google to
  *    parse and is exactly the defect the 10-mobile-audit flagged on the old
@@ -42,7 +42,7 @@ export const metadata = pageMeta({
   path: PATH,
   title: 'Case Studies: Engineers We Placed | TalentSync',
   description:
-    'Ten named engagements: role, stack, time to signature and outcome. New Era Visionary Group, OptimEyes, SocialBee, Silvertalent, Qualiwise, Foodamigos.',
+    'Nine named engagements: role, stack, time to signature and outcome. New Era Visionary Group, OptimEyes, SocialBee, Silvertalent, Qualiwise, Foodamigos.',
 })
 
 // 00-design-contract §2.3 roles. Heading classes are written out as literals at
@@ -83,7 +83,7 @@ const FAQS = [
   },
   {
     q: 'Why are some of these entries short?',
-    a: 'Because they are honest. Several of these engagements were a single placement, and a single placement does not justify a thousand words of narrative. We would rather publish ten accurate short entries than three inflated ones, and everything stated here is something the client would confirm.',
+    a: 'Because they are honest. Several of these engagements were a single placement, and a single placement does not justify a thousand words of narrative. We would rather publish nine accurate short entries than three inflated ones, and everything stated here is something the client would confirm.',
   },
   {
     q: 'Are these placements or projects you delivered?',
@@ -125,15 +125,17 @@ const NEXT_LINKS = [
  * the same ratio the derivatives were resized to, so it stays correct even
  * though the bytes it loads are the small file.
  *
- * `bg-text-primary` on the plate is not a mistake. Several of the ten marks are
+ * `bg-text-primary` on the plate is not a mistake. Several of the nine marks are
  * dark ink on white and vanish on `bg-surface`; §2.2 has no light-surface token,
  * and `--color-text-primary` (#F5F5F5) is the table's only near-white. Rule 2
  * forbids reaching outside the token table for a colour, so the off-white token
  * is used as an off-white plate. Swap it the day §2.2 grows a real one.
  *
  * `logo` is optional (case-studies.ts): a client whose mark has not been
- * supplied yet (Vinlivt, at launch) renders as a text mark instead of a
- * placeholder image, matching the homepage carousel's fallback.
+ * supplied yet renders as a text mark instead of a placeholder image,
+ * matching the homepage carousel's fallback. No client is in that state
+ * today (Vinlivt was, until removed entirely on 22 September 2026 — see
+ * case-studies.ts header).
  */
 const logoBase = (src: string) => src.replace(/\.[a-z]+$/i, '')
 const logoSrcSet = (src: string) => `${logoBase(src)}-384.webp 384w, ${logoBase(src)}-768.webp 768w`
@@ -235,7 +237,7 @@ export default function CaseStudiesPage() {
             The record at a glance
           </h2>
           <p className={cn('mt-4 max-w-3xl', BODY)}>
-            One row per engagement. One of the ten is not a placement and is marked as such in its
+            One row per engagement. One of the nine is not a placement and is marked as such in its
             entry below — an advisory engagement where no engineer was placed.
           </p>
           <ComparisonTable
@@ -305,7 +307,7 @@ export default function CaseStudiesPage() {
             inLanguage: 'en',
           },
           // Zero rich results exist for this (07-schema-aeo.md §3.6) — it is
-          // emitted purely so a retrieval system gets ten discrete, attributable
+          // emitted purely so a retrieval system gets nine discrete, attributable
           // engagement records instead of a wall of prose.
           itemListLd({
             id: `${absUrl(PATH)}#list`,
@@ -328,7 +330,7 @@ export default function CaseStudiesPage() {
           <p className={cn('mt-6 max-w-3xl', LEDE)}>
             {PLACED_ENGINEERS} engineers placed with named client companies, from a Senior Python
             Developer at Qualiwise filled in one week to a dedicated seven-person team assembled
-            for New Era Visionary Group. Ten engagements are listed below. Each states the client,
+            for New Era Visionary Group. Nine engagements are listed below. Each states the client,
             the role, the stack, the time from brief to signature, and what the engineers worked on.
           </p>
           <div className="mt-8 flex flex-col gap-4 sm:flex-row">

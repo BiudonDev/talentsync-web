@@ -25,6 +25,9 @@
  *     (below) lists seven named roles and none of them is DevOps, and the
  *     eighteen-engineer total only balances without that person. If the
  *     placement was real, the client confirms it and the total moves to nineteen.
+ *   - Vinlivt, in every form. Added 21 September 2026, removed 22 September
+ *     2026: Vinlivt did not agree to being posted as a public case study.
+ *     Do not re-add this client without their written consent on file.
  *
  * ONE record for New Era Visionary Group / Barça Mobile. New Era Visionary Group
  * is the company TalentSync contracted with; Barça Mobile is the product it
@@ -41,9 +44,8 @@
  *   - engagement dates / years. `timeToSignature` is a duration, never a date.
  *   - the engagement MODEL per client (direct B2B, hourly or outsourcing).
  *     `talentsyncRole` states what TalentSync did instead.
- *   - the sector for Vinlivt and OptimEyes beyond what is public: the client will
- *     supply its preferred category wording (feedback items 9 and 10).
- *   - a Vinlivt logo. None has been supplied; the card renders a text mark.
+ *   - the sector for OptimEyes beyond what is public: the client will supply
+ *     its preferred category wording (feedback item 10).
  *   - testimonial surnames.
  *
  * ROLE NAMES are the client's canonical list (feedback item 23) and are spelled
@@ -268,29 +270,6 @@ export const caseStudies: CaseStudy[] = [
     logo: { src: '/images/case-optimeyes.webp', width: 632, height: 200, contain: true, bg: '#0b0d1a' },
   },
 
-  // -------------------------------------------------------------------------
-  {
-    slug: 'vinlivt',
-    client: 'Vinlivt',
-    // Sourced from Munich Startup, Crunchbase, PitchBook and Tracxn, 21
-    // September 2026 — not guessed. Vinlivt GmbH is a Munich-based fintech /
-    // insurtech company (founded 2021) building a white-label "Financial
-    // Home" app that lets insurance and financial advisors manage client
-    // portfolios digitally. Swap for the client's own preferred wording if
-    // they send one (feedback item 9 offered it).
-    sector: 'Fintech / InsurTech, Germany',
-    rolesPlaced: '1 × Full-Stack Developer',
-    stack: 'Full-stack web development',
-    timeToSignature: 'Not recorded',
-    talentsyncRole: 'Sourcing and technical vetting',
-    summary: 'One Full-Stack Developer added to Vinlivt’s product team.',
-    highlights: ['1 Full-Stack Developer added to the team'],
-    body: [
-      'Vinlivt is a Munich-based fintech company building a white-label app that lets insurance and financial advisors manage client portfolios digitally. The brief was one Full-Stack Developer to join the existing product team, own features end to end, and be productive inside the client’s codebase without a long ramp-up.',
-      'We sourced and technically vetted the shortlist, Vinlivt interviewed and selected, and the engineer joined the client’s team on the client’s tooling and review process.',
-      'We are not quoting a time from brief to signature for this engagement because we did not record one, and a figure we cannot evidence is worth less than the sentence that replaces it.',
-    ],
-  },
 
   // -------------------------------------------------------------------------
   {
@@ -577,14 +556,16 @@ export const ledgerCounts = new Map<string, number>(
 )
 
 /**
- * "18 engineers placed with European product teams" — client feedback item 8,
- * 21 September 2026: the original eight plus Vinlivt (1), OptimEyes (2) and
- * the seven-person New Era Visionary Group team. Asserted against the ledger
- * below so the visible number and the rows can never disagree again.
+ * "17 engineers placed with European product teams" — client feedback item 8,
+ * 21 September 2026, set the total to 18 (the original eight plus Vinlivt (1),
+ * OptimEyes (2) and the seven-person New Era Visionary Group team). Vinlivt was
+ * removed 22 September 2026 — see the header note — taking the total to 17
+ * across 7 clients. Asserted against the ledger below so the visible number
+ * and the rows can never disagree again.
  */
-export const PLACED_ENGINEERS = 18
+export const PLACED_ENGINEERS = 17
 /** Clients with a counted headcount. */
-export const PLACED_CLIENTS = 8
+export const PLACED_CLIENTS = 7
 
 /**
  * The speed record, stated once. Only the six engagements with a recorded

@@ -14,7 +14,7 @@
  * is why the spec's DevOps and AI anchors are absent.
  */
 
-import { TIMELINE_RECORD } from '@/data/case-studies'
+import { PLACED_ENGINEERS, TIMELINE_RECORD } from '@/data/case-studies'
 import type { ServicePage } from '../types'
 
 export const hireBackendDevelopers: ServicePage = {
@@ -184,7 +184,7 @@ export const hireBackendDevelopers: ServicePage = {
         {
           kind: 'stats',
           items: [
-            { value: '18', label: 'engineers placed with European product teams' },
+            { value: String(PLACED_ENGINEERS), label: 'engineers placed with European product teams' },
             { value: '1 week', label: 'from brief to signature, Qualiwise Senior Python Developer' },
             { value: '2 weeks', label: 'to integrate a Senior Software Architect and Senior Python Developer at OptimEyes' },
           ],
