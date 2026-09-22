@@ -7,18 +7,21 @@
  *
  * 1. **`draft: true`, and this one is furthest from publishable.** §9 opens by
  *    recommending the page be cut from launch, and the reason is not squeamishness:
- *    there is no QA placement anywhere in the record. Not one of the eight
- *    engineers in our five most recent placements was a QA or test-automation
- *    hire, and nor is there one in the programme engagements.
+ *    there is ONE QA placement in the record — the QA Engineer inside the
+ *    seven-person team assembled for New Era Visionary Group on Barça Mobile
+ *    (src/data/case-studies.ts) — and D1.1 wants two.
  *    D1.1 resolved that as "build it, gate it" rather than "cut it", which is what
  *    this file is.
  *
- * 2. **`evidence` is EMPTY, and that is the correct value.** Qualiwise is an AI
+ * 2. **`evidence` is EMPTY, and that is the correct value.** The one QA placement
+ *    cannot be listed here as a count-1 row: `assertServicePage` checks evidence
+ *    counts against the ledger, where New Era Visionary Group is recorded once as
+ *    seven, so a `count: 1` row fails the build and a `count: 7` row would claim
+ *    seven QA engineers. It is described in prose instead. Qualiwise is an AI
  *    copilot for product quality — a client in the quality space, not a QA
- *    placement. Listing it here to reach a count is exactly the sleight of hand
- *    §9 names, and it would make every other number on the site less believable.
- *    An empty array also means `assertServicePage` will refuse `draft: false`
- *    twice over, which is the intended safety.
+ *    placement — and listing it to reach a count is exactly the sleight of hand
+ *    §9 names. An empty array also means `assertServicePage` will refuse
+ *    `draft: false` twice over, which is the intended safety.
  *
  * 3. **The absence is stated on the page, not hidden.** The
  *    `what-our-record-shows` section says plainly that our published record is in
@@ -45,6 +48,7 @@
  *    as prose, unlinked.
  */
 
+import { PLACED_ENGINEERS } from '@/data/case-studies'
 import type { ServicePage } from '../types'
 
 export const hireQaEngineers: ServicePage = {
@@ -119,9 +123,9 @@ export const hireQaEngineers: ServicePage = {
         {
           kind: 'prose',
           body: [
-            'Stated plainly, because you can check it: our published placement record is in development and platform roles. Eight engineers across five clients — our five most recent placements: backend, full-stack, front-end and industrial-control work — and none of them was a QA or test-automation hire; nor is there one anywhere else on the case studies page, which is backend, DevOps and platform work throughout.',
+            `Stated plainly, because you can check it: our published placement record is mostly development roles. ${PLACED_ENGINEERS} engineers across eight client teams — backend, full-stack, front-end, architecture and industrial-control work — and exactly one of them was a QA hire: the QA Engineer inside the seven-person team we assembled for New Era Visionary Group, supporting the development and delivery of Barça Mobile. One is a record, not a specialism.`,
             'We could dress that up. Qualiwise, one of our clients, builds an AI copilot for product quality, and it would be easy to let that sit next to the word QA on this page and let you draw the wrong conclusion. It is a client in the quality space, not a QA placement, and treating it as one would be the kind of small dishonesty that should make you doubt every other figure on this site.',
-            'What we do have is a technical screen run by engineers rather than recruiters, the same sourcing network across the same region, and clients who hire from us again. What we do not yet have is a named QA engagement with a suite we can point at. When we do, it will be on this page with the framework, the state of the suite the engineer inherited, and what changed afterwards.',
+            'What we do have is one QA Engineer placed inside a delivery team with a fixed launch date, a technical screen run by engineers rather than recruiters, the same sourcing network across the same region, and clients who hire from us again. What we do not yet have is a second QA engagement, or a suite we can describe in detail. When we do, it will be on this page with the framework, the state of the suite the engineer inherited, and what changed afterwards.',
             'If you would rather wait for that, we understand. If you want a shortlist now, we will run the same screen we run for developers, adapted to the role, and you can judge the candidates rather than our record.',
           ],
         },
@@ -226,7 +230,7 @@ export const hireQaEngineers: ServicePage = {
             'Embedded in the delivery team, not in a separate function that receives finished work. QA at the end of the pipeline finds the same class of bug repeatedly and reports it later each time; QA inside the team changes what gets built.',
             'That has a practical consequence for a contract engagement: the QA engineer needs the same access, the same standup and the same definition of done as your developers. Where clients treat a contract QA engineer as an external verifier, the engagement produces tickets rather than confidence.',
             'It also has a scope consequence worth settling early. If what you actually want is someone to own the release gate, the pipeline and the rollback, that is closer to a platform or DevOps role than a QA one, and we would source a different person. Ask before you write the job description.',
-            'On engagement shape: QA work is often the clearest case for hourly collaboration, because a suite rebuild has an end and a headcount commitment does not. Longer-term ownership of quality in a growing team suits a direct B2B contract instead. Both models are set out in full on their own pages.',
+            'On engagement shape: QA work is often the clearest case for hourly collaboration, because a suite rebuild has an end and a headcount commitment does not. Longer-term ownership of quality in a growing team suits a direct B2B contract instead, and a QA Engineer can also sit inside a dedicated team under software development outsourcing, as on Barça Mobile. All three models are set out in full on their own pages.',
           ],
         },
       ],

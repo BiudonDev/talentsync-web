@@ -388,7 +388,7 @@ export const terms: LegalDoc = {
     {
       k: 'c',
       id: 'A12-2',
-      t: '**The Site sets no cookie of its own and loads no analytics.** There is no analytics tag, no advertising technology, no cross-site tracking, no marketing pixel, no chat widget and no social embed, and there is no consent banner because nothing is stored on your device for us to ask you about. Every font, style, script and image is served from talentsync.eu, so loading the Site causes no request to any third-party host. Web-server logs record IP addresses for security and operational purposes and are described in the privacy policy. If we ever add analytics, we will update our **[cookie policy](/cookies/)** first and ask for your consent before anything is stored.',
+      t: '**The Site stores nothing on your device except a record of your cookie-banner choice, and loads Google Analytics 4 only after you accept it on that banner.** There is no advertising technology, no cross-site tracking, no marketing pixel, no chat widget and no social embed. Until you accept analytics, every font, style, script and image is served from talentsync.eu and loading the Site causes no request to any third-party host. Web-server logs record IP addresses for security and operational purposes and are described in the privacy policy. Rejecting analytics, or closing the banner, leaves the Site working identically; you can change your choice at any time from the “Cookie settings” link in the footer. The full inventory is in our **[cookie policy](/cookies/)**.',
     },
 
     { k: 'h', level: 3, id: 'A13', t: 'A13. Changes to these Website Terms' },

@@ -8,6 +8,7 @@
  * there is no builder for it and nothing to call.
  */
 
+import { CANONICAL_DESCRIPTION, POSITIONING } from '@/data/content'
 import { SITE_NAME, SITE_URL, absUrl } from './seo'
 
 export const ORG_ID = `${SITE_URL}/#organization`
@@ -103,13 +104,10 @@ export const organizationLd = () => ({
     caption: SITE_NAME,
   },
   image: { '@id': LOGO_ID },
-  description:
-    `TalentSync is a technology recruitment and engineering talent partner based in ${LOCALITY}, Moldova. ` +
-    'It helps European and international product companies engage vetted senior engineers from Eastern Europe ' +
-    'through direct B2B recruitment and flexible hourly collaboration.',
-  disambiguatingDescription:
-    'TalentSync is not a project outsourcing company. We help companies add experienced engineers to their ' +
-    'existing teams while retaining full technical and operational control.',
+  // BLOCK A and the positioning line, imported from content.ts so the visible
+  // paragraph on / and /about/ and this node are one string (07-schema-aeo §4.2).
+  description: CANONICAL_DESCRIPTION,
+  disambiguatingDescription: POSITIONING,
   email: EMAIL,
   telephone: TELEPHONE,
   address: {
@@ -136,6 +134,8 @@ export const organizationLd = () => ({
   knowsAbout: [
     'Technology recruitment',
     'Software engineering staff augmentation',
+    'Software development outsourcing',
+    'Dedicated development teams',
     'Eastern European software developers',
     'AI and machine learning engineers',
     'Backend engineering',
@@ -156,6 +156,7 @@ export const organizationLd = () => ({
   makesOffer: [
     { '@type': 'Offer', itemOffered: { '@id': `${absUrl('/b2b-engineer-recruitment/')}#service` } },
     { '@type': 'Offer', itemOffered: { '@id': `${absUrl('/hourly-engineering-talent/')}#service` } },
+    { '@type': 'Offer', itemOffered: { '@id': `${absUrl('/software-development-outsourcing/')}#service` } },
   ],
 })
 
@@ -170,7 +171,7 @@ export const websiteLd = () => ({
   name: SITE_NAME,
   alternateName: 'TalentSync.eu',
   description:
-    'Technology recruitment and engineering talent from Eastern Europe for European and international product companies.',
+    'Technology recruitment, hourly engineering collaboration and software development outsourcing from Eastern Europe for European and international product companies.',
   publisher: ORG_REF,
   inLanguage: 'en',
 })

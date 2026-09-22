@@ -14,9 +14,13 @@ export default function Contact() {
           Let&apos;s <span className="text-gradient">Work Together</span>
         </h2>
 
-        <p className="text-lg sm:text-xl leading-relaxed text-text-secondary text-pretty mb-8">
-          Ready to find your next great hire? Get in touch and let&apos;s discuss
-          how we can help build your team.
+        {/* Client feedback item 7, verbatim. */}
+        <p className="text-lg sm:text-xl leading-relaxed text-text-secondary text-pretty mb-4">
+          Ready to hire an exceptional engineer or outsource your next software project?
+        </p>
+        <p className="text-base sm:text-lg leading-relaxed text-text-secondary text-pretty mb-8">
+          Tell us what you need, and we&apos;ll recommend the right engagement model and prepare a
+          tailored proposal.
         </p>
 
         <div className="flex flex-col items-center gap-6">
@@ -36,9 +40,14 @@ export default function Contact() {
             </a>
           </div>
 
-          <Button href={siteConfig.calendlyUrl} external>
-            Book A Meeting
-          </Button>
+          <div className="flex flex-col sm:flex-row gap-4">
+            <Button href={siteConfig.calendlyUrl} external>
+              Book a meeting
+            </Button>
+            <Button variant="secondary" href={siteConfig.quoteHref}>
+              {siteConfig.quoteLabel}
+            </Button>
+          </div>
         </div>
       </div>
     </SectionWrapper>

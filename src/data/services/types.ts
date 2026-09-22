@@ -5,7 +5,7 @@
  * `ServicePageTemplate`, so this file is the single place a thin page gets
  * caught. Every one of the ten things the brief requires of a service page —
  * search-focused H1, who it is for, the hiring problem, the process, stacks and
- * seniorities, geographic coverage, the two engagement models, one real result,
+ * seniorities, geographic coverage, the engagement models, one real result,
  * FAQs from buyer objections, a relevant CTA — is a REQUIRED field. TypeScript
  * refuses to compile a page that skips one.
  *
@@ -19,38 +19,38 @@
  */
 
 // ---------------------------------------------------------------------------
-// The two engagement models — written ONCE, referenced by key.
+// The three engagement models — written ONCE, referenced by key.
 // ---------------------------------------------------------------------------
 
 /**
- * 02-page-content.md Part 0, BLOCK B and BLOCK C, verbatim. The spec's leading
- * bold phrase ("**Direct B2B recruitment.**") is hoisted to `title` and the rest
- * of the sentence is untouched.
+ * The three engagement models, in the order the client presents them
+ * (client feedback, 21 September 2026, item 1): direct B2B recruitment, hourly
+ * collaboration, software development outsourcing.
  *
- * These are a `const` map rather than per-page copy for one reason: nine pages
- * describing the same two products in nine slightly different ways is how a
- * cluster cannibalises itself. A page picks keys; it cannot reword the block.
+ * `summary` is the client's own one-to-two-sentence description and is what the
+ * FAQ, the process step and the homepage lede compress to. `body` is the long
+ * form the model cards render. Both live here and nowhere else: pages pick keys,
+ * they do not reword the block — nine pages describing the same three products
+ * in nine slightly different ways is how a cluster cannibalises itself.
  *
- * WHERE they appear: `/`, `/hire-software-developers-eastern-europe/`,
- * `/b2b-engineer-recruitment/` and `/hourly-engineering-talent/`. Every other
- * service page carries NEITHER — it sets `engagementModels: []` and links out
- * through `internalLinks` instead, which bounds the duplication at four pages.
+ * WHERE the cards appear: `/`, `/hire-software-developers-eastern-europe/`,
+ * `/b2b-engineer-recruitment/`, `/hourly-engineering-talent/` and
+ * `/software-development-outsourcing/`. Role pages set `engagementModels: []`
+ * and link out through `internalLinks`.
  *
- * `/tech-recruitment-eastern-europe/` is the trap. 02-page-content.md Part 0
- * lists it as a fifth carrier; DECISIONS.md D1.2 says the opposite — route 2 is
- * an informational country-selection guide with NO engagement-model blocks —
- * and DECISIONS.md wins outright over a spec document that disagrees with it.
- * D1.2 also mounts the guard that settles it independently: routes 2 and 3 may
- * not share one 12+-word sentence (`scripts/validate-pages.mjs`, check 3d), and
- * route 3 carries BLOCK B and BLOCK C verbatim. Adding `['b2b','hourly']` to
- * route 2 puts all 156 of those words on both pages and fails the build. Do not
- * "fix" that `[]`; it is the correct value.
+ * `/tech-recruitment-eastern-europe/` carries NONE — DECISIONS.md D1.2 makes
+ * route 2 an informational guide, and `scripts/validate-pages.mjs` check 3d
+ * fails the build if routes 2 and 3 share one 12+-word sentence. Do not "fix"
+ * that `[]`.
  */
 export const ENGAGEMENT_MODELS = {
   b2b: {
     title: 'Direct B2B recruitment',
     href: '/b2b-engineer-recruitment/',
     linkAnchor: 'How direct B2B recruitment works',
+    summary:
+      'We identify and introduce carefully vetted Eastern European software engineers. The client contracts ' +
+      'with and manages the selected engineer directly under a B2B arrangement.',
     body:
       'TalentSync sources, screens and technically validates the engineer, then steps out of the relationship. ' +
       'You interview, you select, and you contract the engineer directly for a long-term engagement. The engineer ' +
@@ -59,15 +59,32 @@ export const ENGAGEMENT_MODELS = {
       'manage the engineer exactly as you manage the rest of your team.',
   },
   hourly: {
-    title: 'Flexible hourly collaboration',
+    title: 'Hourly collaboration',
     href: '/hourly-engineering-talent/',
     linkAnchor: 'How hourly collaboration works',
+    summary:
+      'An experienced engineer joins the client’s existing team and workflow while being billed through ' +
+      'TalentSync on an hourly basis.',
     body:
       'The engineer joins your existing team and is billed for hours actually worked, with no fixed headcount ' +
       'commitment. You retain control of architecture, roadmap, priorities, processes and day-to-day management; ' +
       'the engineer works inside your repositories, your sprint cadence and your definition of done. TalentSync ' +
       'handles the contract, invoicing and replacement cover. Capacity can be scaled up, scaled down or paused at ' +
       'agreed notice, which suits teams between funding rounds and work with an uncertain end date.',
+  },
+  outsourcing: {
+    title: 'Software development outsourcing',
+    href: '/software-development-outsourcing/',
+    linkAnchor: 'How software development outsourcing works',
+    summary:
+      'A client can outsource a complete software project, product, or technical component to a dedicated ' +
+      'TalentSync team — from planning and architecture to development, quality assurance, and delivery.',
+    body:
+      'You hand a complete project, product or technical component to a dedicated TalentSync team, and the team ' +
+      'takes responsibility for delivering it — technical planning and architecture, development, quality ' +
+      'assurance, release and ongoing support. You set the outcome, the acceptance criteria and the priorities; ' +
+      'we assemble the team from the same vetted Eastern European engineers we place directly, run delivery, and ' +
+      'report against an agreed plan. Scope and price are estimated in writing before work starts.',
   },
 } as const
 
@@ -242,7 +259,7 @@ export interface ServicePage {
     countries: string[]
   }
   /**
-   * Which of the two canonical models this page carries. `[]` on the six role
+   * Which of the three canonical models this page carries. `[]` on the role
    * pages — see the note on `ENGAGEMENT_MODELS`.
    */
   engagementModels: EngagementModelKey[]

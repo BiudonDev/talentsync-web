@@ -3,7 +3,7 @@ import Link from 'next/link'
 import JsonLd from '@/components/JsonLd'
 import PageShell from '@/components/layout/PageShell'
 import { Button, ComparisonTable, CtaBand, Faq, SectionWrapper } from '@/components/ui'
-import { caseHref, caseStudies, type CaseStudy } from '@/data/case-studies'
+import { PLACED_ENGINEERS, caseHref, caseStudies, type CaseStudy } from '@/data/case-studies'
 import { siteConfig } from '@/data/content'
 import { graphLd, itemListLd, WEBSITE_ID } from '@/lib/schema'
 import { absUrl, pageMeta } from '@/lib/seo'
@@ -42,7 +42,7 @@ export const metadata = pageMeta({
   path: PATH,
   title: 'Case Studies: Engineers We Placed | TalentSync',
   description:
-    'Ten named engagements: role, stack, time to signature and outcome. Barça Mobile, Orange, SocialBee, Silvertalent, Qualiwise, Foodamigos.',
+    'Ten named engagements: role, stack, time to signature and outcome. New Era Visionary Group, OptimEyes, SocialBee, Silvertalent, Qualiwise, Foodamigos.',
 })
 
 // 00-design-contract §2.3 roles. Heading classes are written out as literals at
@@ -87,7 +87,7 @@ const FAQS = [
   },
   {
     q: 'Are these placements or projects you delivered?',
-    a: 'Placements, with two exceptions flagged in the entries themselves: one advisory engagement, and one company our engineers reached through another client’s programme rather than through a contract with us. TalentSync is not a project outsourcing company — we did not build these products, we staffed the teams that did, and the entries describe what the engineer we placed worked on rather than what the company shipped.',
+    a: 'Mostly placements, with one exception flagged in its own entry: an advisory engagement where no engineer was placed. The New Era Visionary Group entry is different again — a dedicated team we assembled and TalentSync’s own software development outsourcing model, which is why it reads as a team delivery rather than an individual hire. Every entry states what TalentSync actually did.',
   },
   {
     q: 'Do you have clients in our sector?',
@@ -106,6 +106,7 @@ const NEXT_LINKS = [
   { anchor: 'recruiting in Moldova', href: '/technical-recruitment-moldova/' },
   { anchor: 'how our search process runs', href: '/hire-software-developers-eastern-europe/' },
   { anchor: 'the B2B contract structure', href: '/b2b-engineer-recruitment/' },
+  { anchor: 'software development outsourcing', href: '/software-development-outsourcing/' },
 ]
 
 /**
@@ -115,23 +116,45 @@ const NEXT_LINKS = [
  * `images.unoptimized: true` means `next/image` emits a bare `<img>` anyway, so
  * this is one, with a hand-built `srcSet` (Rule 9).
  *
- * ponytail: the srcSet carries a single candidate at the file's natural width
- * because no resized derivatives exist in `public/images/` yet — that pipeline
- * belongs to another package (00-design-contract §6.3). When the -192/-384
- * files land, add them to `srcSet` here; nothing else changes.
+ * Feedback item 26: this used to serve the full-size source file directly — up
+ * to 126,030 B for a mark displayed at roughly 120px wide. `-384.webp` and
+ * `-768.webp` derivatives exist beside every logo now (the same pipeline
+ * `sections/CaseStudies.tsx` already used), so this component reads them
+ * instead. `width`/`height` stay the SOURCE file's native dimensions — that is
+ * the aspect-ratio hint the browser reserves layout space against, and it is
+ * the same ratio the derivatives were resized to, so it stays correct even
+ * though the bytes it loads are the small file.
  *
- * `bg-text-primary` on the plate is not a mistake. Four of the ten marks are
+ * `bg-text-primary` on the plate is not a mistake. Several of the ten marks are
  * dark ink on white and vanish on `bg-surface`; §2.2 has no light-surface token,
  * and `--color-text-primary` (#F5F5F5) is the table's only near-white. Rule 2
  * forbids reaching outside the token table for a colour, so the off-white token
  * is used as an off-white plate. Swap it the day §2.2 grows a real one.
+ *
+ * `logo` is optional (case-studies.ts): a client whose mark has not been
+ * supplied yet (Vinlivt, at launch) renders as a text mark instead of a
+ * placeholder image, matching the homepage carousel's fallback.
  */
-function ClientMark({ logo }: { logo: CaseStudy['logo'] }) {
+const logoBase = (src: string) => src.replace(/\.[a-z]+$/i, '')
+const logoSrcSet = (src: string) => `${logoBase(src)}-384.webp 384w, ${logoBase(src)}-768.webp 768w`
+
+function ClientMark({ study }: { study: CaseStudy }) {
+  const { logo, client } = study
+  if (!logo) {
+    return (
+      <div className="inline-flex h-10 items-center rounded-lg bg-surface px-3 sm:h-12">
+        <span className="text-base font-bold tracking-tight text-gradient">{client}</span>
+      </div>
+    )
+  }
   return (
-    <div className={cn('inline-flex items-center rounded-lg p-2', logo.plate && 'bg-text-primary')}>
+    <div
+      className={cn('inline-flex items-center rounded-lg p-2', !logo.bg && logo.plate && 'bg-text-primary')}
+      style={logo.bg ? { backgroundColor: logo.bg } : undefined}
+    >
       <img
-        src={logo.src}
-        srcSet={`${logo.src} ${logo.width}w`}
+        src={`${logoBase(logo.src)}-384.webp`}
+        srcSet={logoSrcSet(logo.src)}
         sizes="120px"
         width={logo.width}
         height={logo.height}
@@ -151,7 +174,7 @@ function Entry({ study }: { study: CaseStudy }) {
       className="grid gap-5 border-t border-border pt-10 lg:grid-cols-[15rem_minmax(0,1fr)] lg:gap-12"
     >
       <div>
-        <ClientMark logo={study.logo} />
+        <ClientMark study={study} />
         <h3 className="text-xl sm:text-2xl font-bold mt-4">{study.client}</h3>
         <p className={cn('mt-2', CAPTION)}>{study.sector}</p>
         <dl className="mt-4 space-y-2 text-sm">
@@ -212,9 +235,8 @@ export default function CaseStudiesPage() {
             The record at a glance
           </h2>
           <p className={cn('mt-4 max-w-3xl', BODY)}>
-            One row per engagement. Two of the ten are not placements and are marked as such in
-            their entry below — an advisory engagement, and one company our engineers reached
-            through another client’s programme rather than through a contract with us.
+            One row per engagement. One of the ten is not a placement and is marked as such in its
+            entry below — an advisory engagement where no engineer was placed.
           </p>
           <ComparisonTable
             className="mt-8"
@@ -304,10 +326,10 @@ export default function CaseStudiesPage() {
             Engineers We Have Placed
           </h1>
           <p className={cn('mt-6 max-w-3xl', LEDE)}>
-            TalentSync has staffed engineering roles at named client companies, from a senior
-            backend Python developer at Qualiwise filled in one week to a three-engineer full-stack
-            team at Silvertalent. Ten engagements are listed below. Each states the client, the
-            role, the stack, the time from brief to signature, and what the engineer worked on.
+            {PLACED_ENGINEERS} engineers placed with named client companies, from a Senior Python
+            Developer at Qualiwise filled in one week to a dedicated seven-person team assembled
+            for New Era Visionary Group. Ten engagements are listed below. Each states the client,
+            the role, the stack, the time from brief to signature, and what the engineers worked on.
           </p>
           <div className="mt-8 flex flex-col gap-4 sm:flex-row">
             <Button href={siteConfig.calendlyUrl} external>

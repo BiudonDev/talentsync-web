@@ -9,7 +9,6 @@ import {
   EngagementModels,
   FAQ,
   Hero,
-  NotOutsourcing,
   Process,
   Services,
   Testimonials,
@@ -39,8 +38,8 @@ export const metadata = pageMeta({
   path: '/',
   title: 'IT Recruitment & Engineering Talent in Eastern Europe | TalentSync',
   description:
-    'Vetted senior engineers from Eastern Europe, on direct B2B contracts or hourly. ' +
-    'You keep architecture and management control. Chișinău-based.',
+    'Vetted senior engineers from Eastern Europe through direct B2B recruitment, hourly collaboration ' +
+    'or complete software development outsourcing. Chișinău-based.',
 })
 
 export default function Home() {
@@ -65,13 +64,10 @@ export default function Home() {
         <MotionRoot>
           <Hero />
           <About />
-          {/* §1's outline, rows 2 and 3. `/` was the shortest commercial page on
-              the site and the only one of the five that must carry BLOCK B and
-              BLOCK C paraphrasing them instead — it compressed both models into
-              a single process step. These two sections restore the canonical
-              blocks and give BLOCK D the H2 the outline gives it. */}
+          {/* The three engagement models in the client's order, from the one
+              shared const. "What TalentSync is not" (BLOCK D) was retired on
+              21 September 2026: TalentSync now offers outsourcing. */}
           <EngagementModels />
-          <NotOutsourcing />
           <Services />
           <Process />
           <CaseStudies />

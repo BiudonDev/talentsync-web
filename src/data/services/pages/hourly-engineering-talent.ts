@@ -4,7 +4,10 @@
  * The hourly model: the control matrix, minimum commitment and notice,
  * timesheets and invoicing, and when hourly is the wrong purchase.
  *
- * BLOCK D (DECISIONS.md D7) appears here verbatim and must not be reworded.
+ * The former BLOCK D ("not a project outsourcing company") was retired on
+ * 21 September 2026: outsourcing is now the third model. The section that
+ * carried it now states what the HOURLY model is not, and points at the
+ * outsourcing page for the case where someone else should own delivery.
  *
  * WHAT IS DELIBERATELY MISSING: the indicative rate table.
  * 02-page-content.md §5 specifies one, headed with a review date, but every
@@ -114,15 +117,15 @@ export const hourlyEngineeringTalent: ServicePage = {
       ],
     },
     {
-      id: 'what-talentsync-is-not',
-      heading: 'What TalentSync is not',
+      id: 'what-hourly-is-not',
+      heading: 'What the hourly model is not',
       blocks: [
         {
           kind: 'prose',
           body: [
-            'TalentSync is not a project outsourcing company. We help companies add experienced engineers to their existing teams while retaining full technical and operational control.',
+            'Hourly collaboration adds an experienced engineer to your existing team while you retain full technical and operational control. It is not outsourcing, and it is not a managed team.',
             'Under the hourly model that means three concrete absences. There is no delivery manager sitting over the engagement on our side. We do not report to you on the engineer’s progress, because you can see it in your own tracker. And we are not in your standups, your planning, or your retrospectives.',
-            'If any of those absences reads as a gap rather than a feature, buy a managed team from an agency instead. That is a legitimate product; it is simply not this one, and the difference matters most on the day something goes wrong.',
+            'If any of those absences reads as a gap rather than a feature, you want our software development outsourcing model instead: a dedicated TalentSync team with its own technical lead that owns delivery of an agreed scope. That is a legitimate and separate product, and the difference matters most on the day something goes wrong.',
           ],
         },
       ],
@@ -234,7 +237,7 @@ export const hourlyEngineeringTalent: ServicePage = {
           kind: 'list',
           items: [
             'You already know you need this person full time for two years. A direct contract you hold is cheaper over that horizon and better for the engineer, and we will point you at it.',
-            'You want somebody else accountable for delivery. That is an agency engagement, and buying it from us in this shape would leave you with neither control nor cover.',
+            'You want somebody else accountable for delivery. That is our outsourcing model, not this one, and buying hourly capacity when you wanted a delivered outcome leaves you with neither control nor cover.',
             'The work is a fixed-scope, fixed-price deliverable with a deadline attached. Hourly prices flexibility you are not using.',
             'You need fewer than a handful of hours a week. Context-switching will eat most of them and you will conclude, fairly, that it did not work.',
             'The role is genuinely on-site. Hourly does not change where the person lives.',
@@ -295,18 +298,18 @@ export const hourlyEngineeringTalent: ServicePage = {
     countries: ['Moldova', 'Romania', 'Poland', 'Bulgaria', 'Ukraine'],
   },
 
-  engagementModels: ['hourly', 'b2b'],
+  engagementModels: ['hourly', 'b2b', 'outsourcing'],
 
   evidence: [
     {
       client: 'Innovatec',
-      role: 'PLC specialist, industrial control systems',
+      role: 'PLC Specialist, industrial control systems',
       count: 1,
       outcome: 'A specialist industrial search, filled in two weeks.',
     },
     {
       client: 'Foodamigos',
-      role: 'Senior frontend developer, Angular',
+      role: 'Senior Frontend Developer, Angular',
       count: 1,
       outcome: 'One senior hire into a small product team, signed in a week.',
     },
@@ -352,6 +355,7 @@ export const hourlyEngineeringTalent: ServicePage = {
 
   internalLinks: [
     { anchor: 'a direct B2B contract instead', href: '/b2b-engineer-recruitment/' },
+    { anchor: 'a dedicated team that owns delivery', href: '/software-development-outsourcing/' },
     { anchor: 'where the engineers are based', href: '/technical-recruitment-moldova/' },
     { anchor: 'how the search itself runs', href: '/hire-software-developers-eastern-europe/' },
     { anchor: 'the wider regional picture', href: '/tech-recruitment-eastern-europe/' },

@@ -308,7 +308,7 @@ export const technicalRecruitmentMoldova: ServicePage = {
   evidence: [
     {
       client: 'Qualiwise',
-      role: 'Senior backend developer, Python',
+      role: 'Senior Python Developer',
       count: 1,
       outcome:
         'Sourced and screened out of our Chișinău office for an AI copilot platform. Signed within one week of the brief.',
@@ -316,14 +316,14 @@ export const technicalRecruitmentMoldova: ServicePage = {
     },
     {
       client: 'Innovatec',
-      role: 'PLC specialist',
+      role: 'PLC Specialist',
       count: 1,
       outcome:
         'Hatchery automation, and the placement that shows this market is not only web work — the industrial and embedded pool here is real. Team scaled within two weeks.',
     },
     {
       client: 'Foodamigos',
-      role: 'Senior frontend developer, Angular',
+      role: 'Senior Frontend Developer, Angular',
       count: 1,
       outcome:
         'A food delivery startup adding front-end capacity. Team scaled within one week of the brief.',

@@ -5,15 +5,13 @@ import type { LegalDoc } from './types'
  *
  * Changes to the draft, every one of them traceable:
  *
- *  · DECISIONS.md D2 (GA4 behind a consent banner) is SUPERSEDED by the client's
- *    answer of 31 August 2026: no GA4 property exists, so analytics ships OFF,
- *    the site sets no cookies, and no banner renders. §4.3, §13 and the short
- *    version say so; the GA4 rows in §8, §9.2 and §10 are deleted. Re-enabling
- *    analytics is a policy change before it is a code change — this file and
- *    /cookies/ are updated BEFORE the tag ships.
- *    NOTE: scripts/check-legal-fidelity.mjs check 5 still enforces the old D2 and
- *    will now fail on the true statements in §13. That check must be inverted;
- *    the script is outside this file's scope.
+ *  · DECISIONS.md D2 (GA4 behind a consent banner) is LIVE as of 21 September
+ *    2026 (v1.1): Google Analytics 4, measurement ID G-4D9N8H4S48, Consent Mode
+ *    v2 basic mode — nothing loads and nothing reaches Google until the visitor
+ *    accepts. §4.1–§4.3, §8, §9.2, §10, §13 and the short version describe that
+ *    implementation; the consent record is `ts_consent` (local storage, 6 months).
+ *    Between 31 August and 21 September 2026 (v1.0) analytics was off and this
+ *    file said so; Annex C records the change.
  *  · DECISIONS.md D3 — {{AI_SCREENING_POSITION}} resolves to the settled
  *    sentence. The token is deleted from §6.8 and §14.
  *  · 08-critique-privacy [CRITICAL] Google Fonts — already fixed in the repo
@@ -48,8 +46,8 @@ export const privacy: LegalDoc = {
   metaTitle: 'Privacy Policy',
   metaDescription:
     'How TalentSync collects, uses and protects personal data — for engineers we source, client contacts and site visitors. Written to the EU GDPR and Law 195/2024.',
-  version: '1.0',
-  updated: '2026-08-30',
+  version: '1.1',
+  updated: '2026-09-21',
   lede: 'This policy applies to https://talentsync.eu and to everything we do offline. It is written to the stricter of the two regimes that reach us — the EU GDPR — and applied to everyone, wherever you live.',
   body: [
     /* ------------------------------------------------------------ summary */
@@ -63,7 +61,7 @@ export const privacy: LegalDoc = {
       items: [
         'We keep **candidate profiles no longer than 24 months** from our last contact with you, and keep placement, invoicing and tax records for the longer periods the law requires — [§10](#s10) lists every period we hold.',
         '**We do not use automated decision-making or AI screening to evaluate candidates.** Every shortlist is assembled by a person who has read your profile.',
-        '**This site sets no cookies at all, and we run no analytics.** Nothing is stored on your device and nothing is read from it, so there is nothing to consent to and you will not be asked to answer a cookie banner. If that ever changes, we update this policy first and ask for your consent before anything is set.',
+        '**Analytics runs only if you accept it.** The one thing we store without asking is the record of your answer on the cookie banner. Google Analytics 4 is not loaded, and no Google cookie is set, until you click Accept; rejecting or closing the banner leaves the site identical and is remembered for six months — see [§4.3](#s4-3) and the [cookie policy](/cookies/).',
         'We never charge a candidate anything, for any reason.',
       ],
     },
@@ -138,7 +136,7 @@ export const privacy: LegalDoc = {
         [
           'Someone browsing talentsync.eu',
           '[§4](#s4)',
-          'We hold almost nothing about you: web-server access logs, deleted after 30 days. No analytics, and no cookies',
+          'We hold almost nothing about you: web-server access logs, deleted after 30 days, and analytics only if you accepted it on the banner',
         ],
         [
           'A contact at a client or prospective client',
@@ -207,7 +205,7 @@ export const privacy: LegalDoc = {
     },
     {
       k: 'p',
-      t: '**While you are on talentsync.eu, your browser contacts no server other than talentsync.eu.** No analytics, no font CDN — the Montserrat typeface is served from our own domain — no chat widget, no heatmap, no A/B testing, no session recording, no advertising pixel, no social embed, no map.',
+      t: '**Before you accept analytics — and always, if you reject it — your browser contacts no server other than talentsync.eu.** No font CDN — the Montserrat typeface is served from our own domain — no chat widget, no heatmap, no A/B testing, no session recording, no advertising pixel, no social embed, no map. The one optional connection, to Google Analytics, is described in [§4.3](#s4-3) and opens only after you click Accept.',
     },
 
     { k: 'h', level: 3, id: 's4-2', t: '4.2 What we process about every visitor' },
@@ -222,26 +220,48 @@ export const privacy: LegalDoc = {
           '**30 days**, then automatically deleted',
           'Our hosting provider, Railway, acting as our processor',
         ],
+        [
+          'Understanding which pages visitors find useful — **only if you accept analytics on the banner**',
+          'Google Analytics 4: a cookie identifier (`_ga`, `_ga_4D9N8H4S48`), pages viewed, referrer, device and browser type, approximate location derived by Google from your IP address (the IP itself is not stored), and three click events — booking a call, opening an email link, opening a phone link',
+          '**Consent**, Art 6(1)(a) GDPR **and** Art 5(3) ePrivacy Directive. Nothing is loaded, set or sent until you actively accept. Declining costs you nothing and changes nothing about the site',
+          'Event data **2 months** in Google Analytics, the shortest retention the tool offers; withdrawing consent stops collection immediately',
+          'Google Ireland Ltd, as our processor under the Google Analytics data processing terms, with Google LLC (US) as its sub-processor',
+        ],
+        [
+          'Remembering your answer on the cookie banner so we do not ask on every page',
+          '`ts_consent`, one local-storage record: accepted or rejected, the date, and the version of the banner. No identifier for you',
+          'Strictly necessary under Art 5(3) ePrivacy; no consent needed for the record itself. Created only after you choose',
+          '**6 months**, then we ask again; or until you clear your browser storage',
+          'Nobody. It never leaves your browser',
+        ],
       ],
     },
     {
       k: 'p',
-      t: 'We do not build visitor profiles from server logs. We do not know who you are. We cannot link a log entry to a person, and we do not try.',
+      t: 'We do not build visitor profiles from server logs or from analytics. We do not know who you are. We cannot link a log entry or an analytics event to a person, and we do not try.',
     },
 
-    { k: 'h', level: 3, id: 's4-3', t: '4.3 Analytics: we do not run any' },
+    { k: 'h', level: 3, id: 's4-3', t: '4.3 Analytics: Google Analytics 4, only with your consent' },
     {
       k: 'p',
-      t: '**There is no analytics on this website.** No Google Analytics, no self-hosted analytics, no page-view script of any kind. Nothing counts you, nothing profiles you, and nothing is stored on or read from your device — which is why you will not be asked to answer a cookie banner.',
+      t: '**Since 21 September 2026 we use Google Analytics 4** (measurement ID G-4D9N8H4S48) to count visits, pages, traffic sources and outbound clicks — the Calendly link, email and phone links — so we know what content works. It runs in **Consent Mode v2, basic mode**: the Google script is not on the page when you arrive, no request leaves your browser to Google, and no analytics cookie exists until you click **Accept analytics** on the banner that appears on your first visit to any page. Every advertising signal — ad storage, ad user data, ad personalisation — stays denied whatever you choose. We use no Google Ads, no remarketing and no advertising features.',
     },
     {
       k: 'p',
-      t: 'We use the two search-console tools below. They run on the search engines’ own servers rather than on ours, and they place nothing on your device.',
+      t: '**Rejecting is exactly as easy as accepting**: the same banner, two identical buttons, one click, no pre-ticked boxes, and Reject comes first in the keyboard order. Closing the banner or pressing Escape counts as a refusal and is remembered as one. Nothing but strictly necessary technology runs before you choose. If you reject, we fall back to counting page requests in our own server logs, which needs no consent because it involves nothing stored on or read from your device. **You can change your mind at any time** from the “Cookie settings” link in the footer of every page; withdrawal stops collection immediately.',
     },
     {
       k: 'table',
       head: ['Tool', 'What it does', 'Data', 'Lawful basis', 'Retention', 'Where'],
       rows: [
+        [
+          '**Google Analytics 4**',
+          'Counts visits, pages, sources and outbound clicks (Calendly, email, phone) so we know what content works',
+          'Cookie identifier, IP address (used by Google to derive approximate location, then discarded), pages viewed, referrer, device and browser type, the three click events tagged with the section of our page the link sat in — never anything you typed',
+          '**Consent**, Art 6(1)(a) GDPR **and** Art 5(3) ePrivacy Directive. No analytics cookie is set and no data is sent until you actively accept. Declining costs you nothing and changes nothing about the site',
+          'Event data kept **2 months** in Google Analytics — the shortest retention the tool offers, which we set in the property’s admin; withdrawn consent stops collection immediately',
+          'Google Ireland Ltd (processor), with Google LLC in the US as sub-processor — see [§9.2](#s9-2)',
+        ],
         [
           '**Google Search Console**',
           'Shows which Google searches lead to our site',
@@ -262,11 +282,11 @@ export const privacy: LegalDoc = {
     },
     {
       k: 'p',
-      t: 'We count page requests in our own server logs instead. That needs no consent, because it involves nothing stored on or read from your device, and those logs are deleted after 30 days ([§4.2](#s4-2)).',
+      t: 'The two search-console tools run on the search engines’ own servers rather than on ours, and they place nothing on your device. Whether or not you accept analytics, we also count page requests in our own server logs; that needs no consent, because it involves nothing stored on or read from your device, and those logs are deleted after 30 days ([§4.2](#s4-2)).',
     },
     {
       k: 'p',
-      t: '**If we ever add analytics, this policy and the [cookie policy](/cookies/) are updated before the tool ships — not after — and we ask for your consent before anything is set on your device.** We would name the tool, what it collects, who receives it and how long it is kept, here, first. Refusing would be exactly as easy as accepting and would change nothing about the site.',
+      t: '**If we ever add any other measurement or marketing technology, this policy and the [cookie policy](/cookies/) are updated before the tool ships — not after — and we ask for your consent before anything is set on your device.** We name the tool, what it collects, who receives it and how long it is kept, here, first. The cookie policy lists every cookie by name, provider, purpose and lifetime.',
     },
 
     { k: 'h', level: 3, id: 's4-4', t: '4.4 Calendly' },
@@ -763,6 +783,13 @@ export const privacy: LegalDoc = {
           'Separate controller for its own platform processing, under its own privacy policy',
         ],
         [
+          '**Google Ireland Ltd (Google Analytics 4)**',
+          'Website analytics — **only for visitors who accepted analytics on the cookie banner**',
+          '**Visitors who consented:** analytics cookie identifier, pages viewed, referrer, device and browser type, IP address (used to derive approximate location, not stored), three click events',
+          'EU/US — Google LLC in the United States acts as sub-processor',
+          'Processor. Google Analytics data processing terms (Art 28); EU–US Data Privacy Framework certification and EU SCCs for the US leg. Event data retained 2 months',
+        ],
+        [
           '**Google (Search Console) and Microsoft (Bing Webmaster Tools)**',
           'Reporting which searches lead to our site',
           'Aggregated search statistics. No individual visitor data, nothing placed on your device',
@@ -854,6 +881,12 @@ export const privacy: LegalDoc = {
           'TalentSync',
           'EU–US Data Privacy Framework certification where the provider holds one, otherwise EU SCCs, plus an Art 28 DPA in every case',
         ],
+        [
+          '**You accept analytics and Google Analytics 4 records your visit**',
+          'Yes — Google Ireland Ltd is the processor, and Google LLC in the United States processes the data as its sub-processor',
+          'TalentSync',
+          'Google LLC’s EU–US Data Privacy Framework certification, backed by the EU SCCs in the Google Analytics data processing terms. If you reject analytics, this flow never happens',
+        ],
       ],
     },
     { k: 'h', level: 3, id: 's9-3', t: '9.3 What you can ask for' },
@@ -874,6 +907,16 @@ export const privacy: LegalDoc = {
       head: ['Record', 'Period', 'Why that period'],
       rows: [
         ['Web-server access logs', '**30 days**', 'Security and debugging only; no longer use exists'],
+        [
+          'Google Analytics 4 event data — visitors who accepted analytics',
+          '**2 months**',
+          'The shortest retention Google Analytics offers; withdrawing consent stops collection at once',
+        ],
+        [
+          'Your cookie-banner choice (`ts_consent`, in your own browser)',
+          '**6 months**, or until you clear your browser storage',
+          'Long enough not to nag you; short enough that consent is re-confirmed',
+        ],
         [
           'Profile recorded during a search, never approached',
           '**30 days**',
@@ -1053,40 +1096,36 @@ export const privacy: LegalDoc = {
     { k: 'h', level: 3, id: 's13-1', t: '13.1 Where we stand' },
     {
       k: 'p',
-      t: '**talentsync.eu sets no cookies at all.** No analytics, no advertising technology, no cross-site tracking, no data broker, no marketing pixel, no fingerprinting, no session recording, no local storage and no session identifier. Nothing is stored on your device and nothing is read from it.',
+      t: '**talentsync.eu stores one thing without asking, and everything else only with your consent.** The one thing is `ts_consent`, a local-storage record of your answer on the cookie banner — created only after you answer, holding nothing but that answer and its date, kept six months. It is strictly necessary and needs no consent itself. The everything else is **Google Analytics 4**, which sets two cookies (`_ga` and `_ga_4D9N8H4S48`, two years each) and only after you click Accept. There is no advertising technology, no cross-site tracking, no data broker, no marketing pixel, no fingerprinting and no session recording.',
     },
     {
       k: 'p',
-      t: 'That is why you will not be asked to answer a cookie banner: there is nothing to consent to, and a banner asking you to accept technology that does not run would be noise rather than a choice. This is the design, not an oversight, and we intend to keep it for as long as we can.',
+      t: 'The Montserrat typeface is served from our own domain, so reading this page does not hand your IP address to a font CDN either. Before you accept analytics, the one record our server keeps is the access log described in [§4.2](#s4-2) — not a cookie, and deleted after 30 days.',
     },
-    {
-      k: 'p',
-      t: 'The Montserrat typeface is served from our own domain, so reading this page does not hand your IP address to a font CDN either. The one record our server keeps is the access log described in [§4.2](#s4-2) — not a cookie, and deleted after 30 days.',
-    },
-    { k: 'h', level: 3, id: 's13-2', t: '13.2 Search consoles, and what would change if we added anything' },
+    { k: 'h', level: 3, id: 's13-2', t: '13.2 How the consent banner works' },
     {
       k: 'p',
       t: 'Google Search Console and Bing Webmaster Tools set no cookies on our site. They report aggregated statistics that Google and Microsoft already hold from their own search results. Nothing is placed on your device and no consent is needed.',
     },
     {
       k: 'p',
-      t: 'If we ever add analytics, or any other non-essential technology, these are commitments and not intentions:',
+      t: 'Google Analytics 4 is different, and this is how it is gated — commitments, not intentions:',
     },
     {
       k: 'ul',
       items: [
-        '**This policy and the [cookie policy](/cookies/) are updated first** — naming the tool, what it collects, who receives it and how long it is kept — before the tool ships, not after.',
-        '**A consent banner appears before any cookie or identifier is set**, with every signal defaulting to denied until you choose.',
-        '**Rejecting will be exactly as easy as accepting** — same screen, same prominence, one click, no pre-ticked boxes, no dark patterns, no “legitimate interests” tab hiding switches you have to turn off individually.',
-        '**Closing the banner without choosing will count as a refusal.**',
-        '**You will be able to change your mind at any time**, and withdrawal will take effect immediately.',
-        '**Refusing will cost you nothing.** The site will be identical either way. There will be no cookie wall.',
+        '**The banner appears on your first visit to any page**, before any analytics cookie or identifier is set, whatever you click. Every Consent Mode signal defaults to denied until you choose, and the Google script is not on the page until you accept.',
+        '**Rejecting is exactly as easy as accepting** — same banner, same prominence, one click, no pre-ticked boxes, no dark patterns, no “legitimate interests” tab hiding switches you have to turn off individually. Reject comes first in the keyboard order.',
+        '**Closing the banner, or pressing Escape, counts as a refusal** and is remembered as one for six months.',
+        '**You can change your mind at any time** from the “Cookie settings” link in the footer of every page, and withdrawal takes effect immediately.',
+        '**Refusing costs you nothing.** The site is identical either way. There is no cookie wall.',
+        '**This policy and the [cookie policy](/cookies/) are updated first** — naming the tool, what it collects, who receives it and how long it is kept — before any further tool ships, not after.',
       ],
     },
     { k: 'h', level: 3, id: 's13-3', t: '13.3 The full cookie policy' },
     {
       k: 'p',
-      t: 'A dedicated [cookie policy](/cookies/) sets out in full what this site does and does not store in your browser, and lists every cookie by name, purpose, provider, type and lifetime the moment there is one to list. Where this section and that page differ, that page is more detailed and more current.',
+      t: 'A dedicated [cookie policy](/cookies/) sets out in full what this site does and does not store in your browser, and lists every cookie by name, purpose, provider, type and lifetime. Where this section and that page differ, that page is more detailed and more current.',
     },
     { k: 'h', level: 3, id: 's13-4', t: '13.4 A standing commitment' },
     {
@@ -1296,6 +1335,11 @@ export const privacy: LegalDoc = {
           '1.0',
           '30 August 2026',
           'First publication. Covers Moldovan Law No. 195/2024 (in force 23 August 2026), EU GDPR via Article 3(2), and UK GDPR. Records the no-analytics, no-cookie position and the self-hosted typeface',
+        ],
+        [
+          '1.1',
+          '21 September 2026',
+          'Google Analytics 4 enabled behind a consent banner (Consent Mode v2, basic mode). §4.1–§4.3, §8, §9.2, §10 and §13 rewritten to describe it; `ts_consent` and the two GA4 cookies documented; the short version updated. No change to candidate or client processing',
         ],
       ],
     },

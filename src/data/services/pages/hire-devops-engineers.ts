@@ -5,30 +5,26 @@
  *
  * ## Decisions taken here, and what has to change before this page publishes
  *
- * 1. **`draft: true`, but this is the closest of the three to publishable.** The
- *    Barça Mobile engagement is a genuinely DevOps-scoped placement — system
- *    architecture and CI/CD for a consumer launch with a fixed external date —
- *    and §8 is right that no competitor's Eastern Europe DevOps page has a named
- *    consumer launch behind it. What is missing is only the second one. D1.1
- *    wants two named placements and there is one.
+ * 1. **`draft: true`, and there is no DevOps placement on record.** The former
+ *    "DevOps engineer on Barça Mobile" claim is gone: the client's own record of
+ *    the seven-person New Era Visionary Group team (src/data/case-studies.ts)
+ *    lists backend, front-end, Android and QA roles and no DevOps role, so the
+ *    site no longer says it. D1.1 wants two named placements and there are none.
  *
- * 2. **`evidence` carries ONE entry.** `assertServicePage` refuses `draft: false`
- *    under two, which is the intended behaviour: the guard blocks the flip, not
- *    this comment. Do not add the Qualiwise or SocialBee placements to reach the
- *    count — they are backend and full-stack hires and they belong to the pages
- *    that sell those roles.
+ * 2. **`evidence` is EMPTY.** `assertServicePage` refuses `draft: false` under
+ *    two, which is the intended behaviour: the guard blocks the flip, not this
+ *    comment. Do not add the Qualiwise, OptimEyes or SocialBee placements to
+ *    reach the count — they are backend and full-stack hires and belong to the
+ *    pages that sell those roles.
  *
- * 3. **To publish:** one more named DevOps, SRE or platform placement in
+ * 3. **To publish:** two named DevOps, SRE or platform placements in
  *    `evidence`, then `draft: false` here AND in `src/data/routes.ts`. The
  *    ML-platform overlap noted in the seniorities block is the likeliest source —
  *    an MLOps placement counts here as well as on the AI page.
  *
- * 4. **The downloads figure is cut, not softened.** D7 and 06-claims row 10: the
- *    "1.5M downloads in the first three months" line has no public linkable source
- *    and is a client product metric, not a TalentSync result. §8 permits it only
- *    with a source, so this page describes launch scale without a number. Every
- *    sentence about Barça Mobile states the ENGINEER's scope; none of them implies
- *    TalentSync delivered the platform.
+ * 4. **No client product metric is used as a TalentSync result.** D7 and
+ *    06-claims row 10: launch scale is described without a number, and nothing
+ *    on the page implies TalentSync delivered a platform.
  *
  * 5. **The §8 meta description is rewritten.** It ended "Shortlist in days, not
  *    weeks" — a bare speed claim, which D7 forbids and 06-claims row 7 puts behind
@@ -52,7 +48,7 @@ export const hireDevopsEngineers: ServicePage = {
   h1: 'Hire DevOps Engineers in Eastern Europe',
 
   answerParagraph:
-    'TalentSync places DevOps, platform and SRE engineers from Eastern Europe who own CI/CD, infrastructure-as-code, observability and cloud cost. Our DevOps engineer on the Barça Mobile engagement worked on system architecture and CI/CD for a consumer launch. Engineers engage on a direct B2B contract with you or hourly, including part-time, which suits teams without full-time platform work.',
+    'TalentSync places DevOps, platform and SRE engineers from Eastern Europe who own CI/CD, infrastructure-as-code, observability and cloud cost, screened by an engineer on an incident they personally owned rather than on a tooling checklist. Engineers engage on a direct B2B contract with you or hourly, including part-time, which suits teams without full-time platform work.',
 
   whoFor: {
     audience: 'Product engineering teams that ship faster than their pipeline allows',
@@ -119,14 +115,14 @@ export const hireDevopsEngineers: ServicePage = {
       ],
     },
     {
-      id: 'the-barca-mobile-launch',
-      heading: 'The Barça Mobile launch',
+      id: 'launch-scale-devops',
+      heading: 'Launch-scale DevOps',
       blocks: [
         {
           kind: 'prose',
           body: [
-            'The DevOps engineer we placed on the Barça Mobile engagement worked on system architecture and CI/CD for the launch. That is the engineer’s scope, stated precisely: TalentSync placed an engineer into the team, we did not build the product, and we are not going to describe someone else’s platform as our delivery.',
-            'What made it a useful proving ground is the shape of the work rather than any headline number. A consumer launch tied to a named brand has a date set outside engineering, which changes every technical decision underneath it.',
+            'Stated plainly: we have no named DevOps placement on record yet, and this page will carry one with the same detail as everything else on this site the day we do. What we do have is a screen built around launch work, because that is the brief that separates a platform engineer who has shipped from one who has configured.',
+            'A consumer launch tied to a named brand has a date set outside engineering, which changes every technical decision underneath it. That shape of work is what the list below is screened against.',
           ],
         },
         {
@@ -142,7 +138,7 @@ export const hireDevopsEngineers: ServicePage = {
         {
           kind: 'prose',
           body: [
-            'The same engagement covered the MVNO integration between Barça Mobile and the Orange network — carrier-side systems with their own release calendar and their own failure modes. Engineers with telecom or regulated-integration backgrounds are rarer than general platform engineers and take longer to source, so brief us earlier when that is the requirement.',
+            'Engineers with telecom or regulated-integration backgrounds are rarer than general platform engineers and take longer to source, so brief us earlier when that is the requirement.',
             'If you have a launch date, tell us the date before you tell us the stack. It changes who we approach.',
           ],
         },
@@ -355,17 +351,9 @@ export const hireDevopsEngineers: ServicePage = {
   // Role page — Part 0 keeps BLOCK B and BLOCK C off the role pages; we link out instead.
   engagementModels: [],
 
-  // ONE entry, on purpose. See decision 2 in the file header before adding a second.
-  evidence: [
-    {
-      client: 'Barça Mobile',
-      role: 'DevOps engineer, system architecture and CI/CD',
-      count: 1,
-      outcome:
-        'Worked on system architecture and CI/CD for the launch, and on the MVNO integration with the Orange network. That is the engineer’s scope; TalentSync placed the engineer and did not deliver the platform.',
-      href: '/case-studies/barca-mobile/',
-    },
-  ],
+  // EMPTY on purpose: no DevOps, SRE or platform placement is on record. See
+  // decision 2 in the file header before adding anything here.
+  evidence: [],
 
   faqs: [
     {
@@ -381,7 +369,7 @@ export const hireDevopsEngineers: ServicePage = {
     {
       question: 'Do you place engineers who have handled a launch spike?',
       answer:
-        'Yes. On the Barça Mobile engagement the DevOps engineer we placed worked on system architecture and CI/CD for a consumer launch with a fixed external date. Launch work is a distinct screen: we look for rollback design, load headroom planning and experience shipping under a deadline that cannot move.',
+        'We screen for it specifically, and we will not name an engagement we do not have on record. Launch work is a distinct screen: we look for rollback design, load headroom planning and experience shipping under a deadline that cannot move, and we ask the candidate to walk through the launch they personally carried, minute by minute.',
     },
     {
       question: 'Which cloud and tooling experience should we expect?',
@@ -406,7 +394,7 @@ export const hireDevopsEngineers: ServicePage = {
     { anchor: 'contracting the engineer directly', href: '/b2b-engineer-recruitment/' },
     { anchor: 'where our engineers are based', href: '/technical-recruitment-moldova/' },
     { anchor: 'the Eastern European market', href: '/tech-recruitment-eastern-europe/' },
-    { anchor: 'the Barça Mobile engagement', href: '/case-studies/barca-mobile/' },
+    { anchor: 'placements on record', href: '/case-studies/' },
   ],
 
   cta: {

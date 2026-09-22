@@ -1,7 +1,7 @@
 /**
  * Route 3 — `/hire-software-developers-eastern-europe/`.
  *
- * TRANSACTIONAL. DECISIONS.md D1.2: this page carries the two engagement
+ * TRANSACTIONAL. DECISIONS.md D1.2: this page carries the three engagement
  * models, the vetting process and the full placement ledger, under `Service`
  * schema. Route 2 is the informational twin and carries none of that.
  *
@@ -12,15 +12,16 @@
  * placement outcomes and the internal-link anchors are all written for this
  * page alone. Read the sibling file before editing either.
  *
- * The ledger is the page's reason to exist: the five most recent placements —
- * five clients, eight engineers — and nothing else. It is NOT the whole
- * engagement record: `/case-studies/` lists ten engagements, eight of them
- * placements, and the programme rows deliberately publish no headcount. So
- * scope every number on this page to those five placements. Do not round it
- * up, do not restate it as a total ("the entire record", "to date"), and do
- * not repeat the same engineers in a second table elsewhere on the site.
+ * The ledger is the page's reason to exist: the six placements with a recorded
+ * brief-to-signature duration — ten engineers — and nothing else. It is NOT
+ * the whole engagement record: `/case-studies/` lists ten engagements and the
+ * eighteen-engineer total (`PLACED_ENGINEERS`) includes two with no recorded
+ * timeline. So scope every timing number on this page to those six. Do not
+ * round it up, do not restate it as a total ("the entire record", "to date"),
+ * and do not repeat the same engineers in a second table elsewhere on the site.
  */
 
+import { PLACED_ENGINEERS, TIMELINE_RECORD } from '@/data/case-studies'
 import type { ServicePage } from '../types'
 
 export const hireSoftwareDevelopersEasternEurope: ServicePage = {
@@ -28,17 +29,16 @@ export const hireSoftwareDevelopersEasternEurope: ServicePage = {
   label: 'Hire Engineers',
   metaTitle: 'Hire Software Developers in Eastern Europe | TalentSync',
   metaDescription:
-    'Hire vetted senior developers from Eastern Europe. Eight engineers placed across five teams, each signed within one to two weeks of the brief.',
+    'Hire vetted senior developers from Eastern Europe on B2B, hourly or outsourced terms. Eighteen engineers placed; recorded timelines of one to two weeks.',
   h1: 'Hire Software Developers in Eastern Europe',
 
-  answerParagraph:
-    'TalentSync places senior software developers from Eastern Europe into existing engineering teams, either on a direct B2B contract you hold with the engineer or on an hourly basis through us. Across our five most recent engagements — eight engineers for SocialBee, Silvertalent, Qualiwise, Foodamigos and Innovatec — each signed within one to two weeks of the brief.',
+  answerParagraph: `TalentSync places senior software developers from Eastern Europe into existing engineering teams — on a direct B2B contract you hold with the engineer, on an hourly basis through us, or as a dedicated team that delivers a project for you. ${TIMELINE_RECORD}`,
 
   whoFor: {
     audience: 'Product teams adding one to five senior developers',
     body: [
       'Teams who have settled the geography question and now need someone to run the search itself: write the specification, source against it, screen hard, and put three to five defensible people in front of your interviewer.',
-      'This works when you have a technical interviewer and someone who can decide. It does not work when you want a supplier to own delivery, because we add people to your team and then get out of the way.',
+      'This works when you have a technical interviewer and someone who can decide. If you would rather a supplier owned delivery, that is a different purchase — our outsourcing model — and it has its own page.',
     ],
   },
 
@@ -54,36 +54,40 @@ export const hireSoftwareDevelopersEasternEurope: ServicePage = {
       blocks: [
         {
           kind: 'table',
-          caption: 'Our five most recent placements, by client, role, headcount and time from brief to signature',
+          caption: 'The six placements with a recorded timeline, by client, role, headcount and time from brief to signature',
           columns: ['Client', 'Role and stack', 'Engineers', 'Brief to signature'],
           rows: [
             {
               label: 'SocialBee',
-              cells: ['Full-stack developers, Java and Angular', '2', 'Two weeks'],
+              cells: ['Senior Full-Stack Developers, Java and Angular', '2', 'Two weeks'],
             },
             {
               label: 'Silvertalent',
-              cells: ['Full-stack developers, React and .NET', '3', 'Two weeks'],
+              cells: ['Full-Stack Developers, React and .NET', '3', 'Two weeks'],
             },
             {
               label: 'Qualiwise',
-              cells: ['Senior backend developer, Python', '1', 'One week'],
+              cells: ['Senior Python Developer', '1', 'One week'],
             },
             {
               label: 'Foodamigos',
-              cells: ['Senior frontend developer, Angular', '1', 'One week'],
+              cells: ['Senior Frontend Developer, Angular', '1', 'One week'],
             },
             {
               label: 'Innovatec',
-              cells: ['PLC specialist, industrial automation', '1', 'Two weeks'],
+              cells: ['PLC Specialist, industrial automation', '1', 'Two weeks'],
+            },
+            {
+              label: 'OptimEyes',
+              cells: ['Senior Software Architect and Senior Python Developer', '2', 'Two weeks'],
             },
           ],
         },
         {
           kind: 'prose',
           body: [
-            'Across our five most recent placements: five clients, eight engineers. We publish every row of it rather than a selected fragment, because a partial ledger is how a small firm makes itself look larger, and anyone who checks will notice.',
-            'Our remaining engagements are listed on the case studies page, including the programme work where we publish no headcount because we do not have one we can stand behind.',
+            `Across those six placements: ten engineers. The wider record is ${PLACED_ENGINEERS} engineers placed across eight client teams, and the two engagements without a row here — the seven-person team for New Era Visionary Group and the Full-Stack Developer for Vinlivt — are omitted only because we did not record a brief-to-signature duration for them. We publish every row we have rather than a selected fragment, because a partial ledger is how a small firm makes itself look larger, and anyone who checks will notice.`,
+            'Every engagement is listed on the case studies page, including the one advisory engagement where no engineer was placed.',
             'The clock runs from an agreed written brief to a signed offer. Your own interview schedule sits inside that window, which is why a client who can interview at two days’ notice always beats one who cannot, on identical roles.',
           ],
         },
@@ -121,7 +125,7 @@ export const hireSoftwareDevelopersEasternEurope: ServicePage = {
         {
           kind: 'prose',
           body: [
-            'We do not publish a rejection ratio. It could be computed, but with eight placements the denominator is far too small for the number to carry meaning, and a manufactured funnel statistic is exactly the sort of claim this site exists to stop making.',
+            'We do not publish a rejection ratio. It could be computed, but with a record this size the denominator is far too small for the number to carry meaning, and a manufactured funnel statistic is exactly the sort of claim this site exists to stop making.',
           ],
         },
       ],
@@ -151,37 +155,41 @@ export const hireSoftwareDevelopersEasternEurope: ServicePage = {
       ],
     },
     {
-      id: 'choosing-between-the-two-models',
-      heading: 'Choosing between the two models',
+      id: 'choosing-between-the-three-models',
+      heading: 'Choosing between the three models',
       blocks: [
         {
           kind: 'table',
-          caption: 'When a direct B2B contract fits, and when hourly collaboration fits',
-          columns: ['Situation', 'Direct B2B', 'Hourly through TalentSync'],
+          caption: 'When a direct B2B contract fits, when hourly collaboration fits, and when outsourcing fits',
+          columns: ['Situation', 'Direct B2B', 'Hourly through TalentSync', 'Outsourced to a TalentSync team'],
           rows: [
             {
               label: 'You already know you need the person for a year or more',
-              cells: ['Cheaper over that horizon, and better for the engineer.', 'You would be paying for flexibility you never use.'],
+              cells: ['Cheaper over that horizon, and better for the engineer.', 'You would be paying for flexibility you never use.', 'Only if the work is a scoped deliverable rather than a seat.'],
             },
             {
               label: 'The end date is genuinely unknown',
-              cells: ['Awkward — you carry the commitment.', 'This is what the model is for.'],
+              cells: ['Awkward — you carry the commitment.', 'This is what the model is for.', 'A dedicated team on a monthly basis works; a fixed price does not.'],
             },
             {
               label: 'You want fewer hours than a full week',
-              cells: ['Rarely worth the paperwork.', 'Normal, and priced for it.'],
+              cells: ['Rarely worth the paperwork.', 'Normal, and priced for it.', 'Not a fit — a team needs a scope, not a part-week.'],
+            },
+            {
+              label: 'You want someone else accountable for delivery',
+              cells: ['No — you manage the engineer.', 'No — you manage the engineer.', 'Yes. A TalentSync technical lead owns delivery against a written plan.'],
             },
             {
               label: 'You want one invoice from one counterparty',
-              cells: ['No — the engineer invoices you directly.', 'Yes, one invoice a month from us.'],
+              cells: ['No — the engineer invoices you directly.', 'Yes, one invoice a month from us.', 'Yes, per milestone or per month, from us.'],
             },
             {
-              label: 'You want cover if the engineer leaves',
-              cells: ['A replacement window fixed in the contract.', 'Continuous, for as long as the engagement runs.'],
+              label: 'You want cover if an engineer leaves',
+              cells: ['A replacement window fixed in the contract.', 'Continuous, for as long as the engagement runs.', 'Ours to solve — the team, not the person, is the commitment.'],
             },
             {
               label: 'You may want to employ them later',
-              cells: ['Simple, because you already hold the contract.', 'Possible, on conversion terms agreed at the start.'],
+              cells: ['Simple, because you already hold the contract.', 'Possible, on conversion terms agreed at the start.', 'Possible at the end of the project, on terms agreed at the start.'],
             },
           ],
         },
@@ -222,15 +230,15 @@ export const hireSoftwareDevelopersEasternEurope: ServicePage = {
         {
           kind: 'stats',
           items: [
-            { value: '8', label: 'engineers in our five most recent placements' },
-            { value: '5', label: 'client teams across those placements' },
-            { value: '1–2 weeks', label: 'brief to signature on each of the eight' },
+            { value: String(PLACED_ENGINEERS), label: 'engineers placed with European product teams' },
+            { value: '10', label: 'of them in the six placements with a recorded timeline' },
+            { value: '1–2 weeks', label: 'brief to signature on each of those ten' },
           ],
         },
         {
           kind: 'prose',
           body: [
-            'Read those as a distribution of eight events, not as a service level. Three were single senior hires into common stacks, which is the easy case. Five were paired or tripled hires into one team, which is easier still, because a single interview loop covers several candidates at once.',
+            'Read those as a distribution of ten events, not as a service level. Three were single senior hires into common stacks, which is the easy case. Seven were paired or tripled hires into one team, which is easier still, because a single interview loop covers several candidates at once.',
             'Roles with a narrow stack, a security-clearance requirement or a hard on-site element take longer, and we tell you that at the brief rather than at week three.',
           ],
         },
@@ -295,26 +303,26 @@ export const hireSoftwareDevelopersEasternEurope: ServicePage = {
     countries: ['Moldova', 'Romania', 'Poland', 'Bulgaria', 'Ukraine'],
   },
 
-  engagementModels: ['b2b', 'hourly'],
+  engagementModels: ['b2b', 'hourly', 'outsourcing'],
 
   evidence: [
     {
       client: 'Qualiwise',
-      role: 'Senior backend developer, Python',
+      role: 'Senior Python Developer',
       count: 1,
       outcome: 'One week from written brief to signed offer.',
       href: '/case-studies/qualiwise/',
     },
     {
       client: 'Silvertalent',
-      role: 'Full-stack developers, React and .NET',
+      role: 'Full-Stack Developers, React and .NET',
       count: 3,
       outcome: 'Three engineers into a single team, all signed inside a fortnight.',
       href: '/case-studies/silvertalent/',
     },
     {
       client: 'SocialBee',
-      role: 'Full-stack developers, Java and Angular',
+      role: 'Senior Full-Stack Developers, Java and Angular',
       count: 2,
       outcome: 'A paired hire into an established product team, closed in two weeks.',
     },
@@ -324,7 +332,7 @@ export const hireSoftwareDevelopersEasternEurope: ServicePage = {
     {
       question: 'How long does it take to hire a developer through TalentSync?',
       answer:
-        'Across our five most recent placements the engineer signed within one to two weeks of the brief: a senior Python developer for Qualiwise in one week, a frontend Angular developer for Foodamigos in one week, and full-stack teams for SocialBee and Silvertalent in two. Narrow or unusual roles take longer, and we say so at the brief.',
+        'Where we recorded the timeline, the engineer signed within one to two weeks of the brief: a Senior Python Developer for Qualiwise in one week, a Senior Frontend Developer for Foodamigos in one week, and full-stack teams for SocialBee and Silvertalent and an architect-and-developer pair for OptimEyes in two. Narrow or unusual roles take longer, and we say so at the brief.',
     },
     {
       question: 'How many candidates will we see?',
@@ -344,7 +352,7 @@ export const hireSoftwareDevelopersEasternEurope: ServicePage = {
     {
       question: 'Do you charge a placement fee or an hourly margin?',
       answer:
-        'Both models exist and you choose. Direct B2B recruitment is a one-time fee, after which the engineer invoices you directly and we are out of the money flow. Hourly collaboration is a single blended rate per hour worked, with our margin included in the quoted number rather than added later.',
+        'All three exist and you choose. Direct B2B recruitment is a one-time fee, after which the engineer invoices you directly. Hourly collaboration is a single blended rate per hour worked, margin included. Outsourcing is a written estimate — a fixed price for a fixed scope, or a monthly dedicated-team rate — agreed before work starts.',
     },
     {
       question: 'Can we hire the developer permanently later?',
@@ -358,6 +366,7 @@ export const hireSoftwareDevelopersEasternEurope: ServicePage = {
     { anchor: 'recruiting in Moldova', href: '/technical-recruitment-moldova/' },
     { anchor: 'how a direct B2B contract works', href: '/b2b-engineer-recruitment/' },
     { anchor: 'engaging the developer hourly instead', href: '/hourly-engineering-talent/' },
+    { anchor: 'outsourcing the whole project to a dedicated team', href: '/software-development-outsourcing/' },
     { anchor: 'full-stack developers', href: '/hire-full-stack-developers/' },
     { anchor: 'backend developers', href: '/hire-backend-developers/' },
     { anchor: 'the full case study record', href: '/case-studies/' },
@@ -372,8 +381,8 @@ export const hireSoftwareDevelopersEasternEurope: ServicePage = {
       external: true,
     },
     secondary: {
-      label: 'Email us the role',
-      href: 'mailto:victor@talentsync.eu?subject=Role%20brief',
+      label: 'Email the role and get a quote',
+      href: 'mailto:victor@talentsync.eu?subject=Engineering%20request%20%E2%80%93%20%5BCompany%20name%5D',
       external: true,
     },
   },

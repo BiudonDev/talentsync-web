@@ -1,28 +1,34 @@
 'use client'
 
+import Link from 'next/link'
 import Script from 'next/script'
 import { useEffect, useRef, useState, useSyncExternalStore } from 'react'
+import { HiX } from 'react-icons/hi'
 import { GA_SRC, setAnalyticsConsent, track } from '@/lib/analytics'
 import { readConsent, writeConsent, type ConsentState } from '@/lib/consent'
+import { cn } from '@/lib/utils'
 
 /**
- * DORMANT with Analytics.tsx, its only parent — see the switch documented there
- * and in src/app/layout.tsx. Nothing is stored while analytics is off, and a
- * banner asking consent for storage that never happens is noise, so it does not
- * render. NOTE for whoever re-enables it: the footer's "Cookie settings" anchor
- * (src/components/layout/Footer.tsx) is the delegated re-open link below. It is
- * commented out there for the same reason — with this unmounted nothing listens
- * for it and no element carries id="cookie-settings", so it would be a dead
- * control on every route. Uncomment it in the same release as this one.
+ * The consent banner. Mounted by `Analytics.tsx`, which the ROOT layout renders
+ * first in <body>, so it appears on the visitor's first visit to any route —
+ * before hydration finishes on the rest of the page, independently of any
+ * click, and before gtag.js exists in the document (client feedback item 17).
  *
- * The only client component in the analytics package. No framer-motion, no
- * animation at all — a banner that fades in is a banner that arrives after the
- * decision it is asking about.
+ * Behaviour, all of which /cookies/ §3–§7 and /privacy/ §4 describe:
+ *  · opens when there is no valid `ts_consent` record (missing, malformed,
+ *    wrong version, or older than 6 months);
+ *  · "Accept analytics" and "Reject analytics" are IDENTICAL controls — same
+ *    class, width, weight, one click — with Reject first in DOM order;
+ *  · the close (×) control and the Escape key are a refusal and are STORED as
+ *    one, so the visitor is not re-asked on the next page;
+ *  · the footer's `<a href="#cookie-settings">Cookie settings</a>` reopens it
+ *    with the current choice shown, on every route, via the delegated listener
+ *    below, so the footer stays a server component;
+ *  · gtag.js is rendered only while the choice is `granted`; withdrawing sends
+ *    `consent update: denied` immediately and `track()` becomes a no-op.
  *
- * The "Cookie settings" entry point cookies.ts §7 promises is a PLAIN ANCHOR
- * anywhere on the site: <a href="#cookie-settings">Cookie settings</a>. The
- * delegated listener below intercepts it, so the footer stays a server
- * component and nobody has to import this file to re-open the banner.
+ * No framer-motion, no animation at all — a banner that fades in is a banner
+ * that arrives after the decision it is asking about.
  */
 const REOPEN_HREF = '#cookie-settings'
 
@@ -30,33 +36,24 @@ const REOPEN_HREF = '#cookie-settings'
  * localStorage is an external store, and `useSyncExternalStore` is React's own
  * way to read one: it serves the server snapshot during hydration and swaps in
  * the real value immediately after, so there is no markup mismatch and no
- * setState inside an effect. The client snapshot is a primitive, so it is
- * referentially stable by construction and needs no cache; nothing outside this
- * tab writes the key, so `subscribe` is a no-op.
+ * setState inside an effect.
  */
 const SSR = 'ssr'
 const subscribe = () => () => {}
 const getStoredState = (): ConsentState | null => readConsent()?.state ?? null
 const getServerState = () => SSR
 
+const BUTTON = 'btn-secondary px-6 py-3 text-base sm:w-44'
+const TEXT_LINK =
+  'rounded-lg text-primary underline underline-offset-2 hover:text-primary-light focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary'
+
 /**
- * role: this is a REGION, not a dialog.
- *
- * `role="dialog"` is a promise that focus lives inside the thing and that the
- * rest of the page is out of play. We deliberately do neither: focus is never
- * stolen on load, nothing is trapped, no overlay, no inert page, no cookie
- * wall. A non-modal "dialog" nobody focuses is announced as a dialog the
- * screen-reader user is not in, and browse-mode behaviour gets strange. A
- * named <section> is a region landmark: reachable from the landmark rotor,
- * announced in normal reading order, and mounted first in <body> so the first
- * Tab lands on Reject. That is the accurate description of what this is.
+ * role: a REGION, not a dialog. Focus is never stolen on load, nothing is
+ * trapped, no overlay, no inert page, no cookie wall. A named <section> is a
+ * landmark: reachable from the rotor, announced in reading order, and mounted
+ * first in <body> so the first Tab lands on Reject.
  */
 export default function ConsentBanner() {
-  // Replay of a stored choice. `SSR` until hydration, so the banner is absent
-  // from the static HTML and a visitor who already answered never sees a flash
-  // of it. No record / malformed / wrong version / older than 6 months -> ask.
-  // Nothing is written here: cookies.ts Table A says ts_consent is "created
-  // only after you make a choice".
   const stored = useSyncExternalStore(subscribe, getStoredState, getServerState)
   // Holds the choice when the storage write silently failed (private mode):
   // it still applies to this page view even when it cannot be remembered.
@@ -104,10 +101,15 @@ export default function ConsentBanner() {
     return () => document.removeEventListener('click', onClick, { capture: true })
   }, [])
 
+  const decide = (state: ConsentState) => {
+    writeConsent(state)
+    setDecision(state)
+    setOverride(false)
+  }
+
   // While open: reserve the banner's height so it covers no content (the
-  // footer is the bottom of every page), and let Escape dismiss it. Dismissing
-  // stores nothing, which IS a refusal — nothing loads — and matches cookies.ts
-  // §4: "Closing the banner without choosing counts as a refusal."
+  // footer is the bottom of every page), and let Escape dismiss it. Closing
+  // without accepting IS a refusal and is stored as one (cookies.ts §4).
   useEffect(() => {
     const el = ref.current
     if (!open || !el) return
@@ -118,7 +120,7 @@ export default function ConsentBanner() {
     ro.observe(el)
 
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setOverride(false)
+      if (e.key === 'Escape') decide('denied')
     }
     document.addEventListener('keydown', onKey)
 
@@ -129,18 +131,10 @@ export default function ConsentBanner() {
     }
   }, [open])
 
-  const decide = (state: ConsentState) => {
-    writeConsent(state)
-    setDecision(state)
-    setOverride(false)
-  }
-
   return (
     <>
       {/* Gated: the tag does not exist in the document until an affirmative
-          accept. afterInteractive because this mounts post-hydration —
-          beforeInteractive is meaningless for a script the user summons, and
-          lazyOnload would defer past an already-fired load event. */}
+          accept. afterInteractive because this mounts post-hydration. */}
       {choice === 'granted' && <Script id="ga4" src={GA_SRC} strategy="afterInteractive" />}
 
       {open && (
@@ -151,21 +145,23 @@ export default function ConsentBanner() {
           aria-labelledby="cookie-settings-title"
           className="fixed inset-x-0 bottom-0 z-50 border-t border-border bg-surface focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
         >
-          <div className="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-5 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:gap-8 lg:px-8">
+          <div className="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-5 pr-14 sm:px-6 sm:pr-16 lg:flex-row lg:items-center lg:justify-between lg:gap-8 lg:px-8 lg:pr-16">
             <div>
               <p id="cookie-settings-title" className="text-base font-semibold text-text-primary">
-                Cookies
+                We value your privacy
               </p>
               <p className="mt-1 text-sm leading-relaxed text-text-secondary">
-                We would like to load Google Analytics 4 to see which pages are useful. It stores
-                cookies on your device. Nothing loads until you choose, the site is identical either
-                way, and you can change your mind at any time.{' '}
-                <a
-                  href="/cookies/"
-                  className="rounded-lg text-primary underline underline-offset-2 hover:text-primary-light focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-                >
-                  Cookie policy
-                </a>
+                We use necessary cookies to operate the website and optional analytics cookies to
+                understand how visitors use it. Analytics cookies will only be activated with your
+                consent. Read our{' '}
+                <Link href="/cookies/" prefetch={false} className={TEXT_LINK}>
+                  Cookie Policy
+                </Link>{' '}
+                and{' '}
+                <Link href="/privacy/" prefetch={false} className={TEXT_LINK}>
+                  Privacy Policy
+                </Link>{' '}
+                for more information.
               </p>
               {choice && (
                 <p className="mt-2 text-sm leading-relaxed text-text-secondary">
@@ -173,34 +169,44 @@ export default function ConsentBanner() {
                   <strong className="font-semibold text-text-primary">
                     {choice === 'granted' ? 'analytics accepted' : 'analytics rejected'}
                   </strong>
-                  .
+                  . Change it below, or withdraw at any time from the “Cookie settings” link in the
+                  footer.
                 </p>
               )}
             </div>
 
             {/* Equal prominence (D2), read the strict way: IDENTICAL controls.
-                Same class, same width, same height, same weight, same one
-                click — not "a filled Accept next to an outlined Reject", which
-                is the format asymmetry CNIL and the EDPB banner taskforce
-                actually enforce against. Reject is first in DOM order, so it is
-                also the first Tab stop. Both measure 44px+ and sit 12px apart. */}
-            <div className="flex shrink-0 flex-col gap-3 sm:flex-row">
-              <button
-                type="button"
-                onClick={() => decide('denied')}
-                className="btn-secondary px-6 py-3 text-base sm:w-40"
-              >
-                Reject
-              </button>
-              <button
-                type="button"
-                onClick={() => decide('granted')}
-                className="btn-secondary px-6 py-3 text-base sm:w-40"
-              >
-                Accept
-              </button>
+                Reject is first in DOM order, so it is also the first Tab stop.
+                "Manage preferences" (feedback item 17's third suggested control)
+                is a plain link to the full inventory rather than a second panel:
+                there is exactly one non-essential category today — analytics —
+                and Accept/Reject already IS that choice, so a second toggle
+                screen repeating the same on/off switch would be theatre. The
+                link is real: /cookies/ Table A lists every cookie by name. */}
+            <div className="flex shrink-0 flex-col items-stretch gap-3 sm:items-end">
+              <div className="flex flex-col gap-3 sm:flex-row">
+                <button type="button" onClick={() => decide('denied')} className={BUTTON}>
+                  Reject analytics
+                </button>
+                <button type="button" onClick={() => decide('granted')} className={BUTTON}>
+                  Accept analytics
+                </button>
+              </div>
+              <Link href="/cookies/" prefetch={false} className={cn(TEXT_LINK, 'text-center text-sm')}>
+                Manage preferences
+              </Link>
             </div>
           </div>
+
+          {/* Closing is a refusal, and is remembered as one. */}
+          <button
+            type="button"
+            onClick={() => decide('denied')}
+            aria-label="Close and reject analytics"
+            className="absolute top-3 right-3 grid size-11 place-items-center rounded-full text-text-secondary hover:bg-primary/10 hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+          >
+            <HiX aria-hidden className="size-5" />
+          </button>
         </section>
       )}
     </>

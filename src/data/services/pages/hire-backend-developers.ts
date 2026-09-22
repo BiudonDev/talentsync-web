@@ -1,9 +1,10 @@
 /**
  * `/hire-backend-developers/` — 02-page-content.md §7.
  *
- * The one thing only this page can say: the integration-heavy backend work.
- * Orange's network integration with the Barça Mobile MVNO is carrier-grade
- * systems integration and no other route on this site can claim it. Everything
+ * The one thing only this page can say: backend work under a fixed launch
+ * date. Two Backend Java Developers sat inside the seven-person team TalentSync
+ * assembled for New Era Visionary Group on Barça Mobile, and OptimEyes took a
+ * Senior Software Architect and a Senior Python Developer as a pair. Everything
  * else here is about backend JUDGEMENT — API versioning, data modelling under a
  * changing requirement, on-call — because a role page that only swaps a noun is
  * a doorway page.
@@ -13,6 +14,7 @@
  * is why the spec's DevOps and AI anchors are absent.
  */
 
+import { TIMELINE_RECORD } from '@/data/case-studies'
 import type { ServicePage } from '../types'
 
 export const hireBackendDevelopers: ServicePage = {
@@ -24,7 +26,7 @@ export const hireBackendDevelopers: ServicePage = {
   h1: 'Hire Backend Developers from Eastern Europe',
 
   answerParagraph:
-    'TalentSync places senior backend developers from Eastern Europe in Python, Java, .NET and Node.js. Recent backend placements include a senior Python developer for Qualiwise, filled in one week, and Java engineers for SocialBee. Engineers contract with you directly on B2B terms or work hourly through us, inside your codebase and your standards.',
+    'TalentSync places senior backend developers from Eastern Europe in Python, Java, .NET and Node.js. Recent backend placements include a Senior Python Developer for Qualiwise, filled in one week, a Senior Python Developer and Senior Software Architect for OptimEyes, and two Backend Java Developers inside the team assembled for New Era Visionary Group. Engineers contract with you directly on B2B terms or work hourly through us, inside your codebase and your standards.',
 
   whoFor: {
     audience: 'Product engineering teams adding senior backend capacity',
@@ -146,20 +148,20 @@ export const hireBackendDevelopers: ServicePage = {
       ],
     },
     {
-      id: 'integration-work',
-      heading: 'Integration work: the Orange and Barça Mobile MVNO engagement',
+      id: 'backend-under-a-launch-date',
+      heading: 'Backend work under a launch date: the Barça Mobile team',
       blocks: [
         {
           kind: 'prose',
           body: [
-            'One engagement covered Orange network integration with the Barça Mobile MVNO. That is carrier-side systems integration: subscriber provisioning, SIM and number lifecycle, a telecom counterparty with its own release calendar, and failure modes you cannot reproduce on a laptop.',
-            'The DevOps engineer we placed worked on system architecture and CI/CD for that launch. We are describing the engineer’s scope, not claiming TalentSync delivered the platform — the client’s own team built the product.',
-            'Integration work of that kind rewards a different temperament from product backend work. Progress is measured in cleared blockers rather than merged features, half the debugging happens in someone else’s logs, and the engineer has to be able to write the email that gets a counterparty to fix their end without escalating it into a contractual argument.',
+            'Two Backend Java Developers sat inside the seven-person team TalentSync assembled for New Era Visionary Group, the integrator delivering Barça Mobile. Their scope was the Java backend services behind a consumer product with a launch date set outside engineering, alongside two Frontend Developers, two Android/Kotlin Multiplatform Specialists and a QA Engineer.',
+            'We are describing the engineers’ scope inside the client’s team, not claiming TalentSync designed the platform — the architecture and the roadmap were the client’s.',
+            'A fixed external date changes what “senior” means. It rewards engineers who cut scope rather than quality when the calendar closes in, who can say which service is safe to ship half-finished and which is not, and who have shipped under a deadline they did not set. That is what we screened for on this brief and it is a different screen from steady-state product work.',
           ],
         },
         {
           kind: 'list',
-          heading: 'What we screen for on integration briefs',
+          heading: 'What we screen for on integration-heavy briefs',
           items: [
             'Has worked against a system they could not change, could not read the source of, and could not get fixed quickly.',
             'Treats retries, idempotency keys and reconciliation as design decisions rather than as things to add after the first incident.',
@@ -170,7 +172,7 @@ export const hireBackendDevelopers: ServicePage = {
         {
           kind: 'prose',
           body: [
-            'Engineers with regulated, telecom or carrier-grade integration backgrounds are rarer than general product backend engineers and take longer to source, so brief us earlier for those roles.',
+            'Integration engineers — the ones who spend a fortnight in a counterparty’s staging environment — are a role we fill, and engineers with regulated or carrier-grade integration backgrounds are rarer than general product backend engineers and take longer to source. Brief us earlier for those roles.',
           ],
         },
       ],
@@ -182,16 +184,16 @@ export const hireBackendDevelopers: ServicePage = {
         {
           kind: 'stats',
           items: [
-            { value: '8', label: 'engineers across five clients, our most recent placements' },
-            { value: '1 week', label: 'from brief to signature, Qualiwise senior Python' },
-            { value: '2', label: 'Java engineers placed with SocialBee' },
+            { value: '18', label: 'engineers placed with European product teams' },
+            { value: '1 week', label: 'from brief to signature, Qualiwise Senior Python Developer' },
+            { value: '2 weeks', label: 'to integrate a Senior Software Architect and Senior Python Developer at OptimEyes' },
           ],
         },
         {
           kind: 'prose',
           body: [
-            'Across our five most recent placements — eight engineers for SocialBee, Silvertalent, Qualiwise, Foodamigos and Innovatec — the engineer signed within one to two weeks of the brief.',
-            'Qualiwise is the cleanest backend example: an AI copilot platform needed one senior Python developer, the brief was specific about the system rather than about the years of experience, and the engineer was signed within a week. The SocialBee pair are Java and Angular full-stack engineers — they are counted here because the backend half is real, and the full-stack page carries the detail so the two pages are not both claiming the same two people.',
+            TIMELINE_RECORD,
+            'Qualiwise is the cleanest backend example: an AI copilot platform needed one Senior Python Developer, the brief was specific about the system rather than about the years of experience, and the engineer was signed within a week. OptimEyes took a Senior Software Architect and a Senior Python Developer as a pair, integrated within two weeks. The two Backend Java Developers on Barça Mobile are counted under New Era Visionary Group, where the whole seven-person team is recorded once.',
             'Roles with a narrow stack, a security-clearance requirement or a hard on-site element take longer, and we tell you that at the brief rather than at week three.',
           ],
         },
@@ -285,26 +287,26 @@ export const hireBackendDevelopers: ServicePage = {
   evidence: [
     {
       client: 'Qualiwise',
-      role: 'Senior backend developer, Python',
+      role: 'Senior Python Developer',
       count: 1,
       outcome:
         'An AI copilot platform scaling its engineering team. Signed within one week of the brief.',
       href: '/case-studies/qualiwise/',
     },
     {
-      client: 'Barça Mobile',
-      role: 'Backend engineer, Barça Mobile programme',
-      count: 1,
-      outcome:
-        'Placed into the product team building the Barça Mobile platform, working on the client’s architecture and roadmap under the client’s technical leadership. Time from brief to signature was not recorded for this engagement, so we do not quote one.',
-      href: '/case-studies/barca-mobile/',
-    },
-    {
-      client: 'SocialBee',
-      role: 'Java / Angular full-stack engineers',
+      client: 'OptimEyes',
+      role: 'Senior Software Architect and Senior Python Developer',
       count: 2,
       outcome:
-        'Both signed within two weeks of the brief. These are the same two engineers the full-stack page describes in more detail — one placement, counted once in the ledger, not two.',
+        'Screened and presented as a pair, both integrated into the client’s team in Belgium within two weeks of the brief.',
+    },
+    {
+      client: 'New Era Visionary Group',
+      role: 'Seven-person Barça Mobile team, including 2 Backend Java Developers',
+      count: 7,
+      outcome:
+        'A dedicated engineering team supporting the development and delivery of Barça Mobile, working under the client’s technical leadership. Time from brief to signature was not recorded, so we do not quote one.',
+      href: '/case-studies/barca-mobile/',
     },
   ],
 
@@ -317,7 +319,7 @@ export const hireBackendDevelopers: ServicePage = {
     {
       question: 'Do you place engineers with telecom or regulated integration experience?',
       answer:
-        'Yes. One engagement covered Orange’s network integration with the Barça Mobile MVNO, which is carrier-grade integration work with a telecom counterparty and its constraints. Engineers with that background are rarer and take longer to source than general product backend engineers, so brief us earlier for those roles.',
+        'We screen for it — has the engineer worked against a system they could not change, treated retries and reconciliation as design decisions, written the runbook — but we have no named telecom engagement on record and will not imply one. Engineers with regulated or carrier-grade integration backgrounds are rarer and take longer to source, so brief us earlier for those roles.',
     },
     {
       question: 'How do you test backend skill beyond the CV?',
@@ -347,7 +349,7 @@ export const hireBackendDevelopers: ServicePage = {
     { anchor: 'contracting the engineer on B2B terms', href: '/b2b-engineer-recruitment/' },
     { anchor: 'hourly backend capacity', href: '/hourly-engineering-talent/' },
     { anchor: 'where our engineers are based', href: '/technical-recruitment-moldova/' },
-    { anchor: 'the Orange and Qualiwise engagements', href: '/case-studies/' },
+    { anchor: 'the Qualiwise and OptimEyes engagements', href: '/case-studies/' },
   ],
 
   cta: {

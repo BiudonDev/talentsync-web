@@ -61,7 +61,7 @@ export const careerRoles: CareerRole[] = [
     metaDescription:
       'Senior Technical Recruiter at TalentSync — Chișinău or remote in Moldova. Source and technically screen Eastern European engineers for European product teams.',
     intro:
-      'You own the sourcing and screening end of a placement: you read the client brief, find the engineers who genuinely match it, and get them to a shortlist a CTO is willing to interview. Eight engineers across five clients, our five most recent placements, came through that work.',
+      'You own the sourcing and screening end of a placement: you read the client brief, find the engineers who genuinely match it, and get them to a shortlist a CTO is willing to interview. Eighteen engineers placed with European product teams came through that work.',
     sections: [
       {
         heading: 'What you would do',
@@ -88,7 +88,7 @@ export const careerRoles: CareerRole[] = [
         items: [
           'A person reads every profile. We do not use automated decision-making or AI screening to evaluate candidates.',
           'Every first outreach message carries the Article 14 privacy notice published at talentsync.eu/candidate-privacy/ — that is not optional here.',
-          'Two engagement models, and you will work on both: direct B2B recruitment, where the client contracts the engineer directly, and flexible hourly collaboration.',
+          'Three engagement models, and you will work on all of them: direct B2B recruitment, where the client contracts the engineer directly; hourly collaboration; and software development outsourcing, where you staff a dedicated delivery team.',
           'Small team, based in Chișinău. You will speak to clients yourself from the first week.',
         ],
       },
@@ -122,7 +122,7 @@ export const careerRoles: CareerRole[] = [
         heading: 'What we are looking for',
         items: [
           'A track record selling recruitment, staffing or engineering services into technology companies, with deals you can walk us through.',
-          'The ability to hold a technical conversation with a CTO without overclaiming — we are not a project outsourcing company and we do not sell like one.',
+          'The ability to hold a technical conversation with a CTO without overclaiming — we sell three clearly separated engagement models and never blur which one a client is buying.',
           'Comfort with a long, consultative cycle and a small number of high-value relationships rather than a volume dial.',
           'Fluent English. A second European language is useful, and not a requirement.',
           'Self-direction: this role is remote, and nobody will be watching your calendar.',

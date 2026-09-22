@@ -1,5 +1,6 @@
 import { HiOutlineClock, HiOutlineLocationMarker, HiOutlineUserGroup } from 'react-icons/hi'
 import { SectionWrapper } from '@/components/ui'
+import { PLACED_ENGINEERS } from '@/data/case-studies'
 import { CANONICAL_DESCRIPTION } from '@/data/content'
 
 /**
@@ -29,8 +30,9 @@ import { CANONICAL_DESCRIPTION } from '@/data/content'
  */
 const stats = [
   { icon: HiOutlineLocationMarker, value: 'Moldova', label: 'Headquarters' },
-  { icon: HiOutlineUserGroup, value: '8', label: 'Engineers placed with European product teams' },
-  { icon: HiOutlineClock, value: '1–2 weeks', label: 'Brief to signed offer, across our last five placements' },
+  // The total is the ledger's, not a typed number: client feedback item 8.
+  { icon: HiOutlineUserGroup, value: String(PLACED_ENGINEERS), label: 'Engineers placed with European product teams' },
+  { icon: HiOutlineClock, value: '1–2 weeks', label: 'Brief to signed offer, across the six placements with a recorded timeline' },
 ]
 
 export default function About() {
@@ -65,9 +67,10 @@ export default function About() {
           <div className="space-y-6 text-base sm:text-lg leading-relaxed text-text-secondary text-pretty">
             <p>{CANONICAL_DESCRIPTION}</p>
             <p>
-              You keep control. We find and technically validate the engineer; you interview, you
-              select, and you manage them inside your own team — without standing up a local entity,
-              a payroll or a benefits scheme in another country.
+              You choose how much you keep in-house. Hire an engineer directly and manage them inside
+              your own team, add hourly capacity to the team you already have, or hand a complete
+              project to a dedicated TalentSync team — without standing up a local entity, a payroll
+              or a benefits scheme in another country.
             </p>
           </div>
         </div>

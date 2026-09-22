@@ -5,7 +5,8 @@ import PageShell from '@/components/layout/PageShell'
 import { Card, CtaBand, Faq, SectionWrapper } from '@/components/ui'
 import { FOUNDED_YEAR, companyDetails, facts, faqs, founder, principles } from '@/data/about'
 import { EMPLOYMENT_LABEL, applyHref, careerRoles, rolePath } from '@/data/careers'
-import { CANONICAL_DESCRIPTION, siteConfig } from '@/data/content'
+import { PLACED_ENGINEERS, TIMELINE_RECORD } from '@/data/case-studies'
+import { CANONICAL_DESCRIPTION, SPEED_CAVEAT, siteConfig } from '@/data/content'
 import { ENGAGEMENT_MODELS } from '@/data/services/types'
 import { FOUNDER_ID, ORG_ID, WEBSITE_ID, graphLd } from '@/lib/schema'
 import { absUrl, pageMeta } from '@/lib/seo'
@@ -39,7 +40,7 @@ export const metadata: Metadata = pageMeta({
   path: '/about/',
   title: 'About TalentSync | Chișinău, Moldova',
   description:
-    'TalentSync is a technology recruitment and engineering talent partner in Chișinău, Moldova. Meet Victor, the person you actually work with.',
+    'TalentSync is a technology recruitment, hourly collaboration and software outsourcing partner in Chișinău, Moldova. Meet Victor, the person you work with.',
 })
 
 // 00-design-contract §2.3 roles. Heading classes stay inline as literals —
@@ -303,17 +304,18 @@ export default function AboutPage() {
         </div>
       </SectionWrapper>
 
-      {/* 6 — the two engagement models, from the one shared source. */}
+      {/* 6 — the three engagement models, from the one shared source. */}
       <SectionWrapper id="engagement-models" band density="tight">
         <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-balance">
-          The two ways to engage us
+          The three ways to engage us
         </h2>
         <p className={cn('mt-6 max-w-3xl', BODY)}>
-          There are two models and they are described in the same words everywhere on this site,
-          because they are the same two things wherever you meet them. Which one fits is usually
-          settled by how long the work runs and how certain it is.
+          There are three models and they are described in the same words everywhere on this site,
+          because they are the same three things wherever you meet them. Which one fits is usually
+          settled by how long the work runs, how certain it is, and whether you want to own
+          delivery yourself or hand it to a dedicated team.
         </p>
-        <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-8">
+        <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-8 lg:grid-cols-3">
           {Object.values(ENGAGEMENT_MODELS).map((m) => (
             <Card key={m.href} hover={false} className="flex h-full flex-col">
               <h3 className="text-xl sm:text-2xl font-bold">{m.title}</h3>
@@ -335,12 +337,9 @@ export default function AboutPage() {
         </h2>
         <div className="mt-6 max-w-3xl space-y-4">
           <p className={BODY}>
-            TalentSync has staffed engineering roles for ten named companies, from a senior backend
-            Python developer at Qualiwise to a three-engineer full-stack team at Silvertalent.
-            Across our five most recent placements — eight engineers for SocialBee, Silvertalent,
-            Qualiwise, Foodamigos and Innovatec — the engineer signed within one to two weeks of the
-            brief. Roles with a narrow stack, a security-clearance requirement or a hard on-site
-            element take longer, and we tell you that at the brief rather than at week three.
+            TalentSync has placed {PLACED_ENGINEERS} engineers with European product teams across
+            ten named engagements, from a Senior Python Developer at Qualiwise to a dedicated
+            seven-person team for New Era Visionary Group. {TIMELINE_RECORD} {SPEED_CAVEAT}
           </p>
           <p className={BODY}>
             Each engagement is listed on its own — the client, the role, the stack, the time from
@@ -424,7 +423,7 @@ export default function AboutPage() {
       <CtaBand
         title="Get in touch"
         body="It goes to one inbox and it is answered by the person who will run your search."
-        primary={{ label: 'Email Victor directly', href: `mailto:${siteConfig.email}` }}
+        primary={{ label: siteConfig.quoteLabel, href: siteConfig.quoteHref }}
         secondary={{ label: 'Book a 30-minute call', href: siteConfig.calendlyUrl, external: true }}
       />
     </PageShell>

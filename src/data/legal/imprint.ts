@@ -146,7 +146,7 @@ export const imprint: LegalDoc = {
         '[Terms and conditions](/terms/) — website terms, client terms of business for direct recruitment and for hourly collaboration, and candidate terms.',
         '[Privacy policy](/privacy/) — how we handle personal data.',
         '[Candidate privacy notice](/candidate-privacy/) — the Article 14 notice for engineers we source from public profiles.',
-        '[Cookie policy](/cookies/) — why this site sets no cookies, and what would change that.',
+        '[Cookie policy](/cookies/) — what this site stores in your browser, and how analytics is gated behind your consent.',
       ],
     },
   ],

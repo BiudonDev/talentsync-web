@@ -13,7 +13,7 @@
  * one answer, one spelling, everywhere (D5).
  */
 
-import { ANTI_POSITIONING, siteConfig } from '@/data/content'
+import { POSITIONING, siteConfig } from '@/data/content'
 
 /**
  * The year, not the date: prose reads better as "since 2020". The full founding
@@ -41,22 +41,22 @@ type Fact = { term: string; value: string }
  * drift. HTML-to-text converters (what every AI crawler runs before the model
  * sees anything) render `<dl>` as clean `term: value` pairs.
  *
- * The `Not` row is the highest-value line on the page: anti-positioning stated
- * as an explicit negative fact is much harder for a summariser to invert than
- * positioning implied by omission.
+ * The `Engagement models` row lists all three in the client's order (feedback
+ * item 1); the former `Not` row ("a project outsourcing company") was retired
+ * on 21 September 2026 because TalentSync now offers outsourcing.
  */
 export const facts: Fact[] = [
   { term: 'Legal name', value: 'S.R.L. “UNQENERGY”, trading as “TalentSync”' },
   { term: 'Founded', value: FOUNDED_YEAR },
   { term: 'Headquarters', value: 'Chișinău, Moldova' },
-  { term: 'What it does', value: 'Technology recruitment and engineering talent partner' },
+  { term: 'What it does', value: 'Technology recruitment, hourly engineering collaboration and software development outsourcing' },
   { term: 'Who it serves', value: 'European and international product companies' },
   { term: 'Talent sourced from', value: 'Eastern Europe — Moldova, Romania, Ukraine, Poland' },
-  { term: 'Engagement models', value: 'Direct B2B recruitment; flexible hourly collaboration' },
   {
-    term: 'Not',
-    value: 'A project outsourcing company. Clients retain full technical and operational control.',
+    term: 'Engagement models',
+    value: 'Direct B2B recruitment; hourly collaboration; software development outsourcing',
   },
+  { term: 'Delivery control', value: POSITIONING },
   { term: 'Specialisms', value: 'AI/ML, backend, DevOps, QA, full-stack engineering' },
   { term: 'Contact', value: `${siteConfig.email} · ${siteConfig.phone}` },
 ]
@@ -96,11 +96,8 @@ export const principles: { title: string; body: string }[] = [
     body: 'Each shortlist says what the engineer has not done, or has not done recently, alongside what they have. You are going to find it in the technical interview anyway; hearing it from us first is what makes the rest of the assessment worth believing.',
   },
   {
-    title: 'We do not manage engineers on your behalf',
-    // BLOCK D, imported rather than paraphrased: the anti-positioning line is the
-    // sentence most often inverted by a summariser, so it is worth stating in the
-    // same words the homepage and the two model pages use.
-    body: `${ANTI_POSITIONING} We handle sourcing, screening and — on the hourly model — the contract, the invoicing and replacement cover. Nobody here stands between you and the engineer doing the work.`,
+    title: 'We never blur which model you are buying',
+    body: 'On direct B2B recruitment and hourly collaboration we do not manage engineers on your behalf: we handle sourcing, screening and, on the hourly model, the contract, invoicing and replacement cover, and nobody stands between you and the engineer. On an outsourced project a dedicated TalentSync team owns delivery against a written plan. We say which one you are buying before you sign, and we do not change the answer afterwards.',
   },
   {
     title: 'We say when the answer is somewhere else',
@@ -127,12 +124,7 @@ export const faqs: { q: string; a: string }[] = [
   },
   {
     q: 'How long have you been operating?',
-    // Orange was named here as a "client". TalentSync has no contract with
-    // Orange — the engineers reached the Orange network through the Barça Mobile
-    // programme, and case-studies.ts flags the entry as an exception for exactly
-    // that reason. 06-claims row 13 is a legal finding, not a wording preference,
-    // and it applies to prose as much as to the grid heading.
-    a: `Since ${FOUNDED_YEAR}. Our published record covers ten named engagements — Barça Mobile, SocialBee and Silvertalent among them — with the placements, stacks and timelines listed individually rather than summarised into a number. Two of the ten are flagged on that page as not placements at all. We would rather show you a record you can check than a headline figure you cannot.`,
+    a: `Since ${FOUNDED_YEAR}. Our published record covers ten named engagements — New Era Visionary Group, SocialBee and Silvertalent among them — with the placements, stacks and timelines listed individually rather than summarised into a number. One of the ten is flagged on that page as not a placement at all. We would rather show you a record you can check than a headline figure you cannot.`,
   },
   {
     q: 'Are you hiring?',

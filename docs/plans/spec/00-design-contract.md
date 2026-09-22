@@ -741,6 +741,8 @@ Ancestors `shrink-0`, current page `min-w-0 truncate`. **Never** `flex-wrap` (a 
 
 **No services dropdown.** "Services" links to `/services/`, an index page listing all nine. Justification: nine links do not fit a 900px pill and a hover dropdown has no mobile equivalent — it would push the 360px accordion past the 216px of headroom it currently has. An index page is also a better internal-link hub for nine SEO landing pages than a menu Google half-weights.
 
+> **Superseded, 21 September 2026.** The site that actually shipped never built the `/services/` index this paragraph describes — `primaryNav` (`src/data/routes.ts`) is eight real routes, flat. That flat list clipped items with no visible scroll affordance at a half-open desktop window (roughly 1024–1140px), which is a real bug a user hit. `Navbar.tsx` now groups the five `group: 'service'` rows under a **click**-triggered "Services" dropdown, `lg:` only. This does not reopen the objection above: a click dropdown has a mobile equivalent (there isn't one — the mobile accordion stays flat, unchanged, and never gets pushed anywhere), so the paragraph's stated reason for rejecting a dropdown does not apply to this one.
+
 **`lg` (1024) stays the navbar breakpoint.** Six links at `px-3 text-sm` ≈ 540px + logo ≈ 130px + CTA ≈ 150px = 820px, inside `min(95vw, 900px)`. Confirmed to fit at 1024. iPad Pro 12.9" portrait gets the desktop bar; every smaller iPad gets the accordion. Correct.
 
 ### 5.2 Mobile (<1024px)

@@ -1,3 +1,4 @@
+import { TIMELINE_RECORD } from '@/data/case-studies'
 import type { Insight } from './types'
 
 /**
@@ -47,7 +48,7 @@ export const b2bOrHourly: Insight = {
     },
     {
       k: 'p',
-      t: 'Neither is outsourcing. In both models you keep architecture, roadmap, priorities and technical decisions; nobody hands you a black box. If you want a fixed scope delivered by someone who owns the outcome, both are the wrong shape — the last section says so more bluntly.',
+      t: 'Neither is outsourcing. In both models you keep architecture, roadmap, priorities and technical decisions; nobody hands you a black box. If you want a fixed scope delivered by someone who owns the outcome, both are the wrong shape and our third model, [software development outsourcing](/software-development-outsourcing/), is the one to read about — the last section says so more bluntly.',
     },
 
     { k: 'h', level: 2, id: 'five-questions', t: 'The five questions that decide it' },
@@ -163,7 +164,7 @@ export const b2bOrHourly: Insight = {
     {
       k: 'ul',
       items: [
-        '**You want a product delivered, not capacity added.** Fixed scope, fixed price, someone else owning the outcome — that is a development contract with an outsourcing firm, and it is a legitimate thing to buy. It is not what either of these models is. Buying capacity when you wanted delivery produces a team you have to manage and a result nobody owns.',
+        '**You want a product delivered, not capacity added.** Fixed scope, an estimate in writing, someone else owning the outcome — that is [software development outsourcing](/software-development-outsourcing/), our third model, and it is a legitimate thing to buy. It is not what either of these two models is. Buying capacity when you wanted delivery produces a team you have to manage and a result nobody owns.',
         '**You need an employee for a reason that is not commercial.** A regulated role, a works council agreement, a security clearance, a customer contract that requires named employees — the requirement decides the structure, and no contractor arrangement satisfies it.',
         '**This is your first engineer.** With nobody to review the work, set technical direction or say no to a bad approach, a strong remote senior will drift and you will conclude that remote hiring does not work. Hire your first engineer where you can sit with them, then add capacity.',
         '**The work is under about ten hours a week.** Below that, context-switching costs more than the hours buy, on either model. Bundle it into a real part of a week, or wait until there is more of it.',
@@ -179,7 +180,7 @@ export const b2bOrHourly: Insight = {
     },
     {
       k: 'p',
-      t: 'On speed, the honest version: across our five most recent engagements — eight engineers for SocialBee, Silvertalent, Qualiwise, Foodamigos and Innovatec — the engineer signed within one to two weeks of the brief. Roles with a narrow stack, a security-clearance requirement or a hard on-site element take longer, and we tell you that at the brief rather than at week three. The full record, with stacks and timings, is on the [case studies page](/case-studies/).',
+      t: `On speed, the honest version. ${TIMELINE_RECORD} Roles with a narrow stack, a security-clearance requirement or a hard on-site element take longer, and we tell you that at the brief rather than at week three. The full record, with stacks and timings, is on the [case studies page](/case-studies/).`,
     },
     {
       k: 'p',

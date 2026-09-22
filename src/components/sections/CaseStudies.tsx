@@ -2,41 +2,65 @@
 
 import { useRef, useState } from 'react'
 import { SectionWrapper, Card } from '@/components/ui'
-import { caseStudies } from '@/data/content'
+import { caseStudies, type CaseStudy } from '@/data/case-studies'
 
-/* Plain <img>, not next/image. `images.unoptimized: true` (static export) means
+/* Every card reads from the placement ledger in `@/data/case-studies` — the one
+   central client record (client feedback item 24). The hub table, the detail
+   routes and the service-page evidence guard read the same array, so a client
+   added or removed there is added or removed here in the same edit.
+
+   Plain <img>, not next/image. `images.unoptimized: true` (static export) means
    next/image hands back a bare <img> with no optimisation anyway, and `fill`
-   emits no width, no height and no srcSet — eleven Rule 9 findings.
-   content.ts owns the source paths; the resized derivatives are generated beside
-   them as `<base>-384.webp` / `<base>-768.webp`. Both are shrink-only, so a source
-   narrower than the target simply reappears at its own width — the `w` descriptor
-   then over-states by a few pixels and the browser picks the same file either way. */
+   emits no width, no height and no srcSet. The resized derivatives are generated
+   beside each source as `<base>-384.webp` / `<base>-768.webp`. */
 const base = (src: string) => src.replace(/\.[a-z]+$/i, '')
 const srcSet = (src: string) => `${base(src)}-384.webp 384w, ${base(src)}-768.webp 768w`
 
 const SPOTLIGHT_SIZES = '(min-width: 1024px) 34rem, 100vw'
 const CARD_SIZES = '(min-width: 1024px) 22rem, (min-width: 640px) 45vw, 18rem'
 
-/* 06-claims rows 13 and 17, verbatim. The heading is what makes the Orange tile
-   lawful: TalentSync's counterparty is New Era Visionary Group, not Orange and
-   not FC Barcelona, so "Our Clients" over those logos was a false statement
-   about the trader's commercial connections and an implied endorsement. "Where
-   our engineers work" claims only what is true — an engineer we placed worked
-   there, inside someone else's team. Held as string constants, not JSX text,
-   so the apostrophe can be a real typographic apostrophe rather than an HTML
-   entity spliced into a legally-reviewed sentence. */
+/* 06-claims rows 13 and 17. "Where our engineers work" claims only what is true:
+   an engineer we placed, or a team we assembled, worked there. */
 const GRID_SUBHEAD =
-  'Companies and products our placed engineers have contributed to, in their clients’ own teams.'
+  'Companies and products our engineers have contributed to, in their clients’ own teams or as a dedicated TalentSync team.'
 
-/* 06-claims row 16. Four bullets say "team scaled within N weeks"; rather than
+/* 06-claims row 16. Several bullets say "team scaled within N weeks"; rather than
    hedge each one, the clock is defined once, here, under the grid they sit in. */
 const TIMING_QUALIFIER =
   'Timings are measured from agreed role brief to signed offer, for the engagements shown. ' +
   'Your timeline depends on role scarcity and your interview schedule.'
 
+/* A client with no supplied mark gets a text tile rather than a placeholder
+   image. Vinlivt is the case today (case-studies.ts header). */
+function Mark({ study, sizes }: { study: CaseStudy; sizes: string }) {
+  const { logo } = study
+  if (!logo) {
+    return (
+      <div className="absolute inset-0 flex items-center justify-center bg-surface">
+        <span className="text-2xl font-bold tracking-tight text-gradient">{study.client}</span>
+      </div>
+    )
+  }
+  return (
+    <img
+      src={`${base(logo.src)}-384.webp`}
+      srcSet={srcSet(logo.src)}
+      sizes={sizes}
+      alt={study.client}
+      width={384}
+      height={216}
+      loading="lazy"
+      decoding="async"
+      className={`absolute inset-0 size-full motion-safe:transition-transform motion-safe:duration-300 group-hover:scale-105 ${
+        logo.plate || logo.contain ? 'object-contain p-4' : 'object-cover'
+      }`}
+    />
+  )
+}
+
 export default function CaseStudies() {
-  const highlighted = caseStudies.find((s) => s.highlight)
-  const others = caseStudies.filter((s) => !s.highlight)
+  const highlighted = caseStudies.find((s) => s.spotlight)
+  const others = caseStudies.filter((s) => !s.spotlight)
   const scrollRef = useRef<HTMLDivElement>(null)
   const [activeIndex, setActiveIndex] = useState(0)
 
@@ -54,6 +78,8 @@ export default function CaseStudies() {
     scrollRef.current.scrollTo({ left: index * cardWidth, behavior: 'smooth' })
   }
 
+  const spotlightImage = highlighted?.spotlightImage ?? highlighted?.logo
+
   return (
     <SectionWrapper id="case-studies" band>
       <div className="text-center mb-20">
@@ -65,8 +91,8 @@ export default function CaseStudies() {
         </p>
       </div>
 
-      {/* Spotlight: FC Barcelona */}
-      {highlighted && (
+      {/* Spotlight: the New Era Visionary Group / Barça Mobile team */}
+      {highlighted && spotlightImage && (
         <div className="mb-16">
           <Card className="border-primary ring-2 ring-primary/20 overflow-hidden">
             <div className="grid lg:grid-cols-2 gap-8 items-center">
@@ -74,10 +100,10 @@ export default function CaseStudies() {
                 {/* width/height describe the 16:9 box the CSS forces, so the
                     intrinsic ratio hint matches what is painted. */}
                 <img
-                  src={`${base(highlighted.image)}-768.webp`}
-                  srcSet={srcSet(highlighted.image)}
+                  src={`${base(spotlightImage.src)}-768.webp`}
+                  srcSet={srcSet(spotlightImage.src)}
                   sizes={SPOTLIGHT_SIZES}
-                  alt={highlighted.company}
+                  alt={highlighted.project ?? highlighted.client}
                   width={768}
                   height={432}
                   loading="lazy"
@@ -90,12 +116,13 @@ export default function CaseStudies() {
                 <span className="px-4 py-2 text-sm font-semibold rounded-full gradient-primary text-secondary-dark mb-4 inline-block">
                   Spotlight Partnership
                 </span>
-                <h3 className="text-xl sm:text-2xl font-bold mb-3">{highlighted.company}</h3>
+                <h3 className="text-xl sm:text-2xl font-bold mb-3">{highlighted.client}</h3>
                 <p className="text-base sm:text-lg leading-relaxed text-text-secondary text-pretty mb-6">
-                  {highlighted.industry}
+                  {highlighted.sector}
+                  {highlighted.project ? ` · ${highlighted.project}` : ''}
                 </p>
                 <ul className="space-y-3">
-                  {highlighted.results.map((result, i) => (
+                  {highlighted.highlights.map((result, i) => (
                     <li
                       key={i}
                       className="flex items-start gap-3 text-base sm:text-lg leading-relaxed text-text-secondary"
@@ -111,39 +138,31 @@ export default function CaseStudies() {
         </div>
       )}
 
-      {/* Other clients - ONE DOM tree: snap carousel at 360, card grid from sm up */}
+      {/* Other clients — ONE DOM tree, each card rendered exactly once: a snap
+          carousel at 360, a card grid from sm up. No duplicated slides, so
+          nothing is announced twice and nothing is indexed twice. */}
       <div
         ref={scrollRef}
         onScroll={handleScroll}
         className="-mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-4 scrollbar-hide sm:mx-0 sm:grid sm:grid-cols-2 sm:gap-8 sm:overflow-x-visible sm:px-0 sm:pb-0 lg:grid-cols-3"
       >
         {others.map((study) => (
-          <div key={study.company} className="w-72 shrink-0 snap-start sm:w-auto">
+          <div key={study.slug} className="w-72 shrink-0 snap-start sm:w-auto">
             <Card className="h-full overflow-hidden group">
               <div
-                className="relative aspect-video mb-4 rounded-lg overflow-hidden"
-                style={{ backgroundColor: study.logoBg || 'transparent' }}
+                className={`relative aspect-video mb-4 rounded-lg overflow-hidden ${
+                  !study.logo?.bg && study.logo?.plate ? 'bg-text-primary' : ''
+                }`}
+                style={study.logo?.bg ? { backgroundColor: study.logo.bg } : undefined}
               >
-                <img
-                  src={`${base(study.image)}-384.webp`}
-                  srcSet={srcSet(study.image)}
-                  sizes={CARD_SIZES}
-                  alt={study.company}
-                  width={384}
-                  height={216}
-                  loading="lazy"
-                  decoding="async"
-                  className={`absolute inset-0 size-full motion-safe:transition-transform motion-safe:duration-300 group-hover:scale-105 ${
-                    study.logoContain ? `object-contain ${study.logoPadding || 'p-4'}` : 'object-cover'
-                  }`}
-                />
+                <Mark study={study} sizes={CARD_SIZES} />
               </div>
               <span className="inline-block px-3 py-1 text-xs font-medium rounded-full bg-primary text-secondary-dark mb-2">
-                {study.industry}
+                {study.sector}
               </span>
-              <h3 className="text-xl sm:text-2xl font-bold mb-3">{study.company}</h3>
+              <h3 className="text-xl sm:text-2xl font-bold mb-3">{study.client}</h3>
               <ul className="space-y-2">
-                {study.results.map((result, i) => (
+                {study.highlights.map((result, i) => (
                   <li
                     key={i}
                     className="flex items-start gap-2 text-sm leading-relaxed text-text-secondary"
@@ -160,9 +179,9 @@ export default function CaseStudies() {
 
       {/* Dot indicators - only steer the carousel, which only exists below sm */}
       <div className="flex justify-center gap-2 mt-4 sm:hidden">
-        {others.map((_, index) => (
+        {others.map((study, index) => (
           <button
-            key={index}
+            key={study.slug}
             type="button"
             onClick={() => scrollToIndex(index)}
             className="p-2.5 -m-1 rounded-full focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"

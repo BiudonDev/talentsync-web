@@ -1,8 +1,7 @@
 import type { Metadata } from 'next'
 import { Montserrat } from 'next/font/google'
 import JsonLd from '@/components/JsonLd'
-// ANALYTICS IS OFF — see the comment on the commented-out <Analytics /> mount below.
-// import Analytics from '@/components/Analytics'
+import Analytics from '@/components/Analytics'
 import { graphLd, organizationLd, websiteLd } from '@/lib/schema'
 import { SITE_NAME, SITE_URL } from '@/lib/seo'
 import './globals.css'
@@ -95,30 +94,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     // during navigation unless the document opts in.
     <html lang="en" className={montserrat.variable} data-scroll-behavior="smooth">
       <body>
-        {/* ANALYTICS IS OFF, on purpose. No GA4 property exists, so there is no
-            measurement ID and nothing to load. Because nothing loads, the site
-            stores nothing on a visitor's device — and a consent banner asking
-            about storage that never happens is noise, so ConsentBanner does not
-            render either. Not rendering is not enough on its own: this mount is
-            the ONLY importer of @/components/Analytics, so commenting it out is
-            what keeps @/lib/analytics — the Consent Mode defaults, the gtag.js
-            URL and the unresolved GA4 measurement-ID token — out of the client
-            bundle. `npm run verify` scans _next/*.js as well as the HTML.
-
-            TO TURN ANALYTICS BACK ON, when the G-XXXXXXXXXX ID arrives:
-              1. put the real ID in GA_MEASUREMENT_ID, src/lib/analytics.ts
-              2. uncomment the import at the top of this file and the one line
-                 below. That is the whole change — both components are intact
-                 and working, nothing else was removed.
-              3. same release, not later: /privacy/ §4 and /cookies/ currently
-                 state in the present tense that no analytics runs and that the
-                 site sets no cookies of its own.
-
-            It goes FIRST in <body> when it comes back, for two reasons: the
-            Consent Mode v2 defaults must execute before anything else on the
-            page, and the banner's DOM position is what puts Reject on the first
-            Tab stop. */}
-        {/* <Analytics /> */}
+        {/* FIRST in <body>, on purpose: the Consent Mode v2 defaults it renders
+            must execute before anything else on the page, and the banner's DOM
+            position is what puts Reject on the first Tab stop. The banner opens
+            on the first visit to ANY route — this is the root layout — before
+            gtag.js exists in the document (src/components/ConsentBanner.tsx). */}
+        <Analytics />
         <JsonLd data={graphLd(organizationLd(), websiteLd())} />
         {children}
       </body>

@@ -10,7 +10,9 @@
  * below: the line is repeated verbatim rather than stated once at the top,
  * because a reader who lands on an anchor never sees the top.
  *
- * BLOCK D (DECISIONS.md D7) appears here verbatim and must not be reworded.
+ * The former BLOCK D ("not a project outsourcing company") was retired on
+ * 21 September 2026: outsourcing is now the third model, and the section that
+ * carried the line now states what this model is not, relative to the other two.
  *
  * Nothing here states a rate, a fee percentage or an entity fact. Those are
  * business facts owned by Victor (BLOCKERS.md), and a surviving `{{TOKEN}}`
@@ -84,9 +86,8 @@ export const b2bEngineerRecruitment: ServicePage = {
         {
           kind: 'prose',
           body: [
-            'TalentSync is not a project outsourcing company. We help companies add experienced engineers to their existing teams while retaining full technical and operational control.',
-            'In this arrangement specifically: we are not a party to the delivery relationship, we do not manage or direct the engineer, we do not stand between you and their work, and we do not report to you on their progress. Once the introduction agreement has run its course, the only two parties left are you and the engineer’s company.',
-            'Read that as a limit on what you can expect from us, not only as positioning. If you want someone accountable for delivery, this is the wrong model and the hourly page or an agency will serve you better.',
+            'Under direct B2B recruitment we add an experienced engineer to your existing team and you retain full technical and operational control. We are not a party to the delivery relationship, we do not manage or direct the engineer, we do not stand between you and their work, and we do not report to you on their progress. Once the introduction agreement has run its course, the only two parties left are you and the engineer’s company.',
+            'Read that as a limit on what you can expect from us, not only as positioning. If you want someone accountable for delivery, this is the wrong model: our software development outsourcing model puts a dedicated TalentSync team in charge of delivering an agreed scope, and the hourly model keeps you in charge while we hold the contract. All three are described on their own pages.',
           ],
         },
       ],
@@ -340,19 +341,19 @@ export const b2bEngineerRecruitment: ServicePage = {
     countries: ['Moldova', 'Romania', 'Poland', 'Bulgaria', 'Ukraine'],
   },
 
-  engagementModels: ['b2b', 'hourly'],
+  engagementModels: ['b2b', 'hourly', 'outsourcing'],
 
   evidence: [
     {
       client: 'Qualiwise',
-      role: 'Senior backend developer, Python',
+      role: 'Senior Python Developer',
       count: 1,
       outcome: 'We sourced and technically vetted the shortlist; Qualiwise interviewed and selected. Signed one week after the brief.',
       href: '/case-studies/qualiwise/',
     },
     {
       client: 'Silvertalent',
-      role: 'Full-stack developers, React and .NET',
+      role: 'Full-Stack Developers, React and .NET',
       count: 3,
       outcome: 'Three engineers briefed at once rather than one seat at a time, all three signed within two weeks.',
       href: '/case-studies/silvertalent/',
@@ -400,6 +401,7 @@ export const b2bEngineerRecruitment: ServicePage = {
   internalLinks: [
     { anchor: 'Moldova’s IT Park regime in detail', href: '/technical-recruitment-moldova/' },
     { anchor: 'hourly collaboration instead', href: '/hourly-engineering-talent/' },
+    { anchor: 'handing a whole project to a dedicated team', href: '/software-development-outsourcing/' },
     { anchor: 'how the recruitment process runs', href: '/hire-software-developers-eastern-europe/' },
     { anchor: 'the wider Eastern European market', href: '/tech-recruitment-eastern-europe/' },
     { anchor: 'who you are contracting with', href: '/about/' },

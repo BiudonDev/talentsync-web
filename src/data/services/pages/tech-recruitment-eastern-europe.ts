@@ -238,7 +238,7 @@ export const techRecruitmentEasternEurope: ServicePage = {
       blocks: [
         {
           kind: 'cards',
-          heading: 'Four ways to hold the relationship',
+          heading: 'Five ways to hold the relationship',
           items: [
             {
               title: 'Your own local entity',
@@ -256,12 +256,16 @@ export const techRecruitmentEasternEurope: ServicePage = {
               title: 'Hourly through a partner',
               body: 'A partner holds the contract, supplies the engineer and bills you for hours worked. Useful where the end date is unknown or the commitment is part-time. More expensive per hour than a direct contract you intend to hold for years.',
             },
+            {
+              title: 'Outsourced delivery',
+              body: 'A partner assembles a dedicated team and owns delivery of a scoped project, product or component against an agreed plan and estimate. You keep the outcome and the acceptance criteria and hand over the day-to-day running. The right shape when you want a result rather than headcount.',
+            },
           ],
         },
         {
           kind: 'prose',
           body: [
-            'TalentSync does the last two. If your situation points at an employer of record — you need to direct someone as a subordinate, set their working hours, or bar them from other clients — that is a different product and you should buy it from a firm that sells it.',
+            'TalentSync does the last three. If your situation points at an employer of record — you need to direct someone as a subordinate, set their working hours, or bar them from other clients — that is a different product and you should buy it from a firm that sells it.',
             'Naming the case where we are the wrong answer is the only thing that makes the rest of this page worth reading. Vendors who claim every model suits every buyer are describing their price list, not your problem.',
           ],
         },
@@ -289,7 +293,7 @@ export const techRecruitmentEasternEurope: ServicePage = {
         {
           kind: 'prose',
           body: [
-            'Our own dataset is small and we will not dress it up. Across our five most recent placements, eight engineers have gone to five companies — SocialBee, Silvertalent, Qualiwise, Foodamigos and Innovatec — with each one signing one to two weeks after the role was briefed in writing.',
+            'Our own dataset is small and we will not dress it up. In the six engagements where we kept the clock running — SocialBee, Silvertalent, Qualiwise, Foodamigos, Innovatec and OptimEyes, ten engineers between them — every engineer was signed one to two weeks after the role was briefed in writing.',
             'That is a handful of common stacks, and it is not a forecast for your role. A narrow stack, a clearance requirement or a genuine on-site element pushes any search past that range, and the moment to hear so is the brief rather than the third week of silence.',
             'Regional norms move the start date more than the search does. Notice runs from immediate for an established contractor to three months for an employed engineer in Poland or Romania, so two candidates who accept on the same day can begin three months apart.',
           ],
@@ -369,13 +373,13 @@ export const techRecruitmentEasternEurope: ServicePage = {
   evidence: [
     {
       client: 'Foodamigos',
-      role: 'Senior frontend developer, Angular',
+      role: 'Senior Frontend Developer, Angular',
       count: 1,
       outcome: 'Sourced inside Moldova, signed a week after the brief.',
     },
     {
       client: 'Innovatec',
-      role: 'PLC specialist, industrial control systems',
+      role: 'PLC Specialist, industrial control systems',
       count: 1,
       outcome: 'An industrial-automation search, closed regionally in a fortnight.',
     },

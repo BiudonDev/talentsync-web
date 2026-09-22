@@ -2,7 +2,8 @@
  * The service-page registry.
  *
  * One file per route under `./pages/`, named for its slug, each exporting a
- * single typed `ServicePage`. This barrel collects them, keys them by slug, and
+ * single typed `ServicePage`. Eleven routes: DECISIONS.md D1 rows 2–11 plus
+ * row 25, `/software-development-outsourcing/`, added 21 September 2026. This barrel collects them, keys them by slug, and
  * runs `assertServicePage` over every entry AT MODULE LOAD — which, under
  * `output: 'export'`, means during `next build`. A thin page never reaches
  * `out/`.
@@ -19,7 +20,7 @@
  * interface.
  */
 
-import { caseStudies } from '@/data/case-studies'
+import { ledgerCounts } from '@/data/case-studies'
 import { allRoutes, serviceSlugs } from '@/data/routes'
 import type { ServicePage } from './types'
 
@@ -31,20 +32,23 @@ import { hireFullStackDevelopers } from './pages/hire-full-stack-developers'
 import { hireQaEngineers } from './pages/hire-qa-engineers'
 import { hireSoftwareDevelopersEasternEurope } from './pages/hire-software-developers-eastern-europe'
 import { hourlyEngineeringTalent } from './pages/hourly-engineering-talent'
+import { softwareDevelopmentOutsourcing } from './pages/software-development-outsourcing'
 import { techRecruitmentEasternEurope } from './pages/tech-recruitment-eastern-europe'
 import { technicalRecruitmentMoldova } from './pages/technical-recruitment-moldova'
 
 export * from './types'
 
 /**
- * Every service route, keyed by slug. Order follows DECISIONS.md D1 rows 2–11,
- * which is also the order the cluster is meant to be read in.
+ * Every service route, keyed by slug. Order follows DECISIONS.md D1 rows 2–11
+ * with row 25 beside the other two engagement-model pages, which is also the
+ * order the cluster is meant to be read in.
  */
 export const servicePages: Record<string, ServicePage> = {
   'tech-recruitment-eastern-europe': techRecruitmentEasternEurope,
   'hire-software-developers-eastern-europe': hireSoftwareDevelopersEasternEurope,
   'b2b-engineer-recruitment': b2bEngineerRecruitment,
   'hourly-engineering-talent': hourlyEngineeringTalent,
+  'software-development-outsourcing': softwareDevelopmentOutsourcing,
   'technical-recruitment-moldova': technicalRecruitmentMoldova,
   'hire-backend-developers': hireBackendDevelopers,
   'hire-full-stack-developers': hireFullStackDevelopers,
@@ -86,47 +90,13 @@ export const publishedServicePages = (): ServicePage[] =>
 const wordCount = (s: string) => s.trim().split(/\s+/).length
 
 /**
- * Headcount per client, read off the placement ledger in `@/data/case-studies`,
- * which is the single source of truth for what was actually placed. Only the
- * rows that state a number ("3 × Full-stack engineer") are included; the
- * programme engagements deliberately omit headcount (BLOCKERS.md), so they are
- * not asserted against.
- *
- * This exists because the site shipped a rendered self-contradiction: Innovatec
- * was "2 × PLC and automation specialists" on two service pages and "1 × PLC
- * specialist" on a third, on `/case-studies/` and on `/` — which also broke the
- * "eight engineers across five clients" total that seven pages quote. Counting
- * evidence by hand across ten files is how that happens, so it is counted here
- * instead, once, against the ledger.
+ * Headcount per client comes from `ledgerCounts` in `@/data/case-studies`, the
+ * single client record, which also asserts the headline totals
+ * (`PLACED_ENGINEERS`, `PLACED_CLIENTS`) against its own rows at module load.
+ * Evidence on a service page is checked against that map below, so a count the
+ * ledger does not support never reaches `out/`.
  */
-const LEDGER_COUNTS = new Map<string, number>(
-  caseStudies.flatMap((c) => {
-    const m = /^(\d+)\s*×/.exec(c.rolesPlaced)
-    return m ? [[c.client, Number(m[1])] as [string, number]] : []
-  }),
-)
-
-/**
- * The headline the copy quotes: "eight engineers across our five most recent
- * placements". It is hardcoded as prose in ten files — every service page, the
- * about page, `content.ts` and `careers.ts` — because it reads as a sentence,
- * not as a template hole. That is fine right up until someone edits a ledger
- * row, at which point ten pages quietly assert a number the ledger no longer
- * supports. That already happened once: Innovatec moved 2 → 1 and the site
- * shipped "nine engineers" beside a table totalling eight.
- *
- * So the ledger asserts its own shape here. Change a headcount and the build
- * stops with the list of files to update, instead of the contradiction reaching
- * a buyer who adds the column up.
- */
-const LEDGER_CLIENTS = 5
-const LEDGER_ENGINEERS = 8
-const ledgerEngineers = Array.from(LEDGER_COUNTS.values()).reduce((a, b) => a + b, 0)
-if (LEDGER_COUNTS.size !== LEDGER_CLIENTS || ledgerEngineers !== LEDGER_ENGINEERS) {
-  throw new Error(
-    `src/data/case-studies.ts: the placement ledger now totals ${ledgerEngineers} engineer(s) across ${LEDGER_COUNTS.size} client(s), but the site's copy is written around ${LEDGER_ENGINEERS} across ${LEDGER_CLIENTS} ("eight engineers across our five most recent placements"). Update that sentence in src/data/services/pages/*.ts, src/data/content.ts, src/data/careers.ts, src/data/about.ts and src/app/about/page.tsx, then move these two constants. Do not move the constants alone — they exist to make the copy edit unskippable.`,
-  )
-}
+const LEDGER_COUNTS = ledgerCounts
 
 /**
  * Section ids the template already uses for its own bands. A page section

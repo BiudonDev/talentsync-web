@@ -8,17 +8,18 @@
  * 1. **`draft: true` is deliberate and this page must not be flipped yet.**
  *    D1.1 gates publication on named placements *for the role the page sells*.
  *    There is no AI-engineering placement on record: no LLM application engineer,
- *    no ML platform engineer, no MLOps hire. What exists is two clients who build
- *    AI products — Qualiwise (an AI copilot for product quality) and Barça Mobile
- *    (an AI super app) — staffed with a backend engineer and an architecture/CI-CD
- *    engineer respectively. Both are true, both are on the page, and neither is
- *    an AI-engineering hire.
+ *    no ML platform engineer, no MLOps hire. What exists is clients who build
+ *    AI-driven products — Qualiwise (an AI copilot for product quality, staffed
+ *    with a Senior Python Developer) and New Era Visionary Group's Barça Mobile
+ *    (an AI-driven consumer super app, for which we assembled a seven-person
+ *    backend, front-end, mobile and QA team). Both are true, both are on the
+ *    page, and neither is an AI-engineering hire.
  *
  * 2. **`evidence` therefore carries ONE entry, not two.** That is what keeps the
  *    gate real: `assertServicePage` refuses `draft: false` under two named
  *    placements, so the guard, not a comment, blocks the flip. Do not pad this
- *    array with the Barça Mobile engagement to get the count up — that placement
- *    is DevOps-scope work and it belongs to `/hire-devops-engineers/`. It is
+ *    array with the New Era Visionary Group team to get the count up — those are
+ *    backend, front-end, mobile and QA roles recorded once in the ledger. It is
  *    described in the body of this page as context, which is honest, and it is
  *    not counted as AI evidence, which is also honest.
  *
@@ -40,6 +41,7 @@
  *    `/hire-devops-engineers/` is dropped for that reason.
  */
 
+import { TIMELINE_RECORD } from '@/data/case-studies'
 import type { ServicePage } from '../types'
 
 export const hireAiEngineers: ServicePage = {
@@ -127,9 +129,9 @@ export const hireAiEngineers: ServicePage = {
         {
           kind: 'prose',
           body: [
-            'Two of our named clients build AI products. Qualiwise builds an AI copilot for product quality; we filled a senior backend Python role there and the engineer signed within one week of the brief. Barça Mobile is an AI super app; the DevOps engineer we placed on that engagement worked on system architecture and CI/CD for the launch.',
+            'Two of our named clients build AI-driven products. Qualiwise builds an AI copilot for product quality; we filled a Senior Python Developer role there and the engineer signed within one week of the brief. Barça Mobile, delivered by New Era Visionary Group, is an AI-driven consumer super app; we assembled a seven-person backend, front-end, mobile and QA team supporting its development and delivery.',
             'Neither of those was an AI-engineering hire, and we are not going to present them as one. They are evidence that we can staff engineering roles inside an AI product company against a real deadline. They are not evidence that we have placed a retrieval engineer or an MLOps specialist. The day we do, that placement will be named here with the same detail as everything else on this site.',
-            'Across our five most recent placements — eight engineers for SocialBee, Silvertalent, Qualiwise, Foodamigos and Innovatec — the engineer signed within one to two weeks of the brief. Roles with a narrow stack, a security-clearance requirement or a hard on-site element take longer, and we tell you that at the brief rather than at week three.',
+            `${TIMELINE_RECORD} Roles with a narrow stack, a security-clearance requirement or a hard on-site element take longer, and we tell you that at the brief rather than at week three.`,
           ],
         },
       ],
@@ -237,9 +239,10 @@ export const hireAiEngineers: ServicePage = {
         {
           kind: 'prose',
           body: [
-            'Two models, and the AI-specific version of the choice is about how settled the work is. Direct B2B recruitment suits a feature you have committed to: we source, screen and technically validate the engineer, then step out, and you contract them directly for the long term.',
+            'Three models, and the AI-specific version of the choice is about how settled the work is. Direct B2B recruitment suits a feature you have committed to: we source, screen and technically validate the engineer, then step out, and you contract them directly for the long term.',
             'Hourly collaboration suits the case where you are still finding out whether the feature works. The engineer joins your team and is billed for hours worked, with no fixed headcount commitment, which is the honest shape of most first AI projects.',
-            'Both are explained in full on their own pages, including what each one means for contracts, invoicing and notice.',
+            'Software development outsourcing suits a scoped AI feature you want delivered end to end — retrieval, evaluation, the serving layer — by a dedicated team that owns delivery against an agreed plan while you keep the acceptance criteria and the model decisions.',
+            'All three are explained in full on their own pages, including what each one means for contracts, invoicing and notice.',
           ],
         },
       ],
@@ -290,7 +293,7 @@ export const hireAiEngineers: ServicePage = {
   evidence: [
     {
       client: 'Qualiwise',
-      role: 'Senior backend developer, Python',
+      role: 'Senior Python Developer',
       count: 1,
       outcome:
         'Signed within one week of the brief. Qualiwise builds an AI copilot for product quality, so this is a backend placement inside an AI product company — not an AI-engineering hire, and we do not present it as one.',

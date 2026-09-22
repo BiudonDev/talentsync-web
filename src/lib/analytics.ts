@@ -12,9 +12,8 @@
  * would be a false statement in the policy.
  */
 
-/** Deploy blocker by design. validate-pages.mjs check 3c fails the build while
- *  any {{TOKEN}} survives into out/ — including into the client bundle. */
-export const GA_MEASUREMENT_ID = '{{GA4_MEASUREMENT_ID}}'
+/** The GA4 property's measurement ID, supplied by the client on 21 September 2026. */
+export const GA_MEASUREMENT_ID = 'G-4D9N8H4S48'
 
 export const GA_SRC = `https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`
 

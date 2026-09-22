@@ -4,7 +4,7 @@
  * The one thing only this page can say: MULTI-ENGINEER TEAM SCALING. Two named
  * clients each took a small squad rather than a single hire, and both squads
  * signed inside two weeks — three React/.NET engineers for Silvertalent and two
- * Java/Angular engineers for SocialBee. That is the strongest evidence on the
+ * Java/Angular engineers for SocialBee. Vinlivt took one Full-Stack Developer. That is the strongest evidence on the
  * site and the only place it belongs, so the page is built around the mechanics
  * of hiring three at once rather than around the word "full-stack".
  *
@@ -12,6 +12,7 @@
  * No link points at a `draft: true` route (D1.1).
  */
 
+import { TIMELINE_RECORD } from '@/data/case-studies'
 import type { ServicePage } from '../types'
 
 export const hireFullStackDevelopers: ServicePage = {
@@ -19,11 +20,11 @@ export const hireFullStackDevelopers: ServicePage = {
   label: 'Full-Stack Developers',
   metaTitle: 'Hire Full-Stack Developers, Eastern Europe | TalentSync',
   metaDescription:
-    'Hire full-stack developers from Eastern Europe: React/.NET and Java/Angular. Five full-stack engineers placed across SocialBee and Silvertalent.',
+    'Hire full-stack developers from Eastern Europe: React/.NET and Java/Angular. Six Full-Stack Developers placed across SocialBee, Silvertalent and Vinlivt.',
   h1: 'Hire Full-Stack Developers from Eastern Europe',
 
   answerParagraph:
-    'TalentSync has placed five senior full-stack developers from Eastern Europe across two teams: three React and .NET engineers for Silvertalent and two Java and Angular engineers for SocialBee, each team scaled within two weeks of the brief. Engineers contract with you on B2B terms or work hourly, inside your codebase and your review standards.',
+    'TalentSync has placed six Full-Stack Developers from Eastern Europe across three teams: three React and .NET engineers for Silvertalent and two Java and Angular engineers for SocialBee, each team scaled within two weeks of the brief, plus one Full-Stack Developer for Vinlivt. Engineers contract with you on B2B terms or work hourly, inside your codebase and your review standards.',
 
   whoFor: {
     audience: 'Product teams adding a small squad rather than a single engineer',
@@ -255,7 +256,7 @@ export const hireFullStackDevelopers: ServicePage = {
   evidence: [
     {
       client: 'Silvertalent',
-      role: 'Full-stack developers, React and .NET',
+      role: 'Full-Stack Developers, React and .NET',
       count: 3,
       outcome:
         'A talent-acquisition platform scaling its engineering team. All three signed and the team was scaled within two weeks of the brief.',
@@ -263,10 +264,17 @@ export const hireFullStackDevelopers: ServicePage = {
     },
     {
       client: 'SocialBee',
-      role: 'Senior full-stack developers, Java and Angular',
+      role: 'Senior Full-Stack Developers, Java and Angular',
       count: 2,
       outcome:
         'A social media management platform. Both engineers signed and the team was scaled within two weeks of the brief.',
+    },
+    {
+      client: 'Vinlivt',
+      role: 'Full-Stack Developer',
+      count: 1,
+      outcome:
+        'One Full-Stack Developer added to a fintech product team. Time from brief to signature was not recorded.',
     },
   ],
 
@@ -304,7 +312,7 @@ export const hireFullStackDevelopers: ServicePage = {
     {
       question: 'How long does a multi-engineer brief take to fill?',
       answer:
-        'Across our five most recent placements — eight engineers for SocialBee, Silvertalent, Qualiwise, Foodamigos and Innovatec — the engineer signed within one to two weeks of the brief. Roles with a narrow stack, a security-clearance requirement or a hard on-site element take longer, and we say so at the brief.',
+        `${TIMELINE_RECORD} Roles with a narrow stack, a security-clearance requirement or a hard on-site element take longer, and we say so at the brief.`,
     },
   ],
 

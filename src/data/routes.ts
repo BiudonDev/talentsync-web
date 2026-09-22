@@ -2,7 +2,9 @@
  * THE route registry — the single source of truth for every URL on this site.
  *
  * The route table is FROZEN by docs/plans/spec/DECISIONS.md D1. No agent adds,
- * renames or removes a route here without a decision change.
+ * renames or removes a route here without a decision change. Row 25
+ * (/software-development-outsourcing/) was added by the D1 amendment of
+ * 21 September 2026.
  *
  * Everything else derives from this file: the sitemap, the nav, the footer link
  * map, the canonical tags (via pageMeta) and the build guard. Nothing may
@@ -61,6 +63,9 @@ const staticRoutes: Route[] = [
   { path: '/hire-software-developers-eastern-europe/', label: 'Hire Engineers', group: 'service', index: true },
   { path: '/b2b-engineer-recruitment/', label: 'Direct B2B Recruitment', group: 'service', index: true },
   { path: '/hourly-engineering-talent/', label: 'Hourly Collaboration', group: 'service', index: true },
+  // Row 25 — added 21 September 2026 (DECISIONS.md D1 amendment). The third
+  // engagement model gets its own transactional page.
+  { path: '/software-development-outsourcing/', label: 'Outsourcing', group: 'service', index: true },
   { path: '/technical-recruitment-moldova/', label: 'Moldova', group: 'service', index: true },
   { path: '/hire-backend-developers/', label: 'Backend Developers', group: 'service', index: true },
   { path: '/hire-full-stack-developers/', label: 'Full-Stack Developers', group: 'service', index: true },
@@ -104,7 +109,7 @@ export const allRoutes: Route[] = [
 export const indexableRoutes = allRoutes.filter((r) => r.index && !r.draft)
 
 /**
- * The ten service-page slugs, drafts INCLUDED — `generateStaticParams()` must
+ * The eleven service-page slugs, drafts INCLUDED — `generateStaticParams()` must
  * still emit the draft pages (D1.1: generated, just unlinked and unlisted).
  * Use `servicesNav` for anything that renders links.
  */
@@ -122,11 +127,18 @@ const route = (path: string): Route => {
 // Nav arrays. No draft route may appear in any of them.
 // ---------------------------------------------------------------------------
 
-/** Header. Flat list — no dropdown (00-design-contract.md §5.2). Seven items, measured to fit at 360px. */
+/**
+ * Header. Eight items. `Navbar.tsx` (21 September 2026) groups the five
+ * `group: 'service'` rows here under a click "Services" dropdown at `lg:` —
+ * the flat list in 00-design-contract.md §5.2 clipped items with no visible
+ * scroll affordance at a half-open desktop window. The mobile accordion
+ * stays flat, unchanged; this array still supplies both.
+ */
 export const primaryNav: Route[] = [
   '/tech-recruitment-eastern-europe/',
   '/hire-software-developers-eastern-europe/',
   '/b2b-engineer-recruitment/',
+  '/software-development-outsourcing/',
   '/technical-recruitment-moldova/',
   '/case-studies/',
   '/about/',

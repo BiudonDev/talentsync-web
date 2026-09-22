@@ -58,8 +58,10 @@ export default function Hero() {
           <Button href={siteConfig.calendlyUrl} external>
             Book a 30-minute call
           </Button>
-          <Button variant="secondary" href={`mailto:${siteConfig.email}?subject=Role%20brief`}>
-            Email the role to Victor
+          {/* Client feedback item 6: one wording that works for an engineer, hourly
+              capacity, a dedicated team or a whole project; subject pre-filled. */}
+          <Button variant="secondary" href={siteConfig.quoteHref}>
+            {siteConfig.quoteLabel}
           </Button>
         </div>
       </div>

@@ -5,32 +5,28 @@ import type { LegalDoc } from './types'
  * Part 2 of that document is an implementation plan for the consent-banner package
  * and is deliberately not on this page.
  *
- * Wave 2, 2026-08-31: ANALYTICS SHIPS OFF. No GA4 property exists, so there is no
- * measurement ID, nothing loads (layout.tsx does not mount <Analytics />), the site
- * stores nothing on a visitor's device, and ConsentBanner therefore does not render.
- * D2's consent-gated GA4 rewrite is reversed: describing a banner and four Google
- * cookies that do not exist would document processing the company does not perform.
- * So §3 states the no-storage position, §5 Table A is empty by fact, the GA4 rows
- * are gone from the live inventory, and §7 says there is no consent to withdraw.
- *
- * WHEN THE G-XXXXXXXXXX ID ARRIVES: re-enabling is one edit in src/app/layout.tsx
- * (uncomment the <Analytics /> mount and its import). This page must be updated in
- * the same change — §3, §4, §5 (Table A gains `ts_consent`, a live analytics table
- * returns), §7 and §8 all describe a site with no banner and must not ship stale.
+ * 2026-09-21, v1.1: ANALYTICS IS ON. Google Analytics 4 (measurement ID
+ * G-4D9N8H4S48) loads behind the consent banner in src/components/ConsentBanner.tsx
+ * — Consent Mode v2, BASIC mode: no Google script is on the page and nothing
+ * leaves the browser to Google until the visitor clicks "Accept analytics". The
+ * only first-party item is the `ts_consent` local-storage record (6 months).
+ * §3, §4, §5 Table A, §7, §8, §9 and §11 describe exactly that implementation;
+ * if the banner, the key, the cookie names or the retention change, this page
+ * changes in the same commit.
  *
  * Every duration, provider and browser instruction below is the draft's own,
- * unchanged.
+ * unchanged, except where the GA4 rows moved from "conditional" to "live".
  */
 export const cookies: LegalDoc = {
   slug: 'cookies',
   path: '/cookies/',
   label: 'Cookie Policy',
-  h1: 'Cookie policy: talentsync.eu sets no cookies of its own',
+  h1: 'Cookie policy: what talentsync.eu stores, and only with your consent',
   metaTitle: 'Cookie Policy',
   metaDescription:
-    'talentsync.eu stores nothing on your device: no cookies, no analytics, no consent banner. What still leaves your browser, and what would change that.',
-  version: '1.0',
-  updated: '2026-08-30',
+    'What talentsync.eu stores in your browser: one consent record, and Google Analytics 4 cookies only after you accept. How to refuse, change or withdraw.',
+  version: '1.1',
+  updated: '2026-09-21',
   lede: 'This policy is only about what happens in *your browser* when you visit talentsync.eu. Everything else we do with personal data — candidate data, client data — is in the [privacy policy](/privacy/).',
   body: [
     {
@@ -96,18 +92,18 @@ export const cookies: LegalDoc = {
     },
 
     /* ------------------------------------------------------------------ 3 */
-    { k: 'h', level: 2, id: 'c3', t: '3. Current status — this Site stores nothing on your device' },
+    { k: 'h', level: 2, id: 'c3', t: '3. Current status — one necessary record, and analytics only if you accept' },
     {
       k: 'p',
-      t: '**This Site sets no cookie of its own, and stores nothing else on your device either** — no local-storage key, no session-storage key, no pixel, no fingerprint. That is true on your first visit, on every visit after it, and whatever you click while you are here.',
+      t: '**As of 21 September 2026, this Site stores exactly one item of its own without asking: `ts_consent`**, the local-storage record of the choice you make on the consent banner. It is created only after you choose, it contains nothing but that choice and its date, and it exists so we do not ask you again on every page ([Table A](#c5-a)).',
     },
     {
       k: 'p',
-      t: 'We run **no analytics at all**: no Google Analytics, no Plausible, no self-hosted alternative. There is no advertising technology on this Site, no cross-site tracking, no data broker, no marketing pixel, no chat widget, no heatmap, no session recording, no A/B testing tool and no social embed.',
+      t: '**Everything else is optional and off until you say otherwise.** We use **Google Analytics 4** to understand which pages visitors find useful. It is *not loaded* when you arrive: no Google script is on the page, no request leaves your browser to Google, and no analytics cookie exists until you click **Accept analytics**. If you click **Reject analytics**, close the banner or press Escape, nothing changes — the Site works identically and Google is never contacted.',
     },
     {
       k: 'p',
-      t: '**There is no consent banner, because there is nothing to consent to.** Consent is required before something is stored on or read from your device; we do neither, so asking would be theatre. **If we ever add analytics, we will update this policy first and ask for your consent before anything is stored** — and refusing will keep the Site working exactly as it does now.',
+      t: 'There is no advertising technology on this Site, no cross-site tracking, no data broker, no marketing pixel, no chat widget, no heatmap, no session recording, no A/B testing tool and no social embed. Google Analytics runs with every advertising signal switched off (see [§5](#c5)).',
     },
 
     /* ------------------------------------------------------------------ 4 */
@@ -121,20 +117,51 @@ export const cookies: LegalDoc = {
     },
     {
       k: 'p',
-      t: 'Nothing on this Site currently falls into the second category, so nothing here is waiting on a decision from you. If that ever changes, refusing will be exactly as easy as accepting — the same screen, one click, no pre-ticked boxes — and closing the banner without choosing will count as a refusal.',
+      t: 'One thing on this Site falls into the second category — Google Analytics 4 — and that is what the banner on your first visit asks about. Refusing is exactly as easy as accepting: the same banner, two identical buttons, one click, no pre-ticked boxes, and **Reject analytics** comes first in the keyboard order. Closing the banner, or pressing Escape, counts as a refusal and is remembered as one.',
     },
 
     /* ------------------------------------------------------------------ 5 */
     { k: 'h', level: 2, id: 'c5', t: '5. Inventory — what is on this Site' },
 
-    { k: 'h', level: 3, id: 'c5-a', t: 'A — Stored on your device: nothing' },
+    { k: 'h', level: 3, id: 'c5-a', t: 'Table A — Stored on your device' },
     {
       k: 'p',
-      t: '**This table is empty, and that is the whole point of it.** There is no cookie, no local-storage key and no session-storage item set by talentsync.eu — not a strictly necessary one, not an optional one. Nothing to list, nothing to switch off, and nothing that survives after you close the tab.',
+      t: 'The first row is strictly necessary and needs no consent. Every row after it is **set only after you click Accept analytics**, and is never set if you refuse.',
+    },
+    {
+      k: 'table',
+      head: ['Name', 'Provider', 'Purpose', 'Type', 'Duration'],
+      rows: [
+        [
+          '`ts_consent`',
+          'TalentSync (first party)',
+          'Records your cookie choice — accepted or rejected — and the date you made it, so we do not ask again on every page. Created only **after** you make a choice. Contains no identifier for you.',
+          'Local storage, strictly necessary',
+          'Until you clear it, or **6 months**, whichever comes first — then we ask again',
+        ],
+        [
+          '`_ga`',
+          'Google',
+          'Google Analytics 4 — distinguishes one browser from another; the core analytics identifier.',
+          'Third-party cookie, analytics — **only after you accept**',
+          '**2 years**',
+        ],
+        [
+          '`_ga_4D9N8H4S48`',
+          'Google',
+          'Google Analytics 4 — persists session state for our data stream (measurement ID G-4D9N8H4S48).',
+          'Third-party cookie, analytics — **only after you accept**',
+          '**2 years**',
+        ],
+      ],
     },
     {
       k: 'p',
-      t: 'Two consequences worth stating plainly. There is **no consent record**, because there is no consent to record. And there is **no analytics cookie**: no `_ga`, no `_gid`, no `_gat_*`, because no analytics runs here. If analytics is ever added, [Table C](#c5-c) is where it appears first, and this policy changes before it ships.',
+      t: 'That is the complete list. Google Analytics 4 does not set the legacy `_gid` or `_gat_*` cookies and we have not enabled anything that would. **No other cookie, pixel or storage item is set by this Site.**',
+    },
+    {
+      k: 'p',
+      t: '**What Google Analytics records once you accept:** the pages you view, the page you came from, your device and browser type, approximate location derived by Google from your IP address (Google does not store the IP itself), and three click events — booking a call, opening an email link, opening a phone link — each tagged only with the section of our page the link sat in, never with anything you typed. It runs in **Consent Mode v2, basic mode**: before you choose, the script is not on the page at all; when you accept, only the analytics-storage signal is granted, and the advertising signals (ad storage, ad user data, ad personalisation) stay denied permanently. We use no Google Ads, no remarketing and no advertising features. Google holds the event data for **2 months**, the shortest retention its settings offer.',
     },
 
     {
@@ -190,20 +217,12 @@ export const cookies: LegalDoc = {
     },
     {
       k: 'p',
-      t: 'Nothing below is on the Site. Each row names the exact decision that would create it. If any of them ships, this policy is updated first, a consent banner appears, and nothing is stored until you accept it.',
+      t: 'Nothing below is on the Site. Each row names the exact decision that would create it. If any of them ships, this policy is updated first, the consent banner asks about it separately, and nothing is stored until you accept it.',
     },
     {
       k: 'table',
       head: ['Name', 'Provider', 'Purpose', 'Type', 'Duration', 'Trigger'],
       rows: [
-        [
-          '`_ga`, `_gid`, `_gat_*`',
-          'Google',
-          'Google Analytics 4 — distinguishes browsers, holds session state, throttles requests.',
-          'Third-party cookies, analytics',
-          '**Up to 2 years**',
-          'Only if we add analytics — none runs today',
-        ],
         [
           '`_gcl_au`',
           'Google',
@@ -288,7 +307,7 @@ export const cookies: LegalDoc = {
     },
     {
       k: 'p',
-      t: '**Google Search Console** and **Bing Webmaster Tools** are search-engine reporting tools. We verify ownership of the domain using a **DNS TXT record** — a change to our domain’s DNS settings, not to your browser. Neither tool sets any cookie on this Site and neither observes your visit. *(Google Search Console can also be verified by piggy-backing on a Google Analytics tag. There is no analytics tag here to piggy-back on, and we would not use that method if there were: it would tie Search Console to a consent choice.)*',
+      t: '**Google Search Console** and **Bing Webmaster Tools** are search-engine reporting tools. We verify ownership of the domain using a **DNS TXT record** — a change to our domain’s DNS settings, not to your browser. Neither tool sets any cookie on this Site and neither observes your visit. *(Google Search Console can also be verified by piggy-backing on a Google Analytics tag. We deliberately do not use that method: it would tie Search Console to a consent choice.)*',
     },
 
     /* ------------------------------------------------------------------ 6 */
@@ -310,17 +329,20 @@ export const cookies: LegalDoc = {
     },
 
     /* ------------------------------------------------------------------ 7 */
-    { k: 'h', level: 2, id: 'c7', t: '7. Consent: what there is to give or withdraw' },
+    { k: 'h', level: 2, id: 'c7', t: '7. Changing or withdrawing your consent' },
     {
       k: 'p',
-      t: '**Nothing.** We never asked for consent to store anything, because we store nothing, so there is no choice of yours to change, no record of it to delete, and no banner to reopen.',
+      t: 'Consent must be as easy to withdraw as it was to give. Here is how it works on this Site:',
     },
     {
       k: 'ul',
       items: [
-        '**Clearing your browser’s storage for `talentsync.eu`** removes nothing of ours. There is nothing there.',
-        '**Cookies set by a third party on its own site** — Calendly’s, if you book a call there — are not ours and are not deleted by anything we do. Use the browser instructions in [§8](#c8) to remove them.',
-        '**If we ever add something that needs consent**, this section will say how to give and withdraw it, a **“Cookie settings”** control will appear on every page, and withdrawal will be exactly as easy as consent. Consent will be asked for before anything is stored, never after.',
+        '**On your first visit to any page**, a banner titled “We value your privacy” appears at the foot of the screen, before any analytics loads and whatever you click. It offers **Accept analytics** and **Reject analytics** with identical prominence, and links to this policy and the [privacy policy](/privacy/). Nothing is stored until you choose.',
+        '**A “Cookie settings” link sits in the footer of every page.** Click it and the banner reopens showing your current choice; change it and the change takes effect immediately.',
+        '**Withdrawing consent stops collection at once.** We tell Google Analytics that analytics storage is denied and stop sending events. A script Google has already served in the page you are on cannot be unloaded, but it records nothing further, and it is not loaded on any later page.',
+        '**Refusal is remembered.** We do not re-prompt visitors who have refused, other than once your recorded choice is more than 6 months old.',
+        '**Clearing your browser’s storage for `talentsync.eu`** erases the `ts_consent` record and you will be asked again on your next visit.',
+        '**Cookies already set by Google** before you withdrew are not deleted by withdrawing — withdrawal stops the collection. Use the browser instructions in [§8](#c8) to delete what is already there. **Cookies set by a third party on its own site** — Calendly’s, if you book a call there — are not ours and are not deleted by anything we do.',
       ],
     },
 
@@ -345,14 +367,14 @@ export const cookies: LegalDoc = {
     },
     {
       k: 'p',
-      t: '**Global Privacy Control and Do Not Track.** We do not track you across websites and we run no analytics, so there is nothing here for these signals to switch off. If we ever add analytics, a GPC signal will be honoured as a valid objection: we will treat consent as refused and will not show you a banner inviting you to change that.',
+      t: '**Global Privacy Control and Do Not Track.** We do not track you across websites, and the only thing these signals could switch off here — Google Analytics — is already off until you accept it. Blocking third-party cookies in your browser also prevents the `_ga` cookies from being set, whatever you answer on the banner.',
     },
 
     /* ------------------------------------------------------------------ 9 */
     { k: 'h', level: 2, id: 'c9', t: '9. What we do not do' },
     {
       k: 'p',
-      t: 'We do not sell your personal data. We do not share it with advertising networks or data brokers. We do not track you across other websites, and we run no analytics — so there is no analytics data about you to profile, share or make decisions from. We do not fingerprint your device. We do not use a cookie wall or make access conditional on consent.',
+      t: 'We do not sell your personal data. We do not share it with advertising networks or data brokers. We do not track you across other websites. We run analytics **only with your consent**, with every advertising signal denied, and we do not use analytics data to profile you or to make decisions about you. We do not fingerprint your device. We do not use a cookie wall or make access conditional on consent.',
     },
 
     /* ----------------------------------------------------------------- 10 */
@@ -385,6 +407,9 @@ export const cookies: LegalDoc = {
       k: 'p',
       t: 'Material changes are announced by updating the effective date and version at the top of this page. Where a change requires consent, we ask for it before the change takes effect.',
     },
-    { k: 'p', t: '**Version history:** v1.0 — 30 August 2026 — first publication.' },
+    {
+      k: 'p',
+      t: '**Version history:** v1.0 — 30 August 2026 — first publication. v1.1 — 21 September 2026 — Google Analytics 4 enabled behind a consent banner; `ts_consent` and the two GA4 cookies added to Table A; §3, §4, §7, §8 and §9 rewritten to match.',
+    },
   ],
 }
